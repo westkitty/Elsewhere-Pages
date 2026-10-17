@@ -11,7 +11,8 @@
   <meta name="description" content="Elsewhere is a private prompt engine for journaling, discovery, creative writing, shadow work, spiritual reflection, and learning." />
   <title>Elsewhere — Greyson mode</title>
   <!-- Self-contained edition: no external files, network requests, fonts, or runtime dependencies. -->
-  <style>
+  <script>document.documentElement.classList.add('elsewhere-locked')</script>
+<style>
     @property --path { syntax: '<color>'; inherits: true; initial-value: #9bdcff; }
     @property --path2 { syntax: '<color>'; inherits: true; initial-value: #91f0d0; }
     :root{
@@ -400,16 +401,75 @@
 @media(max-width:1099px) and (min-width:701px){.greyson-rail{display:none!important}}
 .mobile-greyson-hero{display:grid;gap:5px;padding:4px 2px 9px}.mobile-greyson-hero strong{font-size:18px}.mobile-greyson-hero small{color:var(--muted);font-size:11px;line-height:1.35}.mobile-greyson-language{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.02);margin-bottom:8px}.mobile-greyson-language>span{font-size:10px;color:var(--muted)}.mobile-greyson-language>div{display:flex;gap:4px}.mobile-greyson-language button{min-width:44px;min-height:40px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03);color:var(--muted)}.mobile-greyson-language button[aria-pressed="true"]{color:var(--ink);border-color:color-mix(in srgb,var(--path) 42%,var(--line));background:color-mix(in srgb,var(--path) 11%,rgba(255,255,255,.04))}.mobile-greyson-pick{width:100%;min-height:58px;border:1px solid color-mix(in srgb,var(--path) 38%,var(--line));border-radius:15px;background:color-mix(in srgb,var(--path) 9%,rgba(255,255,255,.03));color:var(--ink);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;text-align:left;margin-bottom:12px}.mobile-greyson-pick strong{font-size:13px}.mobile-greyson-pick small{font-size:9px;color:var(--muted)}.greyson-sheet-grid button{display:grid;gap:4px}.greyson-sheet-grid button strong{font-size:11px}.greyson-sheet-grid button small{font:700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted2)}.greyson-sheet-grid button[aria-pressed="true"]{border-color:color-mix(in srgb,var(--path) 42%,var(--line));background:color-mix(in srgb,var(--path) 10%,rgba(255,255,255,.03))}
 
-  </style>
+  
+/* The local lock blocks the app UI before its scripts initialize. */
+#elsewhereGate, #elsewhereGate *, #elsewherePasswordDialog, #elsewherePasswordDialog * { box-sizing: border-box; }
+html.elsewhere-locked, html.elsewhere-locked body { overflow: hidden; }
+html.elsewhere-locked body > :not(#elsewhereGate):not(script) { visibility: hidden !important; pointer-events: none !important; }
+#elsewhereGate[hidden] { display: none !important; }
+#elsewhereGate { position: fixed; inset: 0; z-index: 2147483647; display: grid; place-items: center; padding: max(22px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); overflow: auto; background: radial-gradient(ellipse at 50% 6%, rgba(93, 177, 203, .16), transparent 57%), #080b10; color: #f5f1e9; font: 15px/1.55 system-ui, -apple-system, sans-serif; }
+.elsewhere-gate-card { width: min(100%, 430px); padding: clamp(26px, 6vw, 42px); border: 1px solid rgba(255, 255, 255, .14); border-radius: 28px; background: linear-gradient(150deg, #171e27, #0c1016); box-shadow: 0 28px 90px rgba(0, 0, 0, .48); }
+.elsewhere-gate-mark { width: 56px; height: 56px; border: 1px solid #7ec8e0; border-radius: 50%; display: grid; place-items: center; font: 32px/1 Georgia, serif; color: #9bdcff; box-shadow: inset 0 0 25px rgba(155, 220, 255, .13), 0 0 32px rgba(155, 220, 255, .08); }
+.elsewhere-gate-kicker { margin: 26px 0 8px; color: #9bdcff; letter-spacing: .2em; text-transform: uppercase; font-size: 11px; font-weight: 750; }
+.elsewhere-gate-card h1 { font: 400 clamp(35px, 8vw, 52px)/1.1 Georgia, serif; letter-spacing: -.035em; margin: 0 0 13px; }
+.elsewhere-gate-copy { color: #c1c5cc; margin: 0 0 27px; }
+.elsewhere-gate-card label, #elsewherePasswordDialog label { display: block; margin-bottom: 7px; color: #f1f3f5; font: 650 12px system-ui, sans-serif; }
+.elsewhere-password-row { display: flex; gap: 8px; align-items: center; }
+.elsewhere-password-row input, #elsewherePasswordDialog input { flex: 1; min-width: 0; width: 100%; height: 50px; border-radius: 12px; border: 1px solid rgba(255,255,255,.25); background: #0c131b; color: #f9f9f9; padding: 10px 12px; font-size: 16px; }
+.elsewhere-password-row button { min-height: 48px; padding: 0 13px; border: 1px solid rgba(255,255,255,.2); background: #17212b; color: #f9f9f9; border-radius: 12px; cursor: pointer; }
+.elsewhere-gate-submit { min-height: 52px; width: 100%; border: 0; border-radius: 14px; background: #d7f0f8; color: #12212b; font: 750 15px system-ui, sans-serif; cursor: pointer; }
+.elsewhere-gate-submit:disabled { opacity: .62; cursor: wait; }
+.elsewhere-lock-status { min-height: 27px; margin: 11px 0; color: #9fe5bd; font-size: 12px; }
+.elsewhere-lock-status[data-error="true"] { color: #ffbcbc; }
+.elsewhere-gate-foot { margin: 23px 0 0; color: #9ea9b5; font-size: 11px; line-height: 1.5; }
+#elsewherePasswordDialog { padding: 0; width: min(94vw, 440px); border: 1px solid rgba(255,255,255,.2); border-radius: 22px; background: #101720; color: #f5f1e9; }
+#elsewherePasswordDialog .elsewhere-password-panel { padding: 24px; }
+#elsewherePasswordDialog h2 { margin: 0 0 9px; font: 400 28px/1.2 Georgia, serif; }
+#elsewherePasswordDialog p { color: #bbc3cc; font-size: 13px; line-height: 1.55; }
+#elsewherePasswordDialog label { margin-top: 13px; }
+#elsewherePasswordDialog menu { display: flex; justify-content: flex-end; gap: 8px; padding: 0; margin: 16px 0 0; }
+#elsewherePasswordDialog button { min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.24); background: #19232e; color: #f5f1e9; cursor: pointer; }
+#elsewherePasswordDialog button[type="submit"] { background: #d7f0f8; color: #10212b; font-weight: 750; }
+#elsewherePasswordDialog button:disabled { opacity: .55; }
+#elsewhereGate :focus-visible, #elsewherePasswordDialog :focus-visible { outline: 2px solid #9bdcff; outline-offset: 3px; }
+</style>
 </head>
 <body data-path="notice">
+  <div id="elsewhereGate" role="region" aria-labelledby="elsewhereGateTitle">
+    <section class="elsewhere-gate-card">
+      <div class="elsewhere-gate-mark" aria-hidden="true">◇</div>
+      <p class="elsewhere-gate-kicker">Private entrance</p>
+      <h1 id="elsewhereGateTitle">Elsewhere is locked.</h1>
+      <p class="elsewhere-gate-copy">Enter your password to continue your exploration.</p>
+      <form id="elsewhereGateForm">
+        <label for="elsewhereGatePassword">Password</label>
+        <div class="elsewhere-password-row"><input id="elsewhereGatePassword" type="password" required autocomplete="current-password" spellcheck="false" /><button type="button" id="elsewhereTogglePassword" aria-label="Show password">Show</button></div>
+        <p class="elsewhere-lock-status" id="elsewhereGateStatus" role="status" aria-live="polite"></p>
+        <button class="elsewhere-gate-submit" id="elsewhereGateSubmit" type="submit">Enter Elsewhere →</button>
+      </form>
+      <p class="elsewhere-gate-foot">This is a local access lock, not data encryption or server-side protection. Saved work remains in browser storage.</p>
+    </section>
+  </div>
+  <dialog id="elsewherePasswordDialog" aria-labelledby="elsewherePasswordTitle">
+    <div class="elsewhere-password-panel">
+      <h2 id="elsewherePasswordTitle">Change your lock password</h2>
+      <p>A unique password is better than the initial default. This lock does not encrypt existing saved work.</p>
+      <form id="elsewherePasswordForm">
+        <label for="elsewhereOldPassword">Current password</label><input id="elsewhereOldPassword" type="password" required autocomplete="current-password" />
+        <label for="elsewhereNewPassword">New password (at least 8 characters)</label><input id="elsewhereNewPassword" type="password" required minlength="8" autocomplete="new-password" />
+        <label for="elsewhereConfirmPassword">Confirm new password</label><input id="elsewhereConfirmPassword" type="password" required minlength="8" autocomplete="new-password" />
+        <p id="elsewherePasswordStatus" class="elsewhere-lock-status" role="status" aria-live="polite"></p>
+        <menu><button type="button" id="elsewherePasswordCancel">Cancel</button><button type="submit" id="elsewhereSavePassword">Save password</button></menu>
+      </form>
+    </div>
+  </dialog>
   <div class="ambient" aria-hidden="true"></div>
   <canvas id="world" aria-hidden="true"></canvas>
   <div class="path-flash" id="pathFlash" aria-hidden="true"></div>
   <div class="shell">
     <header>
       <div class="brand"><div class="sigil" aria-hidden="true"></div><div class="brandcopy"><strong>Elsewhere</strong><span id="brandSub">Greyson mode · pick something, make it weird.</span></div></div>
-      <div class="head-actions"><button type="button" class="roundbtn helpbtn" id="mainHelpBtn" data-help="main" aria-label="How to use this screen" title="Help">?</button><button type="button" class="roundbtn omni-launch" id="omniBtn" aria-label="Open Omni Lens for this prompt" aria-keyshortcuts="O" title="Omni Lens">◉</button><button type="button" class="roundbtn workbench-launch" id="workbenchBtn" aria-label="Open comparative workbench" aria-keyshortcuts="W" title="Workbench">✣</button><button type="button" class="roundbtn quick-launch" id="quickBtn" aria-label="Open quick actions" aria-keyshortcuts="/" title="Commands">⌕</button><button type="button" class="roundbtn drift-launch" id="driftBtn" aria-label="Start a five-door Drift" aria-keyshortcuts="D" title="Drift">↝</button><button type="button" class="roundbtn" id="historyBtn" aria-label="Open prompt history and kept prompts" title="History">⌁</button><button type="button" class="roundbtn" id="settingsBtn" aria-label="Open settings" title="Settings">⋯</button></div>
+      <div class="head-actions"><button type="button" class="roundbtn helpbtn" id="mainHelpBtn" data-help="main" aria-label="How to use this screen" title="Help">?</button><button type="button" class="roundbtn omni-launch" id="omniBtn" aria-label="Open Omni Lens for this prompt" aria-keyshortcuts="O" title="Omni Lens">◉</button><button type="button" class="roundbtn workbench-launch" id="workbenchBtn" aria-label="Open comparative workbench" aria-keyshortcuts="W" title="Workbench">✣</button><button type="button" class="roundbtn quick-launch" id="quickBtn" aria-label="Open quick actions" aria-keyshortcuts="/" title="Commands">⌕</button><button type="button" class="roundbtn drift-launch" id="driftBtn" aria-label="Start a five-door Drift" aria-keyshortcuts="D" title="Drift">↝</button><button type="button" class="roundbtn" id="historyBtn" aria-label="Open prompt history and kept prompts" title="History">⌁</button><button type="button" class="roundbtn" id="elsewhereLockButton" aria-label="Lock Elsewhere" title="Lock Elsewhere">&#128274;</button><button type="button" class="roundbtn" id="settingsBtn" aria-label="Open settings" title="Settings">⋯</button></div>
     </header>
 
     <div class="control-room" id="controlRoom" data-project-rail="open" data-intelligence-rail="folded" data-zen="false">
@@ -580,6 +640,7 @@
     <div class="setting"><label for="haptics">Tiny haptic tap</label><select id="haptics"><option value="on">On when supported</option><option value="off">Off</option></select></div><div class="setting"><label for="adaptiveMix">Adaptive all-path mix</label><select id="adaptiveMix"><option value="off">Off — use the chosen mix only</option><option value="on">On — learn from More / Less feedback</option></select><small>Only changes which path appears next in All paths. It never changes or repeats prompt text.</small></div><div class="setting"><label for="cooldown">Path cooldown</label><select id="cooldown"><option value="soft">Soft — avoid the last two paths when possible</option><option value="off">Off — allow the same path again</option></select><small>Keeps mixed sessions from feeling stuck on one category.</small></div>
     <div class="setting"><label>Pocket universe</label><small>Move your kept prompts, history, and no-repeat progress to another device. The app itself is still one HTML file.</small><div class="pocket-actions"><button type="button" class="mini" id="exportState">Export progress</button><button type="button" class="mini" id="importState">Import progress</button><input type="file" id="importStateFile" accept="application/json,.json" hidden /></div><small class="pocket-note" id="pocketStatus">Nothing leaves your browser unless you export it.</small></div>
     <div class="setting"><label>Your prompt collection</label><small id="universeExplain">Thousands of fresh prompts, plus small prompt packs. Generated prompts do not repeat unless you reset.</small></div>
+    <div class="setting"><label>Access lock</label><small>Elsewhere requests a password at every page load. The initial password is set by the owner.</small><div class="pocket-actions"><button type="button" class="mini" id="elsewhereChangePasswordBtn">Change lock password</button></div></div>
     <div class="dangerzone"><button type="button" class="secondary dangerbtn" id="resetUniverse">Reset prompt collection</button><small id="resetHint">Resetting is the only way old prompts can come back.</small></div>
   </div></div></dialog>
 
@@ -734,7 +795,7 @@
   </dialog>
 
 
-<script>
+<script type="text/plain" data-elsewhere-app>
 (function(){
   try{window.__elsewhereHadLegacyState=!!localStorage.getItem('elsewhere:v2:state')}catch{window.__elsewhereHadLegacyState=false}
   window.__elsewhereBooted=false;
@@ -744,7 +805,7 @@
 })();
 </script>
 
-<script>
+<script type="text/plain" data-elsewhere-app>
 (() => {
   'use strict';
   const $ = (s, r=document) => r.querySelector(s);
@@ -2046,7 +2107,7 @@
   applyPerformanceProfile(false);renderPaths();renderHistory();renderPinnedBanner();updateStorageStatus();applyMotion();generateNext().then(()=>{renderPaths();syncQuickChrome();document.body.classList.add('app-ready');window.__elsewhereBooted=true;const n=$('#compatNotice');if(n)n.hidden=true;}).catch(()=>{const n=$('#compatNotice');if(n)n.hidden=false;});setTimeout(initWorld,80);
 })();
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:state */
 (()=>{
   'use strict';
@@ -2276,7 +2337,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:domain */
 (()=>{
   'use strict';
@@ -2391,7 +2452,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:semantic */
 (()=>{
   'use strict';
@@ -2429,7 +2490,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:grounding */
 (()=>{
   'use strict';
@@ -2472,7 +2533,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:power */
 (()=>{
   'use strict';
@@ -2495,7 +2556,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:builders */
 (()=>{
   'use strict';
@@ -2530,7 +2591,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:continuity */
 (()=>{
   'use strict';
@@ -2569,7 +2630,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:discovery */
 (()=>{
   'use strict';
@@ -2603,7 +2664,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:atlas-uplift */
 (()=>{
   'use strict';
@@ -2690,7 +2751,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:ui-control-room */
 (()=>{
   'use strict';
@@ -2743,7 +2804,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:ui-projects */
 (()=>{
   'use strict';
@@ -2824,7 +2885,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:ui-intelligence */
 (()=>{
   'use strict';
@@ -2865,7 +2926,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:ui-uplift */
 (()=>{
   'use strict';
@@ -2935,7 +2996,7 @@
 })();
 
 </script>
-<script>
+<script type="text/plain" data-elsewhere-app>
 /* v13:ui-mobile */
 (()=>{
   'use strict';
@@ -2947,6 +3008,168 @@
 })();
 
 </script>
-<script>globalThis.ElsewhereV13UI?.boot?.()</script>
+<script type="text/plain" data-elsewhere-app>globalThis.ElsewhereV13UI?.boot?.()</script>
+<script>
+/* Elsewhere access lock: a local interface gate, not server authentication or encryption. */
+(() => {
+  'use strict';
+  const KEY = 'elsewhere:access-lock:v1';
+  const DEFAULT = 'Dexter';
+  const ITERATIONS = 310000;
+  const $ = id => document.getElementById(id);
+  const screen = $('elsewhereGate');
+  const form = $('elsewhereGateForm');
+  const input = $('elsewhereGatePassword');
+  const status = $('elsewhereGateStatus');
+  const submit = $('elsewhereGateSubmit');
+  const changeDialog = $('elsewherePasswordDialog');
+  const changeForm = $('elsewherePasswordForm');
+  const changeStatus = $('elsewherePasswordStatus');
+  let started = false;
+  let unlocked = false;
+  let working = false;
+  let changeWorking = false;
+
+  const hex = bytes => Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+  const unhex = value => {
+    if (typeof value !== 'string' || !/^(?:[0-9a-f]{2})+$/i.test(value)) throw Error('Invalid lock settings');
+    return Uint8Array.from(value.match(/../g), h => parseInt(h, 16));
+  };
+  function storedRecord() {
+    const raw = localStorage.getItem(KEY);
+    if (raw === null) return null;
+    const value = JSON.parse(raw);
+    if (!value || value.v !== 1 || value.iterations !== ITERATIONS ||
+        typeof value.salt !== 'string' || typeof value.hash !== 'string' ||
+        unhex(value.salt).length !== 16 || unhex(value.hash).length !== 32) {
+      throw Error('Invalid lock settings');
+    }
+    return value;
+  }
+  async function derive(password, salt) {
+    if (!crypto?.subtle || !crypto?.getRandomValues) throw Error('Secure password verification is unavailable in this browser');
+    const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+    return new Uint8Array(await crypto.subtle.deriveBits({name: 'PBKDF2', hash: 'SHA-256', salt, iterations: ITERATIONS}, key, 256));
+  }
+  async function valid(password) {
+    const saved = storedRecord();
+    if (!saved) return password === DEFAULT;
+    const actual = await derive(password, unhex(saved.salt));
+    const expected = unhex(saved.hash);
+    let difference = 0;
+    for (let i = 0; i < expected.length; i++) difference |= actual[i] ^ expected[i];
+    return difference === 0;
+  }
+  function setStatus(element, message, error = true) {
+    element.textContent = message;
+    element.dataset.error = String(error);
+  }
+  function blockApp(blocked) {
+    document.documentElement.classList.toggle('elsewhere-locked', blocked);
+    for (const node of document.body.children) {
+      if (node !== screen && node.tagName !== 'SCRIPT') node.inert = blocked;
+    }
+    screen.hidden = !blocked;
+  }
+  function startApp() {
+    if (started) return;
+    started = true;
+    for (const inertScript of Array.from(document.querySelectorAll('script[data-elsewhere-app]'))) {
+      const executable = document.createElement('script');
+      executable.textContent = inertScript.textContent;
+      inertScript.after(executable);
+      inertScript.remove();
+    }
+  }
+  function openApp() {
+    unlocked = true;
+    blockApp(false);
+    input.value = '';
+    setStatus(status, 'Unlocked.', false);
+    startApp();
+    requestAnimationFrame(() => $('elsewhereLockButton')?.focus({preventScroll: true}));
+  }
+  function lockApp(message = '') {
+    unlocked = false;
+    if (changeDialog.open) changeDialog.close();
+    for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+    blockApp(true);
+    input.value = '';
+    setStatus(status, message, !!message);
+    requestAnimationFrame(() => input.focus());
+  }
+  async function onUnlock(event) {
+    event.preventDefault();
+    if (working || unlocked) return;
+    working = true;
+    submit.disabled = true;
+    setStatus(status, 'Checking password...', false);
+    try {
+      if (await valid(input.value)) openApp();
+      else { input.value = ''; setStatus(status, 'That password is incorrect.'); input.focus(); }
+    } catch (error) {
+      setStatus(status, error.message === 'Invalid lock settings' ?
+        'Lock settings are damaged. Saved content has not been erased.' :
+        'Password verification failed. Please try again.');
+    } finally {
+      working = false;
+      submit.disabled = false;
+    }
+  }
+  function openChangePassword() {
+    if (!unlocked || changeDialog.open) return;
+    changeForm.reset();
+    setStatus(changeStatus, '', false);
+    changeDialog.showModal();
+    $('elsewhereOldPassword').focus();
+  }
+  async function onChangePassword(event) {
+    event.preventDefault();
+    if (!unlocked || changeWorking) return;
+    const current = $('elsewhereOldPassword').value;
+    const fresh = $('elsewhereNewPassword').value;
+    const confirmation = $('elsewhereConfirmPassword').value;
+    if (fresh.length < 8) return setStatus(changeStatus, 'Choose at least 8 characters.');
+    if (fresh !== confirmation) return setStatus(changeStatus, 'New passwords do not match.');
+    changeWorking = true;
+    $('elsewhereSavePassword').disabled = true;
+    try {
+      if (!await valid(current)) {
+        setStatus(changeStatus, 'Current password is incorrect.');
+        return;
+      }
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const hash = await derive(fresh, salt);
+      localStorage.setItem(KEY, JSON.stringify({v: 1, iterations: ITERATIONS, salt: hex(salt), hash: hex(hash)}));
+      changeForm.reset();
+      changeDialog.close();
+    } catch (error) {
+      setStatus(changeStatus, 'Could not save the new password. The previous password remains in effect.');
+    } finally {
+      changeWorking = false;
+      $('elsewhereSavePassword').disabled = false;
+    }
+  }
+
+  form.addEventListener('submit', onUnlock);
+  changeForm.addEventListener('submit', onChangePassword);
+  $('elsewhereLockButton').addEventListener('click', () => lockApp());
+  $('elsewhereChangePasswordBtn').addEventListener('click', openChangePassword);
+  $('elsewherePasswordCancel').addEventListener('click', () => changeDialog.close());
+  $('elsewhereTogglePassword').addEventListener('click', () => {
+    const reveal = input.type === 'password';
+    input.type = reveal ? 'text' : 'password';
+    $('elsewhereTogglePassword').textContent = reveal ? 'Hide' : 'Show';
+    $('elsewhereTogglePassword').setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+    input.focus();
+  });
+  window.addEventListener('storage', event => {
+    if (event.key === KEY && unlocked) lockApp('Password settings changed in another tab.');
+  });
+  blockApp(true);
+  input.focus();
+  globalThis.ElsewhereAccessLock = Object.freeze({lock: lockApp, get locked() { return !unlocked; }});
+})();
+</script>
 </body>
 </html>
