@@ -1,0 +1,82 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Elsewhere 14 - Test</title><style>body{background:#080b10;color:#f5f1e9;font-family:system-ui;margin:0}main{width:min(1100px,100%);margin:30px auto;overflow:auto} .stage{padding:24px}.prompt-card{border:1px solid #334;background:#101722;padding:26px;border-radius:24px} .head-actions{display:flex;justify-content:flex-end;padding:12px}button{font-family:inherit}</style><style>
+/* Living Atlas: art direction intentionally follows Elsewhere's existing dark editorial system. */
+.e14-workspace{--e14-border:rgba(205,225,242,.15);--e14-surface:rgba(12,17,25,.77);position:relative;width:min(100%,1020px);margin:18px auto 30px;padding:clamp(16px,2.6vw,30px);color:var(--ink,#f0f3fa);background:linear-gradient(142deg,rgba(22,30,42,.95),rgba(8,12,19,.95));border:1px solid var(--e14-border);border-radius:26px;box-shadow:0 28px 75px rgba(0,0,0,.3)}
+.e14-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 16px;min-height:unset;max-width:none}
+.e14-eyebrow{font:650 11px/1.3 ui-monospace,monospace;letter-spacing:.16em;color:var(--path,#9bdcff)}
+.e14-tagline{font:italic 15px/1.5 Georgia,serif;color:var(--muted,#afb8c6);margin:0}
+.e14-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 16px;padding:5px;border:1px solid var(--e14-border);border-radius:15px;background:rgba(255,255,255,.025)}
+.e14-tabs button{flex:1;min-width:85px;min-height:43px;border:0;border-radius:10px;background:transparent;color:var(--muted,#a9acb4);cursor:pointer;font:650 12px system-ui}
+.e14-tabs button[aria-selected=true]{background:color-mix(in srgb,var(--path,#9bdcff) 13%,rgba(255,255,255,.03));color:var(--ink,#fff);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--path,#9bdcff) 35%,transparent)}
+.e14-panel{min-width:0;animation:e14Open .23s ease-out}
+.e14-panel[hidden]{display:none!important}
+.e14-panel>h3,.e14-atlas-head h3{font:500 clamp(22px,3.2vw,31px)/1.12 Georgia,serif;margin:0 0 15px}
+.e14-panel label{display:block;color:#d8e1ec;font:600 12px/1.4 system-ui;margin:13px 0 7px}
+.e14-panel textarea,.e14-panel input[type=password],.e14-panel input[type=search]{background:rgba(4,8,13,.72);border:1px solid rgba(210,230,250,.19);border-radius:13px;color:var(--ink,#fff);font:14px/1.6 system-ui;padding:12px 13px;width:100%;min-width:0}
+.e14-panel textarea{resize:vertical;min-height:118px;max-height:48vh;field-sizing:content}
+.e14-panel textarea:focus,.e14-panel input:focus{outline:2px solid var(--path,#9bdcff);outline-offset:2px}
+.e14-current-prompt{font:italic 21px/1.32 Georgia,serif;border-left:2px solid var(--path,#9bdcff);margin:0 0 16px;padding:7px 15px;color:#e7edf4;max-width:68ch}
+.e14-actions,.e14-mini-actions,.e14-atlas-controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.e14-actions button,.e14-mini-actions button,.e14-atlas-controls button,.e14-cross-row button{background:rgba(211,229,246,.045);color:var(--ink,#fff);border:1px solid rgba(211,229,246,.21);border-radius:12px;min-height:42px;padding:9px 14px;font:600 12px system-ui;cursor:pointer;transition:background .17s ease,transform .17s ease,border-color .17s ease}
+.e14-actions button:first-child{background:color-mix(in srgb,var(--path,#9bdcff) 16%,rgba(211,229,246,.04));border-color:color-mix(in srgb,var(--path,#9bdcff) 44%,transparent)}
+.e14-actions button:hover,.e14-mini-actions button:hover,.e14-atlas-controls button:hover,.e14-cross-row button:hover{background:rgba(211,229,246,.12);transform:translateY(-1px)}
+.e14-follow-ups{display:grid;gap:7px}
+.e14-follow-ups button{min-height:44px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid var(--e14-border);color:#dbeaf5;padding:10px 14px;cursor:pointer;text-align:left;font:14px/1.45 Georgia,serif}
+.e14-status{margin:12px 0 0;color:var(--path,#9bdcff);font:12px/1.5 system-ui;min-height:1.5em}
+.e14-status[data-error=true]{color:#ffc4b7}
+.e14-artifact,.e14-graph-detail,.e14-cross{background:rgba(0,0,0,.19);border:1px solid var(--e14-border);border-radius:15px;padding:14px;min-width:0}
+.e14-artifact-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.e14-artifact-head strong{font:500 18px/1.2 Georgia,serif;overflow-wrap:anywhere}
+.e14-artifact-head small{text-transform:uppercase;letter-spacing:.12em;color:var(--path,#9bdcff);font:600 10px monospace}
+.e14-artifact p,.e14-graph-detail p{color:var(--muted,#afb8c6);font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 0;max-height:14em;overflow:auto}
+.e14-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:10px;margin:13px 0 23px}
+.e14-artifact .e14-mini-actions{margin-bottom:0}
+.e14-artifact .e14-mini-actions button{min-height:35px;padding:6px 10px}
+.e14-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:20px}
+.e14-comparison .e14-artifact p{max-height:28em}
+.e14-cross{display:grid;gap:10px;margin-top:16px}
+.e14-cross>label{display:inline;margin:0}
+.e14-cross-results{display:grid;gap:9px}
+.e14-cross-row{border-top:1px solid var(--e14-border);display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding-top:9px}
+.e14-cross-row span{font:12px system-ui;color:var(--muted,#a9acb4)}
+.e14-graph{position:relative;min-height:345px;height:clamp(345px,50vh,640px);border:1px solid var(--e14-border);border-radius:19px;overflow:hidden;background:radial-gradient(ellipse at 49% 45%,color-mix(in srgb,var(--path,#9bdcff) 13%,transparent),transparent 62%),radial-gradient(ellipse at 70% 88%,rgba(83,143,177,.08),transparent 40%),#070b12;touch-action:none}
+.e14-graph svg{display:block;width:100%;height:100%;overflow:visible;cursor:grab}
+.e14-graph svg:active{cursor:grabbing}
+.e14-graph .e14-graph-layer{will-change:transform}
+.e14-edge{stroke:#b6c6dc;stroke-width:1.2;stroke-opacity:.24;stroke-linecap:round;pointer-events:stroke}
+.e14-edge.possible{stroke-dasharray:4 5;stroke:#e3baad;stroke-opacity:.4}
+.e14-edge.established{stroke:#9bdcff;stroke-opacity:.38}
+.e14-node{cursor:pointer}
+.e14-node:focus{outline:none}
+.e14-node:focus circle{stroke:#fff;stroke-width:3}
+.e14-node-label{font:12px/1 Georgia,serif;pointer-events:none;paint-order:stroke;stroke:#07101a;stroke-width:3;stroke-linejoin:round}
+.e14-graph-empty{position:absolute;inset:0;display:grid;place-items:center;padding:20px;font:16px Georgia,serif;text-align:center;color:#c1d5e3}
+.e14-graph-detail{margin-top:10px}
+.e14-graph-detail:empty{display:none}
+.e14-graph-detail h4{font:650 12px system-ui;color:var(--muted,#c5d0dc);letter-spacing:.06em}
+.e14-graph-detail .e14-fact{font-size:12px;margin:5px 0}
+.e14-atlas-head{display:flex;align-items:baseline;justify-content:space-between;gap:9px;flex-wrap:wrap}
+.e14-atlas-controls label{margin:0;align-self:center}
+.e14-atlas-controls input[type=range]{accent-color:var(--path,#9bdcff);max-width:190px;min-height:30px}
+.e14-muted{color:var(--muted,#afb8c6);font:12px/1.55 system-ui}
+.e14-privacy-origin{padding:12px 14px;border:1px solid var(--e14-border);border-radius:13px;color:#d5e7f2;background:rgba(255,255,255,.02);font:12px/1.55 system-ui}
+.e14-privacy-origin[data-warn=true]{border-color:rgba(255,185,146,.4)}
+.e14-head-launch{color:var(--path,#9bdcff)!important;min-width:44px;height:44px;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--line,rgba(255,255,255,.2));border-radius:14px;cursor:pointer;font-size:11px}
+.e14-conflict{background:#101923;color:#e7f1ff;max-width:min(550px,calc(100vw - 20px));padding:24px;border:1px solid rgba(225,240,250,.35);border-radius:19px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.e14-conflict::backdrop{background:rgba(2,4,8,.87)}
+.e14-conflict h2{font:24px/1.2 Georgia,serif}.e14-conflict p{font:14px/1.6 system-ui}.e14-conflict button{min-height:44px;border:1px solid #b5e6ff;border-radius:12px;padding:11px 15px;background:#172b40;color:white;cursor:pointer}
+@keyframes e14Open{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.e14-workspace{margin:12px auto 90px;border-radius:19px;padding:14px;max-width:calc(100vw - 20px)}.e14-head{display:block}.e14-tagline{margin-top:8px}.e14-panel textarea{min-height:145px}.e14-comparison{grid-template-columns:1fr}.e14-cards{grid-template-columns:1fr}.e14-actions button{flex:1 1 42%}.e14-graph{height:50vh;min-height:300px}.e14-atlas-controls input[type=range]{width:100%;max-width:none}.e14-head-launch{font-size:10px;padding:0 7px}}
+@media(prefers-reduced-motion:reduce){.e14-workspace *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.e14-actions button:hover,.e14-mini-actions button:hover{transform:none}}
+@media(prefers-contrast:more){.e14-workspace{--e14-border:rgba(240,245,255,.5)}.e14-panel textarea,.e14-panel input{border-color:#d9edff}.e14-edge{stroke-opacity:.85}}
+</style></head><body><div class="head-actions"></div><main id="main"><section class="stage"><article class="prompt-card" id="promptCard">How does one idea change the world?</article></section></main>
+<script>
+window.appErrors=[];window.addEventListener('error',e=>window.appErrors.push(e.message));
+const model={id:'p1',name:'A world',artifacts:[{id:'char-one',type:'character',name:'Mara',summary:'A courier',createdAt:1,meta:{}},{id:'place-two',type:'place',name:'Quiet Harbor',summary:'Old coastal town',createdAt:2,meta:{}}],facts:[],relationships:[{id:'r1',fromId:'char-one',toId:'place-two',status:'established',label:'lives in'}],scratchpads:[],prompts:[],timeline:[],returnPoint:null};
+const st={schemaVersion:13,activeProjectId:'p1',projects:[model],persistenceMode:'local'};
+let seq=0;window.createCalls=0;
+window.ElsewhereV13State={SCHEMA_VERSION:13,runtime:{state:st,adapter:{}},markDirty(){},flushDirty(){return {persistent:true,failed:[]}},syncLegacyState(){},exportUniverse(s){return {app:'Elsewhere',type:'universe',schemaVersion:13,state:JSON.parse(JSON.stringify(s))}},importUniverse(data,s){Object.assign(s,data.state);return {ok:true}},validateProjectPayload(){return {ok:true}},legacyStateFromV13(){return {}},removeProjectStorage(){}};
+window.ElsewhereV13Domain={ARTIFACT_TYPES:['character','power','place','scene','faction','creature','culture','object','rule','memory','note'],createArtifact(p,t,input){createCalls++;const a={id:'new-'+(++seq),type:t,projectId:p.id,...input,createdAt:Date.now()};p.artifacts.push(a);return a},createFact(p,input){const f={id:'f'+(++seq),...input};p.facts.push(f);return f},createRelationship(p,input){const r={id:'r'+(++seq),...input};p.relationships.push(r);return r},setScratchpad(p,scopeId,raw){let a=p.scratchpads.find(x=>x.scopeId===scopeId);if(!a){a={id:'scratch'+(++seq),scopeId};p.scratchpads.push(a)}a.text=raw;return a}};
+window.ElsewhereLegacy={getCurrent:()=>({id:'q1',text:'How does one idea change the world?',c:'imagine',sourceRefs:[]}),getState:()=>({motion:'off'}),restoreState:async()=>{}};
+window.ElsewhereV13UI={projects:{openProjectEditor(){},openQuickLook(id){window.lastOpened=id},switchProject(id){st.activeProjectId=id}},renderControlRoom(){}};
+</script>
+<script src="../src/elsewhere14.js"></script></body></html>

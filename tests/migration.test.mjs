@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const html = fs.readFileSync(new URL('../index.html', import.meta.url),'utf8');
+const match=html.match(/<script type="text\/plain" data-elsewhere-app>\s*\/\* v13:state \*\/([\s\S]*?)<\/script>/);
+if(!match)throw Error('Missing canonical v13 state module');
+const context={Date,Math,Map,Set,Uint32Array,JSON,Number,Array,Object,String,parseInt,localStorage:null};
+context.globalThis=context;
+vm.runInNewContext('/* v13:state */'+match[1],context,{filename:'v13-state.js'});
+const api=context.ElsewhereV13State;
+test('migration retains all Greyson packs and Spanish preference',()=>{
+  const old={version:12,greysonLanguage:'es',category:'day',pack:'greysonShared',packProgress:{greysonNow:3,greysonWeird:7,greysonShared:5,greysonDexter:8},progress:{day:42},saved:[{id:'save1',c:'day',text:'Keep me'}]};
+  const {state:migrated}=api.migrateV12(old);
+  assert.equal(migrated.greysonLanguage,'es');
+  assert.equal(migrated.pack,'greysonShared');
+  assert.equal(migrated.progress.today,42);
+  assert.equal(migrated.packProgress.greysonNow,3);
+  assert.equal(migrated.packProgress.greysonWeird,7);
+  assert.equal(migrated.packProgress.greysonShared,5);
+  assert.equal(migrated.packProgress.greysonDexter,8);
+  const backwards=api.legacyStateFromV13(migrated);
+  assert.equal(backwards.greysonLanguage,'es');
+  assert.equal(backwards.packProgress.greysonShared,5);
+  assert.equal(backwards.saved[0].c,'day');
+});
+test('failed storage write retains dirty section for retry',()=>{
+  const state=api.createDefaultsV13(),writes=[];
+  let fail=true;
+  const adapter={persistent:true,memory:new Map(),getItem(){return null},setItem(k){writes.push(k);return !fail}};
+  api.markDirty('projects:index');
+  const first=api.flushDirty(adapter,state);assert.ok(first.failed.includes(api.INDEX_KEY));
+  fail=false;writes.length=0;
+  const second=api.flushDirty(adapter,state);
+  assert.ok(second.written.includes(api.INDEX_KEY),'dirty section should survive first failure');
+});
