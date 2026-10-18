@@ -37,7 +37,7 @@ test('nine paths triple the deterministic no-repeat universe without overwriting
  assert.equal(i.universe,27648);
  assert.match(html,/const PROMPT_MASK = 1023/);
  assert.match(html,/bank\*1024\+\(\(Math\.imul\(c\.mult,local\)\+offset\)&PROMPT_MASK\)/);
- assert.match(html,/const bank=Math\.floor\(index\/1024\)/);
+ assert.match(html,/bank=Math\.floor\(index\/1024\)/);
 });
 test('every curated pack and creative builder triples authored variety',()=>{
  const i=getCatalog();
