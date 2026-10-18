@@ -157,3 +157,10 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 **Preservation:** Existing index 0–1023 is byte-equivalent in its prompt text and stable ID mapping to the prior bank. Extend ordinal and sanitized index ranges to 0–3071; use `bank=Math.floor(ordinal/1024)` and the same 1,024-element permutation inside each bank. New curated pack prompts are appended, not prepended. Do not reset existing progress or mutate project/canon records. Access lock, original storage format, encrypted-vault behavior, Greyson language routing, and PWA public shell must not regress.
 
 **Evidence gate:** Run `node --test tests/*.test.mjs`, `node tools/guard_reset14.mjs --check`, `node tools/verify_x5.mjs`, `node tools/rebuild14.mjs --check`; read GitHub Actions result and the full merged source. Actual browser-local rendering, iPhone Safari, installed PWA, two-tab conflict and sensitive restore tests remain separate. The feature branch must not merge to `main` based only on catalog-count checks.
+
+
+### Threefold edition — verified implementation evidence
+
+- PR #2 content change revision `874e3adf1c4adc3e0e70297aa5da4b538aeffc88` passed 57/57 Node tests on GitHub Actions run `39089054570`. Syntax, source packaging, reset protection, and standalone rebuild checks also passed.
+- New regression tests protect all 12 pack permutations across 36 positions. A pre-existing signed-step edge case that could yield negative pack indices was repaired using an unsigned step; where the original 12-item sequence was valid, its order is preserved. Original 1,024-index generated prompt bank and original lens choices remain protected from expansion.
+- Real iPhone/Safari, browser storage interaction under genuine multi-tab conditions, HTTPS Vault workflows, and installed-PWA testing still need direct verification before claims of production release readiness. Nothing was merged into main.
