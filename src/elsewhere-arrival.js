@@ -275,6 +275,15 @@
     const label=node('label','A sentence, if you feel like it','e15-label');label.htmlFor='e15Note';welcome.append(label);
     const input=document.createElement('textarea');input.id='e15Note';input.rows=2;input.maxLength=600;input.placeholder='“I just want something fun.” “I need to work through something.” “No idea.”';
     input.setAttribute('aria-label','Optional: how are you feeling, or what are you looking for?');welcome.append(input);
+    const clarify=node('div','','e15-clarifier');clarify.hidden=true;
+    clarify.append(node('p','Would something lighter or something deeper feel better?','e15-muted'));
+    const clarifyChoices=node('div','','e15-clarifier-actions');
+    clarifyChoices.append(action('Lighter',()=>{void enter('play',true)}),action('Deeper',()=>{void enter('shadow',true)}),action('Let Elsewhere decide',()=>{void enter('surprise',true)}));
+    clarify.append(clarifyChoices);welcome.append(clarify);
+    input.addEventListener('input',()=>{
+      const text=input.value.trim();const explicit=/\\b(surprise|whatever|anything|no idea|don't know|do not know|doesn't matter)\\b/i.test(text);
+      clarify.hidden=text.length<20||explicit||pickMode(text)!=='surprise';
+    });
     const choices=node('div','','e15-choices');
     for(const m of ['talk','shadow','play','learn','quiet','surprise','write']){
       const b=action(MODES[m].label,()=>{void enter(m,true)},'e15-choice');
