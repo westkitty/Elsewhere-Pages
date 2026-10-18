@@ -768,6 +768,10 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
 }
 @media(max-width:370px){.e15-choices{grid-template-columns:1fr}.e15-categories{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.e15-choice{transition:none!important;transform:none!important}}
+.e15-echo-questions{display:grid;grid-template-columns:1fr;gap:8px;margin:5px 0 11px}
+.e15-echo-question{min-height:46px;text-align:left;padding:11px 13px;border-radius:12px;border:1px solid rgba(162,211,240,.35);background:#182c3d;color:#edf8ff;font:500 14px/1.55 system-ui,sans-serif;cursor:pointer}
+.e15-echo-question:hover{border-color:#b4e7ff;background:#203e55}
+.e15-echo-question:focus-visible{outline:3px solid #a3ebff;outline-offset:3px}
 /* ELSEWHERE15:STYLE:END */
 </style>
 </head>
@@ -3733,7 +3737,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     notice('Unencrypted text copy requested. Keep it somewhere private.');
   }
   function saveResponse(asType = 'note') {
-    const p = project(), prompt = current(), raw = $('e14Answer')?.value.trim();
+    const p = project(), prompt = globalThis.ElsewhereArrival?.isFreeWriting?.()?null:current(), raw = $('e14Answer')?.value.trim();
     if (!p) { notice('Create or choose a project before saving a response.', true); UI()?.projects?.openProjectEditor?.(true); return null; }
     if (!raw) { notice('Write a response first.', true); $('e14Answer')?.focus(); return null; }
     if (!D()?.ARTIFACT_TYPES?.includes(asType)) { notice('Unsupported artifact type.', true); return null; }
@@ -4701,10 +4705,30 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     const source=node('p','A playful comparison based on your chosen themes, not a personality diagnosis or a claim about this person’s private life.','e15-muted');
     const reasons=node('details','','e15-echo-why');
     reasons.append(node('summary','Why this connection?'),node('p','Themes in common: '+f.matches.join(', ')+'. These are illustrative parallels, not an identity score.'));
+    const explore=node('details','','e15-echo-why');
+    explore.append(node('summary','Follow this thread (optional)'));
+    const followUps=node('div','','e15-echo-questions');
+    const comparison=f.category==='mythology'||f.category==='fiction'?'story':'public work';
+    const questions=[
+      'Where has '+f.matches[0]+' shown up in your choices recently?',
+      'In the '+comparison+' associated with '+f.name+', what resonates with you, and what does not?',
+      'If you experimented with a little more '+f.matches[1]+' tomorrow, what might happen?'
+    ];
+    for(const question of questions){
+      followUps.append(action(question,()=>{
+        if($('e14Answer')?.value.trim()&&!confirm('Keep your unsaved writing and change the prompt?'))return;
+        document.documentElement.classList.remove('elsewhere-arrival-freewriting');
+        const legacy=globalThis.ElsewhereLegacy;
+        void legacy?.transitionTo?.({id:'echo-'+f.id+'-'+Date.now().toString(36),c:'reframe',text:question,guides:[],sourceKind:'arrival',lens:null});
+        globalThis.Elsewhere14?.setView?.('write');
+        $('e14Workspace')?.scrollIntoView({block:'start',behavior:'auto'});
+      },'e15-echo-question'));
+    }
+    explore.append(followUps);
     const hide=action('Not for me',()=>{data.hideUntil=Date.now()+30*86400000;persist();box.hidden=true;renderPrefs()});
     const dismiss=action('Dismiss',()=>{box.hidden=true});
     const buttons=node('div','','e15-echo-actions');buttons.append(dismiss,hide);
-    box.append(eyebrow,message,source,reasons,buttons);box.hidden=false;
+    box.append(eyebrow,message,source,reasons,explore,buttons);box.hidden=false;
     if(!force){data.lastRevealAt=Date.now();persist();}
   }
   function updateRouteBar(){
@@ -4729,7 +4753,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
   }
   async function enter(mode,withChoice=true){
     mode=safeMode(mode);
-    const note=String($('e15Note')?.value||'').trim().slice(0,600);
+    const note=withChoice?String($('e15Note')?.value||'').trim().slice(0,600):'';
     const actual=mode==='surprise'&&note?pickMode(note):mode;
     const finalMode=actual==='surprise'&&!withChoice?'surprise':actual;
     data.lastDay=dayOf();data.lastMode=finalMode;persist();
@@ -4845,7 +4869,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     }else showWelcome();
     return true;
   }
-  globalThis.ElsewhereArrival=Object.freeze({version:1,boot,pickMode,extractThemes,rankEcho,sanitize,readiness});
+  globalThis.ElsewhereArrival=Object.freeze({version:1,boot,pickMode,extractThemes,rankEcho,sanitize,readiness,isFreeWriting:()=>typeof document!=='undefined'&&document.documentElement.classList.contains('elsewhere-arrival-freewriting')});
   if(typeof document!=='undefined'){
     if(!boot()){let tries=0;const retry=()=>{if(boot())return;if(++tries<35)setTimeout(retry,75);else{document.documentElement.classList.remove('elsewhere-arrival-pending');globalThis.ElsewhereLegacy?.generateNext?.();}};retry();}
   }
