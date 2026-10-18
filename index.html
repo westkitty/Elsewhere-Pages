@@ -2071,7 +2071,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
 
   CONTENT_3X.applyCategories(CATEGORY_CONFIG);
   function decodePromptIndex(index){index%=1024;return {turn:index&3,lens:(index>>2)&3,subject:(index>>4)&15,variant:(index>>8)&3};}
-  function popLensFor(categoryKey,index){const ci=CATEGORY_KEYS.indexOf(categoryKey);if(((index+ci*3)%11)!==0)return null;return POP_LENSES[(index+ci)%POP_LENSES.length];}
+  function popLensFor(categoryKey,index){const ci=CATEGORY_KEYS.indexOf(categoryKey);if(((index+ci*3)%11)!==0)return null;const count=index<1024?10:POP_LENSES.length;return POP_LENSES[(index+ci)%count];}
   function creativePromptFromIndex(index,type='mix',wildness='normal'){
     const d=decodePromptIndex(index),bank=Math.floor(index/1024),ideaBase=d.lens*4+d.turn;
     const actualType=type==='mix'?CREATIVE_TYPE_KEYS[(ideaBase+d.subject+d.variant)%CREATIVE_TYPE_KEYS.length]:type;
@@ -2227,7 +2227,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     const roll=(fnv1a(`${state.salt}|all|${state.allStep++}`)>>>0)%Math.max(1,total);let acc=0;for(const [key,w] of weighted){acc+=w;if(roll<acc)return key}return weighted.at(-1)?.[0]||available[0]||null;
   }
   function rememberCategory(key){if(!CATEGORY_KEYS.includes(key))return;state.recentCats=[...(state.recentCats||[]),key].slice(-4)}
-  function packIndex(key,ordinal){const len=PACKS[key].prompts.length;const offset=fnv1a(`${state.salt}|pack|${key}`)%len;let step=(fnv1a(key)|1)%len;if(step===0)step=1;while(gcd(step,len)!==1)step=(step+2)%len||1;return (offset+ordinal*step)%len;}
+  function packIndex(key,ordinal){const legacy=ordinal<12;const len=legacy?12:PACKS[key].prompts.length-12;const stepOrdinal=legacy?ordinal:ordinal-12;const offset=fnv1a(`${state.salt}|pack|${key}`)%len;let step=(fnv1a(key)|1)%len;if(step===0)step=1;while(gcd(step,len)!==1)step=(step+2)%len||1;return (legacy?0:12)+(offset+stepOrdinal*step)%len;}
   function gcd(a,b){while(b){const t=a%b;a=b;b=t}return Math.abs(a)}
   function greysonText(key,idx,lang=state.greysonLanguage){return lang==='es'&&GREYSON_ES[key]?.[idx]?GREYSON_ES[key][idx]:PACKS[key]?.prompts?.[idx]||''}
   function greysonLens(lang=state.greysonLanguage){return POP_LENSES.find(x=>x.name===(lang==='es'?'Lente Greyson':'Greyson lens'))||null}
