@@ -212,7 +212,12 @@
       const legacy=globalThis.ElsewhereLegacy;
       legacy?.chooseArrivalPath?.(MODES[finalMode].path);
       if(note&&finalMode!=='surprise')await legacy?.transitionTo?.(firstPrompt(finalMode));
-      else await legacy?.generateNext?.();
+      else {
+        await legacy?.generateNext?.();
+        if((finalMode==='surprise'||finalMode==='play')&&Math.random()<(finalMode==='surprise'?.7:.3)){
+          globalThis.ElsewhereInfinite?.open?.(finalMode==='play'?'wander':null);
+        }
+      }
     }
     renderEcho(false);renderPrefs();
   }
