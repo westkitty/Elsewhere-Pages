@@ -484,3 +484,11 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - **Intended invariant:** 3,072 prompts per path × nine paths; 36 questions in every original authored pack and Greyson ES pack; 12 creative formulations per builder; 48 twists per level; 30 optional lenses; 18 deeper questions per path; no new external APIs, secrets, or canon state.
 - **Evidence status:** code and source-level structural tests only until CI and actual browser journeys pass. Real Safari/PWA and production release remain independently unverified. Do not remove the pending release gate.
 - **Scope protection:** browser-local personalization remains optional, figure matches remain analogies, newly saved writing matching remains opt-in; historical user data must not be reset or migrated destructively to access the new banks.
+
+
+### 2026-10-17 — Threefold content CI verification receipt
+
+- **Verified GitHub Actions run:** `39089054570` for commit `874e3adf1c4adc3e0e70297aa5da4b538aeffc88` on PR #2; outcome **SUCCESS**, Node **57/57 PASS**.
+- **Additional green gates:** `node --check` original v14 and arrival sources; `node tools/guard_reset14.mjs --check` PASS; `node tools/verify_x5.mjs` PASS; `node tools/rebuild14.mjs --check` PASS.
+- **Specific newly exercised invariants:** every 36-question pack is a valid no-repeat permutation, old valid 12-question ordering remains stable, formerly negative/invalid pack indices are normalized, new banks keep distinct indices, source scripts remain deferred behind lock, Spanish and English Greyson content both have 36 items.
+- **Evidence boundary:** GitHub CI and source integrity do not prove physical Safari, cross-tab runtime, installed offline PWA, encrypted restore on a real origin, or actual mobile layout. PR #2 still open and not merged; no public Pages release claim.
