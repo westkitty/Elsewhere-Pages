@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import fs from 'node:fs';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-const inline=[...html.matchAll(/<script type="text\\/plain" data-elsewhere-app>([\\s\\S]*?)<\\/script>/g)].map(m=>m[1]);
+const inline=html.split('<script type="text/plain" data-elsewhere-app>').slice(1).map(chunk=>chunk.split('</script>')[0]);
 function getCatalog(){
   const context={matchMedia:()=>({matches:false})};
   context.globalThis=context;
@@ -14,7 +14,7 @@ function getCatalog(){
   const raw=inline.find(s=>s.includes('const CATEGORY_CONFIG =')&&s.includes('const PACKS='));
   assert.ok(raw,'original engine found');
   const prefix=raw.slice(0,raw.indexOf('  const VALID={'));
-  return vm.runInNewContext(prefix+`
+  vm.runInNewContext(prefix+`
   globalThis.__inventory={
     categories:Object.fromEntries(Object.entries(CATEGORY_CONFIG).map(([k,c])=>[k,[c.subjects.length,c.angles.length,c.ends.length,c.openers.length]])),
     packs:Object.fromEntries(Object.entries(PACKS).map(([k,p])=>[k,p.prompts.length])),
