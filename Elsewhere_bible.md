@@ -133,3 +133,14 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 - Verified implementation commit: `e466f2ad25b17b3c0fcce443233406ceab389272` — `feat: integrate Elsewhere OMNI iPhone experience and recovery safeguards`.
 - Scope: 33 intended Elsewhere application, documentation, regression and release-guard files; untracked Python bytecode was not staged.
 - The commit was created on `feature/elsewhere-14-living-atlas` after source and full-browser validation. Pushing, merging and deployment require independent GitHub receipts.
+
+
+## 2026-10-17 — Arrival-first journaling and quiet figure parallels
+
+**Work branch:** `feature/arrival-conversation-quiet-echoes`. The user requested an actual conversational check-in before prompts; controllable routes for talk, shadow work, play, learning, quiet, surprise, or a blank page; and optional, slowly earned comparisons with real/fictional/mythological figures. Do not convert Elsewhere into a diagnosing or coercive profiling app.
+
+**Implementation contract:** v12 engine remains the generator, v13 projects remain authoritative, v14 writing/atlas remains authoritative. The new standalone source pair is `src/elsewhere-arrival.js` and `src/elsewhere-arrival.css`, embedded in `index.html` by `tools/rebuild14.mjs` and deferred behind the existing Dexter lock. The startup engine must defer generating its first prompt until arrival decides. A blank-page session must not attribute writing to an old prompt. Quiet Echoes stores only theme/date metadata locally and must never rewrite canon or inferred project facts.
+
+**Privacy/defaults:** check-in once daily and skippable; quiet parallels from selected paths, optional and dismissible; newly saved response analysis separately opt-in; no retroactive scans or network inference; settings control frequency, categories, matching, optional writing input and deletion. No more than weekly unsolicited figure matches, with repeated-day evidence thresholds; comparisons are analogies, not diagnoses, identity labels, endorsements, or biographical equivalencies. Matching data is plaintext, lives separately from the vault, and does not sync. Security warning for shared GitHub Pages origin remains mandatory.
+
+**Protected compatibility:** existing 19-script deferred startup contract, older Greyson EN/ES packs, no-repeat prompt progress, password replacement, standalone HTML, PWA public shell, drafts and encrypted backup/restore. Tests must prove these, not infer them from polished visuals. Runtime Safari/mobile/full PWA interaction remains to be independently verified before claiming a completed deployment.
