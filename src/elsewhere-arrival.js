@@ -145,10 +145,30 @@
     const source=node('p','A playful comparison based on your chosen themes, not a personality diagnosis or a claim about this person’s private life.','e15-muted');
     const reasons=node('details','','e15-echo-why');
     reasons.append(node('summary','Why this connection?'),node('p','Themes in common: '+f.matches.join(', ')+'. These are illustrative parallels, not an identity score.'));
+    const explore=node('details','','e15-echo-why');
+    explore.append(node('summary','Follow this thread (optional)'));
+    const followUps=node('div','','e15-echo-questions');
+    const comparison=f.category==='mythology'||f.category==='fiction'?'story':'public work';
+    const questions=[
+      'Where has '+f.matches[0]+' shown up in your choices recently?',
+      'In the '+comparison+' associated with '+f.name+', what resonates with you, and what does not?',
+      'If you experimented with a little more '+f.matches[1]+' tomorrow, what might happen?'
+    ];
+    for(const question of questions){
+      followUps.append(action(question,()=>{
+        if($('e14Answer')?.value.trim()&&!confirm('Keep your unsaved writing and change the prompt?'))return;
+        document.documentElement.classList.remove('elsewhere-arrival-freewriting');
+        const legacy=globalThis.ElsewhereLegacy;
+        void legacy?.transitionTo?.({id:'echo-'+f.id+'-'+Date.now().toString(36),c:'reframe',text:question,guides:[],sourceKind:'arrival',lens:null});
+        globalThis.Elsewhere14?.setView?.('write');
+        $('e14Workspace')?.scrollIntoView({block:'start',behavior:'auto'});
+      },'e15-echo-question'));
+    }
+    explore.append(followUps);
     const hide=action('Not for me',()=>{data.hideUntil=Date.now()+30*86400000;persist();box.hidden=true;renderPrefs()});
     const dismiss=action('Dismiss',()=>{box.hidden=true});
     const buttons=node('div','','e15-echo-actions');buttons.append(dismiss,hide);
-    box.append(eyebrow,message,source,reasons,buttons);box.hidden=false;
+    box.append(eyebrow,message,source,reasons,explore,buttons);box.hidden=false;
     if(!force){data.lastRevealAt=Date.now();persist();}
   }
   function updateRouteBar(){
@@ -173,7 +193,7 @@
   }
   async function enter(mode,withChoice=true){
     mode=safeMode(mode);
-    const note=String($('e15Note')?.value||'').trim().slice(0,600);
+    const note=withChoice?String($('e15Note')?.value||'').trim().slice(0,600):'';
     const actual=mode==='surprise'&&note?pickMode(note):mode;
     const finalMode=actual==='surprise'&&!withChoice?'surprise':actual;
     data.lastDay=dayOf();data.lastMode=finalMode;persist();
@@ -289,7 +309,7 @@
     }else showWelcome();
     return true;
   }
-  globalThis.ElsewhereArrival=Object.freeze({version:1,boot,pickMode,extractThemes,rankEcho,sanitize,readiness});
+  globalThis.ElsewhereArrival=Object.freeze({version:1,boot,pickMode,extractThemes,rankEcho,sanitize,readiness,isFreeWriting:()=>typeof document!=='undefined'&&document.documentElement.classList.contains('elsewhere-arrival-freewriting')});
   if(typeof document!=='undefined'){
     if(!boot()){let tries=0;const retry=()=>{if(boot())return;if(++tries<35)setTimeout(retry,75);else{document.documentElement.classList.remove('elsewhere-arrival-pending');globalThis.ElsewhereLegacy?.generateNext?.();}};retry();}
   }
