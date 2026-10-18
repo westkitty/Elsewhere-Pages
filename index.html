@@ -5260,8 +5260,9 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
  const row=actions();step.options.forEach((answer,i)=>row.append(btn(answer,()=>{data.adventureChoices.push(i);if(data.adventureStep===2){const text=a.steps.map((s,j)=>s.scene+' Choice: '+s.options[data.adventureChoices[j]]).join(' ');data.adventure=null;data.adventureStep=0;data.adventureChoices=[];write();prompt('Your story so far: '+text+' What happens afterward?',a.category,'adventure');root.hidden=true;}else{data.adventureStep++;write();renderAdventure();}})));
  row.append(btn('Pause adventure',()=>{root.hidden=true;write()}));root.append(row);
  }
+ function callback(){const state=globalThis.ElsewhereLegacy?.getState?.();if(!data.callbacks||!Array.isArray(state?.history))return;const candidates=state.history.filter(x=>x&&allowedCats.has(x.c)&&typeof x.id==='string'&&!x.id.startsWith('trail-'));if(!candidates.length){announce('No earlier question available for a callback.');return;}const p=candidates[Math.min(candidates.length-1,1+hash('callback'+data.shown)%Math.max(1,candidates.length-1))];const item={id:'callback-'+data.shown,type:'callback',category:p.c,text:'An earlier question took you into '+p.c+'. Instead of replaying private writing, would you like to explore that theme from a different direction? What changed in what you notice?',tags:['reflection'],door:'What could remain unresolved without becoming a failure?',doorLabel:'Another perspective'};track(item);view(item);}
  function menu(){root.hidden=false;root.replaceChildren(el('p','ELSEWHERE / THE INFINITE DOOR','inf-eyebrow'),el('h2','What will you find?','inf-title'),el('p','Pick a door—or leave the choice to chance.','inf-muted'));const grid=el('div','','inf-menu');
- grid.append(btn('Surprise me',()=>open()),btn('Curiosity collision',collide),btn('Something in the room',physical));
+ grid.append(btn('Surprise me',()=>open()),btn('Curiosity collision',collide),btn('Something in the room',physical));if(data.callbacks)grid.append(btn('A quiet callback',callback));
  for(const t of LIB.trails)grid.append(btn(data.trail===t.id?'Resume · '+t.title:'Trail · '+t.title,()=>{if(data.trail===t.id)renderTrail();else startTrail(t.id)}));
  for(const a of LIB.adventures)grid.append(btn(data.adventure===a.id?'Resume · '+a.title:'Adventure · '+a.title,()=>{if(data.adventure===a.id)renderAdventure();else startAdventure(a.id)}));
  root.append(grid,btn('Close',()=>{root.hidden=true}));
@@ -5286,7 +5287,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
  if(data.mode==='off')toolbar.hidden=true;
  return true;
  }
- globalThis.ElsewhereInfinite=Object.freeze({version:1,install,open,menu,collide,physical,choose,sanitize,rank:(a)=>a?.map(x=>({id:x.id,score:score(x)})).sort((a,b)=>b.score-a.score),getState:()=>JSON.parse(JSON.stringify(data)),contentCounts:()=>({encounters:all.length,collisions:LIB.collisions.length,trails:LIB.trails.length,adventures:LIB.adventures.length})});
+ globalThis.ElsewhereInfinite=Object.freeze({version:1,install,open,menu,collide,physical,callback,choose,sanitize,rank:(a)=>a?.map(x=>({id:x.id,score:score(x)})).sort((a,b)=>b.score-a.score),getState:()=>JSON.parse(JSON.stringify(data)),contentCounts:()=>({encounters:all.length,collisions:LIB.collisions.length,trails:LIB.trails.length,adventures:LIB.adventures.length})});
  if(typeof document!=='undefined'){if(!install()){let tries=0;const tryAgain=()=>{if(install())return;if(++tries<35)setTimeout(tryAgain,90)};tryAgain()}}
 })();
 /* INFINITE:ENGINE:END */
@@ -5369,7 +5370,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     const ranked=Object.entries(TERMS).map(([theme,terms])=>({theme,n:terms.filter(term=>words.has(term)).length})).filter(x=>x.n>=2).sort((a,b)=>b.n-a.n);
     return ranked.slice(0,3).map(x=>x.theme);
   }
-  const DEFAULTS=()=>({version:1,settings:{checkin:'daily',matching:true,writing:false,reveal:'weekly',categories:[...CATEGORIES]},events:[],lastDay:'',lastMode:'surprise',lastRevealAt:0,hideUntil:0});
+  const DEFAULTS=()=>({version:1,settings:{checkin:'daily',matching:true,writing:false,reveal:'weekly',categories:[...CATEGORIES]},events:[],lastDay:'',lastMode:'surprise',lastRevealAt:0,hideUntil:0,echoHistory:[]});
   function sanitize(raw){
     const d=DEFAULTS();if(!raw||raw.version!==1)return d;
     const p=raw.settings||{};
@@ -5383,6 +5384,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     d.lastMode=safeMode(raw.lastMode);
     d.lastRevealAt=Number.isFinite(raw.lastRevealAt)?raw.lastRevealAt:0;
     d.hideUntil=Number.isFinite(raw.hideUntil)?raw.hideUntil:0;
+    d.echoHistory=Array.isArray(raw.echoHistory)?unique(raw.echoHistory.filter(x=>typeof x==='string'&&x.length<80)).slice(-10):[];
     return d;
   }
   let data=DEFAULTS(), persistent=false, started=false;
@@ -5415,7 +5417,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
       const score=matches.reduce((n,t)=>n+Math.min(weights.get(t),6),0);
       return {...f,matches,score};
     }).filter(f=>f.matches.length>=2).sort((a,b)=>b.score-a.score||b.matches.length-a.matches.length||a.id.localeCompare(b.id));
-    return rows[0]||null;
+    const history=new Set(data.echoHistory.slice(-4));return rows.find(x=>!history.has(x.id))||rows[0]||null;
   }
   function readiness(){const days=unique(data.events.map(e=>e.day)).length;return {days,observations:data.events.length,ready:!!rankEcho()}}
   function renderPrefs(){
@@ -5465,7 +5467,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     const dismiss=action('Dismiss',()=>{box.hidden=true});
     const buttons=node('div','','e15-echo-actions');buttons.append(dismiss,hide);
     box.append(eyebrow,message,source,reasons,explore,buttons);box.hidden=false;
-    if(!force){data.lastRevealAt=Date.now();persist();}
+    if(!force){data.lastRevealAt=Date.now();data.echoHistory=[...data.echoHistory,f.id].slice(-10);persist();}
   }
   function updateRouteBar(){
     const bar=$('e15RouteBar');if(!bar)return;
@@ -5550,7 +5552,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     actions.append(action('See my connection',()=>{renderEcho(true);const echo=$('e15Echo');if(echo.hidden){state.textContent='No reliable playful connection yet. Try a few more visits or enable categories.';}else{ $('settingsDialog')?.close();echo.scrollIntoView({block:'center',behavior:'auto'});}}));
     actions.append(action('Erase matching history',()=>{
       if(!confirm('Erase your local figure-matching observations? Existing journal entries and projects will not change.'))return;
-      data.events=[];data.lastRevealAt=0;data.hideUntil=0;persist();$('e15Echo').hidden=true;renderPrefs();
+      data.events=[];data.lastRevealAt=0;data.hideUntil=0;data.echoHistory=[];persist();$('e15Echo').hidden=true;renderPrefs();
     }));
     wrap.append(actions,node('p','Only theme labels and dates are retained for matching. Your check-in words are not saved here. Saved journal text is never analyzed unless you enable it. Data is plaintext browser storage on this site’s shared origin and is not included in Vault backups. Nothing is sent to a server.','e15-privacy'));
     target.append(wrap);renderPrefs();
