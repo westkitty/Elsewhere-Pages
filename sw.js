@@ -1,5 +1,5 @@
 /* Elsewhere offline shell: cache only public application assets, never journal or backup data. */
-const CACHE = 'elsewhere-public-shell-v14';
+const CACHE = 'elsewhere-public-shell-v15';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
