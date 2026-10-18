@@ -79,8 +79,9 @@
  const row=actions();step.options.forEach((answer,i)=>row.append(btn(answer,()=>{data.adventureChoices.push(i);if(data.adventureStep===2){const text=a.steps.map((s,j)=>s.scene+' Choice: '+s.options[data.adventureChoices[j]]).join(' ');data.adventure=null;data.adventureStep=0;data.adventureChoices=[];write();prompt('Your story so far: '+text+' What happens afterward?',a.category,'adventure');root.hidden=true;}else{data.adventureStep++;write();renderAdventure();}})));
  row.append(btn('Pause adventure',()=>{root.hidden=true;write()}));root.append(row);
  }
+ function callback(){const state=globalThis.ElsewhereLegacy?.getState?.();if(!data.callbacks||!Array.isArray(state?.history))return;const candidates=state.history.filter(x=>x&&allowedCats.has(x.c)&&typeof x.id==='string'&&!x.id.startsWith('trail-'));if(!candidates.length){announce('No earlier question available for a callback.');return;}const p=candidates[Math.min(candidates.length-1,1+hash('callback'+data.shown)%Math.max(1,candidates.length-1))];const item={id:'callback-'+data.shown,type:'callback',category:p.c,text:'An earlier question took you into '+p.c+'. Instead of replaying private writing, would you like to explore that theme from a different direction? What changed in what you notice?',tags:['reflection'],door:'What could remain unresolved without becoming a failure?',doorLabel:'Another perspective'};track(item);view(item);}
  function menu(){root.hidden=false;root.replaceChildren(el('p','ELSEWHERE / THE INFINITE DOOR','inf-eyebrow'),el('h2','What will you find?','inf-title'),el('p','Pick a door—or leave the choice to chance.','inf-muted'));const grid=el('div','','inf-menu');
- grid.append(btn('Surprise me',()=>open()),btn('Curiosity collision',collide),btn('Something in the room',physical));
+ grid.append(btn('Surprise me',()=>open()),btn('Curiosity collision',collide),btn('Something in the room',physical));if(data.callbacks)grid.append(btn('A quiet callback',callback));
  for(const t of LIB.trails)grid.append(btn(data.trail===t.id?'Resume · '+t.title:'Trail · '+t.title,()=>{if(data.trail===t.id)renderTrail();else startTrail(t.id)}));
  for(const a of LIB.adventures)grid.append(btn(data.adventure===a.id?'Resume · '+a.title:'Adventure · '+a.title,()=>{if(data.adventure===a.id)renderAdventure();else startAdventure(a.id)}));
  root.append(grid,btn('Close',()=>{root.hidden=true}));
@@ -105,6 +106,6 @@
  if(data.mode==='off')toolbar.hidden=true;
  return true;
  }
- globalThis.ElsewhereInfinite=Object.freeze({version:1,install,open,menu,collide,physical,choose,sanitize,rank:(a)=>a?.map(x=>({id:x.id,score:score(x)})).sort((a,b)=>b.score-a.score),getState:()=>JSON.parse(JSON.stringify(data)),contentCounts:()=>({encounters:all.length,collisions:LIB.collisions.length,trails:LIB.trails.length,adventures:LIB.adventures.length})});
+ globalThis.ElsewhereInfinite=Object.freeze({version:1,install,open,menu,collide,physical,callback,choose,sanitize,rank:(a)=>a?.map(x=>({id:x.id,score:score(x)})).sort((a,b)=>b.score-a.score),getState:()=>JSON.parse(JSON.stringify(data)),contentCounts:()=>({encounters:all.length,collisions:LIB.collisions.length,trails:LIB.trails.length,adventures:LIB.adventures.length})});
  if(typeof document!=='undefined'){if(!install()){let tries=0;const tryAgain=()=>{if(install())return;if(++tries<35)setTimeout(tryAgain,90)};tryAgain()}}
 })();
