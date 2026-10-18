@@ -31,3 +31,12 @@ test('callback deliberately accesses prompt metadata but not private written res
  assert.match(engine,/if\(!data\.callbacks/);
  assert.doesNotMatch(engine,/getProject\(/);
 });
+
+test('actual encounter selector yields broad novelty over 100 no-write simulated visits',()=>{
+ const report=context.ElsewhereInfinite.simulate(100);
+ assert.equal(report.delivered,100);
+ assert.ok(report.unique>=90,'unique encounters should reach at least 90');
+ assert.ok(report.forms>=8,'at least eight distinct forms should appear');
+ assert.ok(report.categories>=5,'at least five paths should appear');
+ assert.ok(report.repeats<=10,'at most ten exact repeats under limited corpus');
+});
