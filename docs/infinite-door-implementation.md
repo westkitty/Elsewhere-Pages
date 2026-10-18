@@ -15,7 +15,7 @@ This ledger distinguishes implemented source changes from independently verified
 | 5 | Different encounter forms | Infinite content `forms` | 12 distinct forms implemented |
 | 6 | Exceptional authored encounters | Infinite content `forms` | 120 authored encounters; quantity below aspirational 150 |
 | 7 | Encounter-specific hidden doors | `view`, content `door` | Implemented |
-| 8 | Responsive arrival clarification | `src/elsewhere-arrival.js` | Partial: short route choice and keyword intent, no conditional clarifying question yet |
+| 8 | Responsive arrival clarification | `src/elsewhere-arrival.js` | Implemented one optional lighter/deeper/decide clarifier when input is ambiguous; keyword-based classification remains limited |
 | 9 | Curiosity Collision Engine | 36 content pairs, `collide` | Implemented: authored, offline |
 | 10 | Short playable adventures | Six interactive `adventures` | Implemented; branch choice drives response, not branched story topology |
 | 11 | Reality shifter | Six `transformations`, `view` | Implemented: editorial transformations, not generative AI |
@@ -54,3 +54,7 @@ node tools/guard_reset14.mjs --check
 node tools/verify_x5.mjs
 node tools/rebuild14.mjs --check
 ```
+
+## Latest CI receipt
+
+Run `39098419047` passed **67/67 Node tests**, password/reset guard, deferred access gate, and standalone-source consistency on commit `b94cc855df5090358db41507528c2b067c148e94`. This is code/integration evidence, not real-device or full-browser evidence. PR #3 remains draft and unmerged.
