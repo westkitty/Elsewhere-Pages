@@ -23,3 +23,5 @@
 .inf-setting input{width:19px;height:19px;accent-color:#a8e4fc}
 @media(max-width:500px){.inf-panel{border-radius:17px;padding:18px}.inf-menu{grid-template-columns:1fr}.inf-toolbar{justify-content:stretch}.inf-toolbar button{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.inf-panel *{scroll-behavior:auto!important;transition:none!important}}
+
+#ideaStage:has(#infPanel:not([hidden])) > .stage{display:none!important}
