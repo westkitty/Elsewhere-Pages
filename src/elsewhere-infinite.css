@@ -1,0 +1,25 @@
+/* The Infinite Door: deliberate, low-overhead editorial encounters. */
+#infPanel[hidden],.inf-toolbar[hidden]{display:none!important}
+.inf-panel{width:min(100%,860px);box-sizing:border-box;margin:10px auto 18px;padding:clamp(19px,4vw,37px);border:1px solid rgba(161,211,237,.32);border-radius:24px;background:radial-gradient(circle at 100% 0%,rgba(127,188,211,.14),transparent 57%),#111e2d;color:#e7f0f8;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.inf-eyebrow{font:700 11px/1.5 system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#afddec;margin:0 0 11px}
+.inf-title{font:500 clamp(24px,4vw,38px)/1.15 Georgia,serif;color:#fff5e7;margin:0 0 15px}
+.inf-story{font:400 clamp(17px,2.4vw,22px)/1.65 Georgia,serif;color:#f2ede4;max-width:65ch;margin:0 0 20px;white-space:pre-wrap}
+.inf-muted{font:400 13px/1.6 system-ui,sans-serif;color:#bfd0d8}
+.inf-actions,.inf-menu,.inf-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.inf-toolbar{justify-content:flex-end;margin:12px auto 8px;width:min(100%,860px)}
+.inf-panel button,.inf-toolbar button,.inf-settings button{border:1px solid rgba(158,199,224,.35);border-radius:11px;background:#1b3143;color:#f2f8fc;padding:11px 15px;min-height:46px;font:600 14px/1.35 system-ui,sans-serif;cursor:pointer;text-align:left}
+.inf-panel button:hover,.inf-toolbar button:hover,.inf-settings button:hover{background:#2a455b;border-color:#b5e6f5}
+.inf-panel button:focus-visible,.inf-toolbar button:focus-visible,.inf-settings :is(button,select,input):focus-visible,.inf-panel summary:focus-visible{outline:3px solid #b4efff;outline-offset:3px}
+.inf-door,.inf-transform,.inf-reject{border-top:1px solid rgba(173,209,223,.21);padding:10px 0;margin:10px 0}
+.inf-door summary,.inf-transform summary,.inf-reject summary{cursor:pointer;color:#b9e4f5;padding:11px 0;font:600 14px system-ui,sans-serif;min-height:44px}
+.inf-door p{font:400 16px/1.6 Georgia,serif;color:#e8ecf2;margin:5px 0 12px}
+.inf-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:15px 0}
+.inf-menu button{min-width:0}
+.inf-announce{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.inf-settings{margin:22px 0;padding-top:20px;border-top:1px solid rgba(169,203,225,.28);display:grid;gap:12px}
+.inf-settings h3{font:500 26px/1.2 Georgia,serif;margin:0}
+.inf-setting{display:flex;justify-content:space-between;align-items:center;gap:12px;font:500 14px/1.5 system-ui,sans-serif}
+.inf-setting select{min-height:44px;background:#172a3c;color:#fff;border:1px solid #7097ac;border-radius:9px;padding:6px 10px;font-size:16px}
+.inf-setting input{width:19px;height:19px;accent-color:#a8e4fc}
+@media(max-width:500px){.inf-panel{border-radius:17px;padding:18px}.inf-menu{grid-template-columns:1fr}.inf-toolbar{justify-content:stretch}.inf-toolbar button{width:100%;text-align:center}}
+@media(prefers-reduced-motion:reduce){.inf-panel *{scroll-behavior:auto!important;transition:none!important}}
