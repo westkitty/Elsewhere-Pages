@@ -10,6 +10,7 @@ const css=fs.readFileSync(path.join(root,'src/elsewhere14.css'),'utf8').trimEnd(
 const js=fs.readFileSync(path.join(root,'src/elsewhere14.js'),'utf8').trimEnd();
 const arrivalCss=fs.readFileSync(path.join(root,'src/elsewhere-arrival.css'),'utf8').trimEnd();
 const arrivalJs=fs.readFileSync(path.join(root,'src/elsewhere-arrival.js'),'utf8').trimEnd();
+const pathModule=p=>path.join(root,p);
 function replace(kind,body,prefix='ELSEWHERE14'){
   const open=`/* ${prefix}:${kind}:START */`;
   const close=`/* ${prefix}:${kind}:END */`;
@@ -19,6 +20,7 @@ function replace(kind,body,prefix='ELSEWHERE14'){
 }
 replace('STYLE',css);replace('SCRIPT',js);
 replace('STYLE',arrivalCss,'ELSEWHERE15');replace('SCRIPT',arrivalJs,'ELSEWHERE15');
+for(const [path,prefix,kind] of [['src/elsewhere-infinite.css','INFINITE','STYLE'],['src/elsewhere-infinite-content.js','INFINITE','CONTENT'],['src/elsewhere-infinite-engine.js','INFINITE','ENGINE']])replace(kind,fs.readFileSync(pathModule(path),'utf8').trimEnd(),prefix);
 if(process.argv.includes('--check')){
   const saved=fs.readFileSync(html,'utf8');
   if(saved!==current){console.error('Standalone index.html is out of sync with src/ modules. Run node tools/rebuild14.mjs.');process.exit(1)}
