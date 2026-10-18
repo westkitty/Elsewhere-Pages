@@ -281,7 +281,7 @@
     clarifyChoices.append(action('Lighter',()=>{void enter('play',true)}),action('Deeper',()=>{void enter('shadow',true)}),action('Let Elsewhere decide',()=>{void enter('surprise',true)}));
     clarify.append(clarifyChoices);welcome.append(clarify);
     input.addEventListener('input',()=>{
-      const text=input.value.trim();const explicit=/\\b(surprise|whatever|anything|no idea|don't know|do not know|doesn't matter)\\b/i.test(text);
+      const text=input.value.trim();const explicit=/\b(surprise|whatever|anything|no idea|don't know|do not know|doesn't matter)\b/i.test(text);
       clarify.hidden=text.length<20||explicit||pickMode(text)!=='surprise';
     });
     const choices=node('div','','e15-choices');
