@@ -801,6 +801,12 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
 @media(prefers-reduced-motion:reduce){.inf-panel *{scroll-behavior:auto!important;transition:none!important}}
 
 #ideaStage:has(#infPanel:not([hidden])) > .stage{display:none!important}
+
+.e15-clarifier[hidden]{display:none!important}
+.e15-clarifier{border:1px solid rgba(170,213,235,.27);border-radius:14px;padding:12px;margin:12px 0;background:rgba(88,136,164,.08)}
+.e15-clarifier-actions{display:flex;flex-wrap:wrap;gap:8px}
+.e15-clarifier-actions button{min-height:44px;padding:9px 12px;border-radius:9px;border:1px solid rgba(170,213,235,.34);background:#223c53;color:#f4f9fd;font:600 14px system-ui,sans-serif;cursor:pointer}
+.e15-clarifier-actions button:focus-visible{outline:3px solid #b4efff;outline-offset:3px}
 /* INFINITE:STYLE:END */
 </style>
 </head>
@@ -5583,6 +5589,15 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     const label=node('label','A sentence, if you feel like it','e15-label');label.htmlFor='e15Note';welcome.append(label);
     const input=document.createElement('textarea');input.id='e15Note';input.rows=2;input.maxLength=600;input.placeholder='“I just want something fun.” “I need to work through something.” “No idea.”';
     input.setAttribute('aria-label','Optional: how are you feeling, or what are you looking for?');welcome.append(input);
+    const clarify=node('div','','e15-clarifier');clarify.hidden=true;
+    clarify.append(node('p','Would something lighter or something deeper feel better?','e15-muted'));
+    const clarifyChoices=node('div','','e15-clarifier-actions');
+    clarifyChoices.append(action('Lighter',()=>{void enter('play',true)}),action('Deeper',()=>{void enter('shadow',true)}),action('Let Elsewhere decide',()=>{void enter('surprise',true)}));
+    clarify.append(clarifyChoices);welcome.append(clarify);
+    input.addEventListener('input',()=>{
+      const text=input.value.trim();const explicit=/\b(surprise|whatever|anything|no idea|don't know|do not know|doesn't matter)\b/i.test(text);
+      clarify.hidden=text.length<20||explicit||pickMode(text)!=='surprise';
+    });
     const choices=node('div','','e15-choices');
     for(const m of ['talk','shadow','play','learn','quiet','surprise','write']){
       const b=action(MODES[m].label,()=>{void enter(m,true)},'e15-choice');
