@@ -126,3 +126,26 @@ The first unlocked visit of a day now begins with **How are you doing today?** r
 **Quiet Echoes** is an intentionally light, optional comparison to a curated figure, not personality classification or therapy. Twenty-one figures span sports, movies, music, authors, history, mythology, and fiction. It uses local theme labels from chosen check-in directions, and it waits for several visits before showing a small, dismissible comparison no more than once a week. The user can investigate the explanation, opt into a follow-up question, hide suggestions for 30 days, change figure categories and frequency, or erase just the matching history.
 
 Newly saved journal writing **is not analyzed for figure matching by default**. A separate setting allows processing newly saved responses locally into up to three simple theme labels; the original text never enters the matching record. This rule-based feature has no remote AI service and cannot understand nuanced writing like a human conversation. Matching uses a separate `elsewhere:arrival:v1` browser storage key (plaintext), is not synced across devices, and **is not included** in encrypted Vault backup exports. Existing v12/v13/v14 data contracts, the Dexter UI gate, project/canon write rules, and the offline standalone source-of-truth model remain unchanged. See [PRIVACY.md](PRIVACY.md).
+
+## Threefold content edition (2026-10-17)
+
+This edition increases **usable, authored content**, not the number of controls visible on arrival. The original first 1,024 generated indices for each path remain in place; each path continues into two new independent 1,024-index banks without resetting per-path progress.
+
+| Content surface | Before | After | Delivery |
+|---|---:|---:|---|
+| Generated path prompts across nine paths | 9,216 | **27,648** | First 1,024 preserved; two new banks per path |
+| Themed subjects in each of eight reflection paths | 16 | **48** | 32 new authored subjects per path |
+| Angles, endings, and opener formulations in each reflection path | 4 each | **12 each** | Two newly authored sets |
+| Curated pack prompts, each of 12 packs | 12 | **36** | 24 new standalone questions per pack |
+| Spanish prompts, each of four Greyson packs | 12 | **36** | 24 additional independently translated questions |
+| Creative question formulations per builder (ten builders) | 4 | **12** | Existing four preserved; eight new follow-on forms |
+| Pop lenses | 10 | **30** | 20 new optional editorial perspectives |
+| Twist options per wildness level | 16 | **48** | New strange and unhinged twists; normal stays empty |
+| Deeper follow-up questions per path | 6 | **18** | 12 new questions per path |
+| Prompt-example endings | 4 | **12** | Eight additions |
+| Prompt-enhancement instructions | 8 | **24** | Sixteen additions |
+| Quiet Echoes figure profiles | 21 | **63** | 42 added profiles across seven categories |
+
+The original prompt engine remains deterministic and offline. Content modules are embedded in `index.html` as deferred scripts, behind the existing Dexter UI lock. The builder script still owns the embedded v14/v15 source copies; content-bank modules are separate, audited sources. Never reset existing browser storage to expose new prompts. The original no-repeat state extends into new indices.
+
+The threefold count describes content depth and available variations, not literal tripling of navigation components, data exports or UI buttons. This is intentional: increasing those would make the first screen intrusive and would not improve journaling.
