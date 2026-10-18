@@ -23,7 +23,8 @@ function getCatalog(){
     twists:Object.fromEntries(Object.entries(WILD_TWISTS).map(([k,v])=>[k,v.length])),
     perCategory:PROMPTS_PER_CATEGORY,
     universe:UNIVERSE_SIZE
-  }; `,context,{filename:'legacy-inventory.js'})||context.__inventory;
+  }; `,context,{filename:'legacy-inventory.js'});
+  return context.__inventory;
 }
 test('all eight themed paths triple their subject and opener banks',()=>{
  const c=getCatalog().categories;
