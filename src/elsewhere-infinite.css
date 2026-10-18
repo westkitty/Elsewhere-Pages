@@ -25,3 +25,9 @@
 @media(prefers-reduced-motion:reduce){.inf-panel *{scroll-behavior:auto!important;transition:none!important}}
 
 #ideaStage:has(#infPanel:not([hidden])) > .stage{display:none!important}
+
+.e15-clarifier[hidden]{display:none!important}
+.e15-clarifier{border:1px solid rgba(170,213,235,.27);border-radius:14px;padding:12px;margin:12px 0;background:rgba(88,136,164,.08)}
+.e15-clarifier-actions{display:flex;flex-wrap:wrap;gap:8px}
+.e15-clarifier-actions button{min-height:44px;padding:9px 12px;border-radius:9px;border:1px solid rgba(170,213,235,.34);background:#223c53;color:#f4f9fd;font:600 14px system-ui,sans-serif;cursor:pointer}
+.e15-clarifier-actions button:focus-visible{outline:3px solid #b4efff;outline-offset:3px}
