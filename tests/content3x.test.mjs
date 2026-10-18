@@ -7,7 +7,7 @@ const inline=html.split('<script type="text/plain" data-elsewhere-app>').slice(1
 function getCatalog(){
   const context={matchMedia:()=>({matches:false})};
   context.globalThis=context;
-  for(const name of ['elsewhere-triple-paths','elsewhere-triple-packs','elsewhere-triple-creative','elsewhere-triple-deeper']){
+  for(const name of ['elsewhere-triple-paths','elsewhere-triple-packs','elsewhere-triple-creative','elsewhere-triple-deeper','elsewhere-triple-spanish']){
     const script=fs.readFileSync(new URL('../src/'+name+'.js',import.meta.url),'utf8');
     vm.runInNewContext(script,context,{filename:name+'.js'});
   }
@@ -21,6 +21,7 @@ function getCatalog(){
     creative:Object.fromEntries(Object.entries(CREATIVE_DEFS).map(([k,d])=>[k,d.build.length])),
     lenses:POP_LENSES.length,
     twists:Object.fromEntries(Object.entries(WILD_TWISTS).map(([k,v])=>[k,v.length])),
+    spanish:Object.fromEntries(Object.entries(GREYSON_ES).map(([k,v])=>[k,v.length])),
     perCategory:PROMPTS_PER_CATEGORY,
     universe:UNIVERSE_SIZE
   };\n})();`,context,{filename:'legacy-inventory.js'});
@@ -46,6 +47,8 @@ test('every curated pack and creative builder triples authored variety',()=>{
  assert.equal(Object.keys(i.creative).length,10);
  assert.ok(Object.values(i.creative).every(n=>n===12));
  assert.equal(i.lenses,30);
+ assert.equal(Object.keys(i.spanish).length,4);
+ assert.ok(Object.values(i.spanish).every(n=>n===36));
  assert.ok(Object.values(i.twists).every(n=>n===48));
 });
 test('all nine deeper prompts triple their choices and assistants have threefold endings',()=>{
@@ -54,7 +57,7 @@ test('all nine deeper prompts triple their choices and assistants have threefold
  assert.match(html,/const ASSIST_ENHANCE_EXTRAS=\[.*Try this from a different point of view/);
 });
 test('all content modules are deferred until Dexter unlock, with unchanged v14 source markers',()=>{
- assert.equal(inline.length,23);
+ assert.equal(inline.length,24);
  for(const name of ['elsewhere-triple-paths','elsewhere-triple-packs','elsewhere-triple-creative','elsewhere-triple-deeper']){
    const source=fs.readFileSync(new URL('../src/'+name+'.js',import.meta.url),'utf8').trimEnd();
    assert.ok(inline.some(s=>s.includes(source)),name);
