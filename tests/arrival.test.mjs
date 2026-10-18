@@ -74,7 +74,7 @@ test('writing analysis is opt-in and performed only after successful save',()=>{
   const v14=fs.readFileSync(new URL('../src/elsewhere14.js',import.meta.url),'utf8');
   assert.match(source,/if\(!data\.settings\.matching\|\|!data\.settings\.writing\)return/);
   assert.match(v14,/if\(writingPersisted\(result\)\)try\{globalThis\.dispatchEvent\(new CustomEvent\('elsewhere:response-saved'/);
-  assert.match(source,/data\.settings\.writing=p\.writing===true&&d\.settings\.matching/);
+  assert.match(source,/d\.settings\.writing=p\.writing===true&&d\.settings\.matching/);
   assert.match(source,/data\.events\.push\(\{at:Date\.now\(\),day:today,source,traits/);
 });
 
