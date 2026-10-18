@@ -475,3 +475,12 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - **Privacy invariant:** optional note ephemeral unless deliberately moved to journal editor; optional writing analysis off; only theme labels and dates in local matching record; no automatic canon establishment; origin and vault inclusion limits documented.
 - **Evidence still needed:** GitHub Actions Node suite and rebuild integrity; real unlock/start/check-in/skip/blank-page/write/save/reload browser tests; actual iPhone Safari + offline PWA; password/change and vault roundtrip checks. Do not describe browser-dependent behaviors as verified until directly exercised.
 - **Scope isolation:** matching observations never migrate into v13 project facts; reset applies only to `elsewhere:arrival:v1`; old projects and prompt history must remain unchanged.
+
+
+## 2026-10-17 — Content depth ×3 (feature branch)
+
+- **Source branch:** `feature/arrival-conversation-quiet-echoes` in `westkitty/Elsewhere-Pages`. Source content expanded in place; existing first-bank prompt indices, no-repeat progress, saved writing, and password lock preserved by design.
+- **Added catalogs:** five `src/elsewhere-triple-*.js` modules for eight themed paths, twelve curated packs, ten creative builders, optional lenses/twists, nine deeper-question groups, and four parallel Greyson Spanish packs. The Arrival figure roster increases from 21 to 63.
+- **Intended invariant:** 3,072 prompts per path × nine paths; 36 questions in every original authored pack and Greyson ES pack; 12 creative formulations per builder; 48 twists per level; 30 optional lenses; 18 deeper questions per path; no new external APIs, secrets, or canon state.
+- **Evidence status:** code and source-level structural tests only until CI and actual browser journeys pass. Real Safari/PWA and production release remain independently unverified. Do not remove the pending release gate.
+- **Scope protection:** browser-local personalization remains optional, figure matches remain analogies, newly saved writing matching remains opt-in; historical user data must not be reset or migrated destructively to access the new banks.
