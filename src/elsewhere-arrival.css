@@ -62,3 +62,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
 }
 @media(max-width:370px){.e15-choices{grid-template-columns:1fr}.e15-categories{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.e15-choice{transition:none!important;transform:none!important}}
+.e15-echo-questions{display:grid;grid-template-columns:1fr;gap:8px;margin:5px 0 11px}
+.e15-echo-question{min-height:46px;text-align:left;padding:11px 13px;border-radius:12px;border:1px solid rgba(162,211,240,.35);background:#182c3d;color:#edf8ff;font:500 14px/1.55 system-ui,sans-serif;cursor:pointer}
+.e15-echo-question:hover{border-color:#b4e7ff;background:#203e55}
+.e15-echo-question:focus-visible{outline:3px solid #a3ebff;outline-offset:3px}
