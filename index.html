@@ -799,6 +799,8 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
 .inf-setting input{width:19px;height:19px;accent-color:#a8e4fc}
 @media(max-width:500px){.inf-panel{border-radius:17px;padding:18px}.inf-menu{grid-template-columns:1fr}.inf-toolbar{justify-content:stretch}.inf-toolbar button{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.inf-panel *{scroll-behavior:auto!important;transition:none!important}}
+
+#ideaStage:has(#infPanel:not([hidden])) > .stage{display:none!important}
 /* INFINITE:STYLE:END */
 </style>
 </head>
@@ -5228,7 +5230,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
  function choose(category=null){let candidates=all.filter(eligible);if(category&&allowedCats.has(category))candidates=candidates.filter(x=>x.category===category);if(!candidates.length)candidates=all.filter(x=>!data.exclude.includes(x.type)&&!data.exclude.includes(x.category));if(!candidates.length)return null;
  const scored=candidates.map((x,i)=>({x,s:score(x,i)})).sort((a,b)=>b.s-a.s);return scored[0].x;}
  function track(item){if(!item)return;data.seen=uniq([...data.seen,item.id]).slice(-400);data.recent=[...data.recent,item.id].slice(-36);data.shown++;data.observatory.encounters++;data.observatory.formats.push(item.type);data.observatory.categories.push(item.category);data.observatory.formats=data.observatory.formats.slice(-120);data.observatory.categories=data.observatory.categories.slice(-120);write();}
- function prompt(text,category='imagine',origin='infinite'){const legacy=globalThis.ElsewhereLegacy;if(!legacy?.transitionTo)return;const p={id:origin+'-'+hash(text).toString(36)+'-'+Date.now().toString(36),c:allowedCats.has(category)?category:'imagine',text,guides:[],index:null,time:Date.now(),sourceKind:'side',lens:null};void legacy.transitionTo(p).then(()=>globalThis.Elsewhere14?.setView?.('write'));}
+ function prompt(text,category='imagine',origin='infinite'){const legacy=globalThis.ElsewhereLegacy;if(!legacy?.transitionTo)return;if(root)root.hidden=true;const p={id:origin+'-'+hash(text).toString(36)+'-'+Date.now().toString(36),c:allowedCats.has(category)?category:'imagine',text,guides:[],index:null,time:Date.now(),sourceKind:'side',lens:null};void legacy.transitionTo(p).then(()=>globalThis.Elsewhere14?.setView?.('write'));}
  function actions(row){return el('div','','inf-actions')}
  function view(item){if(!root||!item)return;current=item;root.hidden=false;root.replaceChildren();root.append(el('p','AN ENCOUNTER FROM ELSEWHERE','inf-eyebrow'),el('h2',item.type.replace(/(^.|-.)/g,x=>x.toUpperCase()),'inf-title'),el('p',item.text,'inf-story'));
   const bar=actions();
@@ -5508,7 +5510,12 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
       const legacy=globalThis.ElsewhereLegacy;
       legacy?.chooseArrivalPath?.(MODES[finalMode].path);
       if(note&&finalMode!=='surprise')await legacy?.transitionTo?.(firstPrompt(finalMode));
-      else await legacy?.generateNext?.();
+      else {
+        await legacy?.generateNext?.();
+        if((finalMode==='surprise'||finalMode==='play')&&Math.random()<(finalMode==='surprise'?.7:.3)){
+          globalThis.ElsewhereInfinite?.open?.(finalMode==='play'?'wander':null);
+        }
+      }
     }
     renderEcho(false);renderPrefs();
   }
