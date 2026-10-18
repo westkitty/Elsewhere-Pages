@@ -144,3 +144,16 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 **Privacy/defaults:** check-in once daily and skippable; quiet parallels from selected paths, optional and dismissible; newly saved response analysis separately opt-in; no retroactive scans or network inference; settings control frequency, categories, matching, optional writing input and deletion. No more than weekly unsolicited figure matches, with repeated-day evidence thresholds; comparisons are analogies, not diagnoses, identity labels, endorsements, or biographical equivalencies. Matching data is plaintext, lives separately from the vault, and does not sync. Security warning for shared GitHub Pages origin remains mandatory.
 
 **Protected compatibility:** existing 19-script deferred startup contract, older Greyson EN/ES packs, no-repeat prompt progress, password replacement, standalone HTML, PWA public shell, drafts and encrypted backup/restore. Tests must prove these, not infer them from polished visuals. Runtime Safari/mobile/full PWA interaction remains to be independently verified before claiming a completed deployment.
+
+
+## 2026-10-17 — Threefold content bank expansion
+
+**Control:** Tripling means creative/journaling depth, not tripling visible UI controls or modifying the existing privacy and state contracts.
+
+**New catalog sources:** `src/elsewhere-triple-paths.js`, `src/elsewhere-triple-packs.js`, `src/elsewhere-triple-creative.js`, `src/elsewhere-triple-deeper.js`, `src/elsewhere-triple-spanish.js`. All are embedded as deferred executable text in `index.html` and loaded ahead of the original v12 engine after unlock. The original authored `src/elsewhere14.js` and `src/elsewhere-arrival.js` remain source-of-truth for their corresponding overlays.
+
+**Count contract:** Nine paths × 3,072 deterministic prompt indices = 27,648; eight reflection paths each 48 subjects/12 angles/12 endings/12 openers; ten creative builders × 12 formulations; twelve existing curated packs × 36 authored prompts; four Greyson Spanish packs × 36 localized prompts; 30 lenses; 48 normal/weird/unhinged twists each; nine paths × 18 deepening questions; 12 example endings; 24 enhancement instructions; 63 figure parallels. No user-facing identity diagnosis.
+
+**Preservation:** Existing index 0–1023 is byte-equivalent in its prompt text and stable ID mapping to the prior bank. Extend ordinal and sanitized index ranges to 0–3071; use `bank=Math.floor(ordinal/1024)` and the same 1,024-element permutation inside each bank. New curated pack prompts are appended, not prepended. Do not reset existing progress or mutate project/canon records. Access lock, original storage format, encrypted-vault behavior, Greyson language routing, and PWA public shell must not regress.
+
+**Evidence gate:** Run `node --test tests/*.test.mjs`, `node tools/guard_reset14.mjs --check`, `node tools/verify_x5.mjs`, `node tools/rebuild14.mjs --check`; read GitHub Actions result and the full merged source. Actual browser-local rendering, iPhone Safari, installed PWA, two-tab conflict and sensitive restore tests remain separate. The feature branch must not merge to `main` based only on catalog-count checks.
