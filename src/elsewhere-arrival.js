@@ -166,7 +166,7 @@
     $('e15Echo').hidden=true;
     $('e15Note').value='';
     const main=$('main');if(main)main.scrollTop=0;
-    const focus=$('e15Note');if(focus)focus.focus({preventScroll:true});
+    const focus=$('e15WelcomeTitle');if(focus)focus.focus({preventScroll:true});
   }
   function firstPrompt(mode){
     return {id:'arrival-'+dayOf()+'-'+Date.now().toString(36),c:MODES[mode].path==='all'?'notice':MODES[mode].path,text:MODES[mode].question,guides:[],sourceKind:'arrival',lens:null};
@@ -243,7 +243,8 @@
     if($('e15Welcome'))return;
     const stage=$('ideaStage')?.querySelector('.stage');if(!stage)return;
     const welcome=node('section','','e15-arrival');welcome.id='e15Welcome';welcome.setAttribute('aria-labelledby','e15WelcomeTitle');
-    welcome.append(node('p','ELSEWHERE / ARRIVAL','e15-eyebrow'),node('h1','How are you doing today?','e15-title'),node('p','You do not have to know what you need. Give me a direction, or let me choose.','e15-deck'));
+    const title=node('h1','How are you doing today?','e15-title');title.id='e15WelcomeTitle';title.tabIndex=-1;
+    welcome.append(node('p','ELSEWHERE / ARRIVAL','e15-eyebrow'),title,node('p','You do not have to know what you need. Give me a direction, or let me choose.','e15-deck'));
     const label=node('label','A sentence, if you feel like it','e15-label');label.htmlFor='e15Note';welcome.append(label);
     const input=document.createElement('textarea');input.id='e15Note';input.rows=2;input.maxLength=600;input.placeholder='“I just want something fun.” “I need to work through something.” “No idea.”';
     input.setAttribute('aria-label','Optional: how are you feeling, or what are you looking for?');welcome.append(input);
