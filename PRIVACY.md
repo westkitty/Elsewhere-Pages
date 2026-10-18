@@ -45,3 +45,13 @@ Verified restore now checks project *content* and selected Greyson progress/pref
 Retries after a browser storage failure reuse pending in-memory record IDs while the tab remains open. This prevents double-writing, but does **not** upgrade sessionStorage to durable encrypted storage. The explicit text-copy download is plaintext and should be handled accordingly. Atlas drag coordinates, sorting and search remain local presentation choices, not canonical facts.
 
 This addition does not alter the central security boundary: a public GitHub Pages source cannot provide true server authentication or an encrypted private origin just by displaying the Dexter lock.
+
+## Arrival, daily check-in, and figure matching
+
+The optional arrival sentence is processed in the open page to choose a prompt direction. It is **not retained** by the arrival feature; when the user explicitly chooses **Just let me write**, their sentence can be placed into the ordinary journal editor and then follows the pre-existing session-draft and save rules.
+
+Quiet Echoes uses a separate browser-local `elsewhere:arrival:v1` record that contains settings, selected theme labels, and observation dates. It does not store the check-in sentence, raw journal text, inferred diagnoses, or demographic profiles. The initial experience enables theme matching from chosen directions and allows users to turn it off. Reading **newly saved** journal responses is separately **off by default** and must be enabled within Settings. No previously stored journal entry is scanned retrospectively. Theme extraction is simple deterministic word matching, not a medical or personality evaluation. The interface explicitly frames figure comparisons as playful analogies based on selected themes.
+
+The record is **plaintext localStorage**; code from other repositories on the shared `westkitty.github.io` origin could access it. It does not automatically synchronize across devices, and existing encrypted Vault export/import excludes this separate preference and matching history. Use **Settings → Arrival & quiet echoes → Erase matching history** to remove observations without deleting journal entries, or disable matching and set check-in to Never. Dismissing a suggestion does not delete the underlying observation record. Browser site-data clearing can also erase this feature's record but risks clearing unrelated Elsewhere data and must not be used as the recommended reset.
+
+No answer text or theme observations are sent to an external model or server by the arrival module. The normal browser/network and shared-origin risks documented above still apply.
