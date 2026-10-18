@@ -1,7 +1,7 @@
 name: Elsewhere checks
 on:
   push:
-    branches: [main, feature/elsewhere-14-living-atlas]
+    branches: [main, feature/elsewhere-14-living-atlas, feature/elsewhere-infinite-door]
   pull_request:
     branches: [main]
 jobs:
