@@ -466,3 +466,12 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - Current checkout: 39/39 Node tests passed, source/standalone/reset guards passed, and actual 393px Brave browser end-to-end smoke passed 12/12 (Dexter unlock, wrong password, project creation, saved writing and reload recovery).
 - User explicitly authorized stage, commit, push and merge into main. These Git actions must still be verified on the remote.
 - Hardware iPhone Safari, VoiceOver, changed-password recovery, HTTPS encrypted restoration and installed offline PWA have not been directly verified.
+
+
+## 2026-10-17 — Arrival / Quiet Echoes feature branch
+
+- **Requested:** replace the initial unsolicited prompt with a one-question conversational choice; route talk/deeper/play/learn/quiet/surprise/blank-page; support graceful switching and skipping; make optional celebrity, literary, historical and mythological parallels accumulate across visits with Settings-level controls.
+- **Code implementation:** `src/elsewhere-arrival.js` + `src/elsewhere-arrival.css` embedded in `index.html`; legacy first-prompt defer; category bridge; save-success-only writing signal; pure prompt-free writing path.
+- **Privacy invariant:** optional note ephemeral unless deliberately moved to journal editor; optional writing analysis off; only theme labels and dates in local matching record; no automatic canon establishment; origin and vault inclusion limits documented.
+- **Evidence still needed:** GitHub Actions Node suite and rebuild integrity; real unlock/start/check-in/skip/blank-page/write/save/reload browser tests; actual iPhone Safari + offline PWA; password/change and vault roundtrip checks. Do not describe browser-dependent behaviors as verified until directly exercised.
+- **Scope isolation:** matching observations never migrate into v13 project facts; reset applies only to `elsewhere:arrival:v1`; old projects and prompt history must remain unchanged.
