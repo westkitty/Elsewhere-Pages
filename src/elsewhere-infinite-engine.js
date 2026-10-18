@@ -80,6 +80,15 @@
  const row=actions();step.options.forEach((answer,i)=>row.append(btn(answer,()=>{data.adventureChoices.push(i);if(data.adventureStep===2){const text=a.steps.map((s,j)=>s.scene+' Choice: '+s.options[data.adventureChoices[j]]).join(' ');data.adventure=null;data.adventureStep=0;data.adventureChoices=[];write();prompt('Your story so far: '+text+' What happens afterward?',a.category,'adventure');root.hidden=true;}else{data.adventureStep++;write();renderAdventure();}})));
  row.append(btn('Pause adventure',()=>{root.hidden=true;write()}));root.append(row);
  }
+ function simulate(count=100){const previous=data;data=defaults();const samples=[];try{
+  for(let i=0;i<Math.max(1,Math.min(1000,safeInt(count,1000)));i++){
+   const item=choose();if(!item)break;samples.push(item);data.seen=uniq([...data.seen,item.id]).slice(-400);data.recent=[...data.recent,item.id].slice(-36);data.shown++;
+   data.observatory.formats.push(item.type);data.observatory.categories.push(item.category);
+   data.observatory.formats=data.observatory.formats.slice(-120);data.observatory.categories=data.observatory.categories.slice(-120);
+  }
+  const seen=new Set(samples.map(x=>x.id));return Object.freeze({requested:count,delivered:samples.length,unique:seen.size,repeats:samples.length-seen.size,forms:uniq(samples.map(x=>x.type)).length,categories:uniq(samples.map(x=>x.category)).length});
+ }finally{data=previous;}
+ }
  function callback(){const state=globalThis.ElsewhereLegacy?.getState?.();if(!data.callbacks||!Array.isArray(state?.history))return;const candidates=state.history.filter(x=>x&&allowedCats.has(x.c)&&typeof x.id==='string'&&!x.id.startsWith('trail-'));if(!candidates.length){announce('No earlier question available for a callback.');return;}const p=candidates[Math.min(candidates.length-1,1+hash('callback'+data.shown)%Math.max(1,candidates.length-1))];const item={id:'callback-'+data.shown,type:'callback',category:p.c,text:'An earlier question took you into '+p.c+'. Instead of replaying private writing, would you like to explore that theme from a different direction? What changed in what you notice?',tags:['reflection'],door:'What could remain unresolved without becoming a failure?',doorLabel:'Another perspective'};track(item);view(item);}
  function menu(){root.hidden=false;root.replaceChildren(el('p','ELSEWHERE / THE INFINITE DOOR','inf-eyebrow'),el('h2','What will you find?','inf-title'),el('p','Pick a door—or leave the choice to chance.','inf-muted'));const grid=el('div','','inf-menu');
  grid.append(btn('Surprise me',()=>open()),btn('Curiosity collision',collide),btn('Something in the room',physical));if(data.callbacks)grid.append(btn('A quiet callback',callback));
@@ -95,7 +104,7 @@
  select('Intensity','intensity',[['light','Light'],['medium','Medium'],['deep','Deep']]);
  for(const [k,label] of [['hiddenDoors','Occasional hidden doors'],['timeAware','Time-aware editorial selection'],['callbacks','Offer opt-in callbacks to earlier prompts']]){const line=el('label',label,'inf-setting');const input=document.createElement('input');input.type='checkbox';input.checked=data[k];input.addEventListener('change',()=>{data[k]=input.checked;write()});line.prepend(input);section.append(line)}
  const diag=el('p','','inf-muted');diag.id='infDiagnostics';const refresh=()=>{diag.textContent='Encounter receipts: '+data.observatory.encounters+' · Forms experienced: '+uniq(data.observatory.formats).length+'/'+types.length+' · Last 120 encounters retained as small labels only.'};refresh();
- section.append(btn('View freshness',refresh),btn('Erase discovery history',()=>{if(!confirm('Erase local encounter history and trails? Journal entries and original prompt progress stay untouched.'))return;const keep={mode:data.mode,serendipity:data.serendipity,intensity:data.intensity,hiddenDoors:data.hiddenDoors,timeAware:data.timeAware,callbacks:data.callbacks,exclude:data.exclude};data=Object.assign(defaults(),keep);write();refresh();}),diag);
+ section.append(btn('Simulate 100 encounters',()=>{const result=simulate(100);diag.textContent='Tested '+result.delivered+' encounters · '+result.unique+' unique · '+result.forms+' formats · '+result.categories+' paths · '+result.repeats+' exact repeats. Simulation changes no saved data.';}),btn('View freshness',refresh),btn('Erase discovery history',()=>{if(!confirm('Erase local encounter history and trails? Journal entries and original prompt progress stay untouched.'))return;const keep={mode:data.mode,serendipity:data.serendipity,intensity:data.intensity,hiddenDoors:data.hiddenDoors,timeAware:data.timeAware,callbacks:data.callbacks,exclude:data.exclude};data=Object.assign(defaults(),keep);write();refresh();}),diag);
  host.append(section);
  }
  function install(){if(ready)return true;const legacy=globalThis.ElsewhereLegacy;if(!legacy?.generateNext||!globalThis.Elsewhere14?.initialized||!document.getElementById('ideaStage'))return false;
@@ -107,6 +116,6 @@
  if(data.mode==='off')toolbar.hidden=true;
  return true;
  }
- globalThis.ElsewhereInfinite=Object.freeze({version:1,install,open,menu,collide,physical,callback,choose,sanitize,rank:(a)=>a?.map(x=>({id:x.id,score:score(x)})).sort((a,b)=>b.score-a.score),getState:()=>JSON.parse(JSON.stringify(data)),contentCounts:()=>({encounters:all.length,collisions:LIB.collisions.length,trails:LIB.trails.length,adventures:LIB.adventures.length})});
+ globalThis.ElsewhereInfinite=Object.freeze({version:1,install,open,menu,collide,physical,callback,simulate,choose,sanitize,rank:(a)=>a?.map(x=>({id:x.id,score:score(x)})).sort((a,b)=>b.score-a.score),getState:()=>JSON.parse(JSON.stringify(data)),contentCounts:()=>({encounters:all.length,collisions:LIB.collisions.length,trails:LIB.trails.length,adventures:LIB.adventures.length})});
  if(typeof document!=='undefined'){if(!install()){let tries=0;const tryAgain=()=>{if(install())return;if(++tries<35)setTimeout(tryAgain,90)};tryAgain()}}
 })();
