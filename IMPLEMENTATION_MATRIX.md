@@ -37,3 +37,48 @@ This is the acceptance ledger for the 24 concrete recommendations made during th
 - Server-side authentication: **not possible on unauthenticated static GitHub Pages**. Existing `Dexter` access prompt is a convenience UI gate, not a security control.
 - Automated testing: **implemented** for isolated domain and UI paths. Full original-site browser acceptance is still a merge gate.
 - Deployment: feature branch/PR only until release acceptance gates pass. No DNS changes or production-domain cutover.
+
+## Bounded follow-up uplift (local patch, awaiting repo integration)
+
+- **Recovery / encrypted imports:** masked passphrase dialog; pre-restore encrypted recovery file; duplicate-identity/reference validation; persistent-storage preflight; read-back verification; rollback and stop-on-uncertainty. Pure transaction tests cover success, write failure, rollback failure, and read-back mismatch. Full browser-origin restore remains unverified.
+- **Unsaved writing:** per-tab session cache, explicit Recover button, word count, per-project recovery, preserved text on persistence failure, and a stale-tab text-export escape hatch. The session cache is plaintext, has a seven-day entry expiry, and is not guaranteed by every browser to survive a closed tab.
+- **Atlas scale/accessibility:** bounded 120-node graph pages, correct endpoint-only edges, filter by name/type/summary/tags, keyboard-accessible list, and throttled timeline recomputation. Synthetic Chromium test includes a 255-node project.
+- **Reset safety:** guard preserving custom lock credentials and unrelated same-origin keys; patch script is idempotent and fails on unexpected code. Browser-integrated reset still requires a full canonical-index test.
+- **Delivery state:** source/test/package changes exist in a local working copy only; no commit, push, PR update, main merge, or live deployment has occurred in this follow-up.
+
+## Five-pass source uplift — validated locally, not yet integrated remotely
+
+| Pass | Implemented change | Evidence | Remaining acceptance |
+|---|---|---|---|
+| 1 — Vault integrity | full project/content readback; rollback after partial-import throw; import ID scoping; active-project reference validation; 35 MB import cap | Node crypto, fault-injection and content-mismatch tests | Actual browser restore + same-origin storage recovery |
+| 2 — Writing durability | idempotent retry for response, possible-fact and alternative saves; explicit unencrypted text escape hatch | Synthetic Chromium failure-then-retry test | Real quota exceeded on supported devices |
+| 3 — Atlas editing | opt-in pointer/keyboard node placement, project-specific saved coordinates, undo/reset, relationship redraw | Synthetic Chromium drag + undo, bounded graph unit tests | Android touch and browser reload persistence |
+| 4 — Large-project UX | 24-record pages, sorting and filtering, contextual comparison notes, project-switch refresh | Synthetic Chromium with 105 items | 5k+ artifact performance and touch affordances |
+| 5 — Release evidence | x5 safety verifier, local apply script, additional tests and docs | Node checks and synthetic browser suites | Full canonical index build and CI after user-authorized integration |
+
+The Dexter lock is still only a **local UI lock**. Browser-stored content is **not encrypted at rest**. Do not merge until full-page/device regressions and saved-data restore are verified.
+
+## OMNI five-pass source uplift — 2026-10-17
+
+| Capability | Source status | Local evidence | Required full-page evidence |
+| --- | --- | --- | --- |
+| Explicit encrypted pre-import checkpoint | Implemented | Chromium cancellation and insecure-context fail-closed; Node crypto suite | HTTPS file download + decrypt + restore roundtrip |
+| Writer source lineage and interrupted-draft recovery | Implemented | Chromium source-link save, immediate visibility flush, prior reload fixture | Real reload and project switch with changed password |
+| Deliberate canon review with rationale | Implemented | Chromium 25-fact pagination, rationale gate and saved revision | Real v13 domain revisions, quota failure and recoverability |
+| Atlas fit, focus and mobile opt-in | Implemented | Pure geometry test, Chromium camera and 390px viewport | Real tablet touch, keyboard and SVG scaling |
+| Reproducible test and handoff | Implemented | 26 Node checks; 5 Chromium fixture scripts; authorship audit PASS | Rebuild original 655 KB index, complete original migration suite and live PWA acceptance |
+
+*The feature-branch remote, main branch, deployment and authentication infrastructure were not modified in this work unit.*
+
+
+## iPhone-first OMNI x5 acceptance — 2026-10-17
+
+| Pass | Implemented mobile experience | Verified locally | Still required |
+| --- | --- | --- | --- |
+| One-hand navigation | Existing 4-view tablist docked above iPhone safe area; layout under keyboard avoids blocked actions | Chromium touch emulation on five sizes, target geometry | Real Safari address bar and keyboard viewport |
+| Comfortable writing | 16px+ fields, split Save response/Draft, foldaway advanced tools, Done editing, near-save messages, recovery on background | Synthetic draft, save, project navigation and focus tests | Real page reload and persistent quota injection |
+| Thumb-friendly Library | Eight-card pages on phone, large primary actions, bounded filters and previous/next | Chromium 32-record page test | Screen reader interaction on actual iPhone |
+| Atlas under fingertips | List browse and large hits; two-finger camera-only zoom; explicit layout editor | CDP two-point touch, saved coordinates unchanged | Pinch and pointer cancellation on real Safari |
+| Visual and accessibility QA | Safe-area dock, landscape, focus, reduced-motion and de-cluttered Vault export | Zero sideways scroll 320/375/393/440/844 landscape fixtures; focus sizing checked | VoiceOver, installed PWA, secure-origin vault, real app HTML |
+
+The Dexter access lock remains client-side only. Neither browser storage nor on-device draft recovery is encrypted at rest. The release is a local source artifact; do not imply production deployment.

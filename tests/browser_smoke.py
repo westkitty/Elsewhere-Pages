@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1]
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(SimpleHTTPRequestHandler,directory=str(ROOT)))
 thread=Thread(target=server.serve_forever,daemon=True);thread.start()
-html=(ROOT/'tests/fixture.html').read_text().replace('<script src="../src/elsewhere14.js"></script>', '<script>'+ (ROOT/'src/elsewhere14.js').read_text()+'</script>')
+html=(ROOT/'tests/fixture.html').read_text().replace('<link rel="stylesheet" href="../src/elsewhere14.css">','<style>'+ (ROOT/'src/elsewhere14.css').read_text()+'</style>').replace('<script src="../src/elsewhere14.js"></script>', '<script>'+ (ROOT/'src/elsewhere14.js').read_text()+'</script>')
 try:
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
@@ -27,6 +27,7 @@ try:
   assert page.locator('#e14Graph .e14-edge').count()==1
   page.get_by_role('button',name='Reset view').click()
   page.locator('#e14Time').fill('50')
+  page.wait_for_function('document.querySelectorAll("#e14Graph .e14-node").length === 1')
   assert page.locator('#e14Graph .e14-node').count()==1
   page.get_by_role('tab',name='Write',exact=True).click()
   page.locator('#e14Answer').fill('Possibility is not canon.')

@@ -29,3 +29,19 @@ For meaningful origin isolation, assign Elsewhere a dedicated hostname that is u
 - True server-side authentication requires an authentication-aware host, not static public GitHub Pages.
 - Cross-device collaboration, conflict-free merges, encrypted sync, and credential recovery need explicit architectural approval and security testing.
 - Multi-tab conflict detection is a guard against accidental local edits, not a distributed database transaction system.
+
+### Recovery safeguards
+
+- Unsaved editor recovery is optional to use but cached temporarily in plaintext `sessionStorage` in the current browser tab. It is not encrypted, not backed up across devices, and not a replacement for Save draft.
+- Vault restoration requires a password-style masked field; the passphrase is held in memory only for the current operation and never stored.
+- Before importing, Elsewhere exports an AES-GCM-encrypted checkpoint and requires an explicit user confirmation that the file was saved. The app cannot verify the operating system's actual download completion.
+- A staged import checks persistence and reads data back before removing obsolete project keys. If verification fails, it attempts a rollback. If rollback cannot be verified, the tab is marked stale and further project edits are blocked. An externally saved checkpoint remains the recovery route.
+- Resetting creative work must not reset a custom access-lock password to the insecure initial default, nor erase unrelated applications' browser storage.
+
+## Five-pass restore/recovery clarification
+
+Verified restore now checks project *content* and selected Greyson progress/preferences after browser read-back, not merely whether the same project IDs exist. It also blocks hazardous project identifiers, orphaned active-project pointers and imports beyond configured size limits. A backup restore that changes storage and subsequently fails attempts an evidence-checked rollback; if rollback proof fails, the app must stop writing and tell the user to recover from the independently saved vault.
+
+Retries after a browser storage failure reuse pending in-memory record IDs while the tab remains open. This prevents double-writing, but does **not** upgrade sessionStorage to durable encrypted storage. The explicit text-copy download is plaintext and should be handled accordingly. Atlas drag coordinates, sorting and search remain local presentation choices, not canonical facts.
+
+This addition does not alter the central security boundary: a public GitHub Pages source cannot provide true server authentication or an encrypted private origin just by displaying the Dexter lock.
