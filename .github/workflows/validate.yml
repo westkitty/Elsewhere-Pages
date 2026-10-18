@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: '22'
       - run: node --check src/elsewhere14.js
+      - run: node --check src/elsewhere-arrival.js
       - run: node --test tests/*.test.mjs
       - run: node tools/guard_reset14.mjs --check
       - run: node tools/verify_x5.mjs
