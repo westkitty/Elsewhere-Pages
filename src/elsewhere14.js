@@ -393,7 +393,7 @@
         p.timeline.push({id:`entry_${entry.id}`,label:`Saved ${asType}: ${entry.name}`,artifactIds:[entry.id],createdAt:Date.now(),order:Date.now(),sourceId:entry.id,kind:'response'});
         p.returnPoint={kind:'artifact',id:entry.id,label:entry.name};return entry;
       });
-      afterWrite(p,raw,result,'Response saved locally.');refreshVisibleCollections();return record;
+      afterWrite(p,raw,result,'Response saved locally.');if(writingPersisted(result))try{globalThis.dispatchEvent(new CustomEvent('elsewhere:response-saved',{detail:{text:raw}}))}catch{}refreshVisibleCollections();return record;
     }catch(e){notice(e.message,true);return null}
   }
   function saveDraft() {
