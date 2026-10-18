@@ -37,8 +37,8 @@
  const categoryRepeats=data.observatory.categories.slice(-12).filter(x=>x===item.category).length;
  const recentTags=data.recent.slice(-12).flatMap(x=>all.find(y=>y.id===x)?.tags||[]);
  const overlap=(item.tags||[]).filter(t=>recentTags.includes(t)).length;
- const seen=data.seen.includes(item.id);
- return (seen?-150:0)+(r.has(item.id)?-200:0)-frequency*13-categoryRepeats*5-overlap*8
+ const seen=data.seen.includes(item.id),rejected=data.dismissed.includes(item.id);
+ return (seen?-150:0)+(rejected?-450:0)+(r.has(item.id)?-200:0)-frequency*13-categoryRepeats*5-overlap*8
  +((hash(item.id+'|'+data.shown+'|'+i)%37)-18)
  +(data.serendipity==='wild'&&['casefile','map','microfiction','play'].includes(item.type)?16:0)
  +(data.serendipity==='familiar'&&['reflection','field','letter'].includes(item.type)?13:0)
@@ -50,6 +50,7 @@
  function prompt(text,category='imagine',origin='infinite'){const legacy=globalThis.ElsewhereLegacy;if(!legacy?.transitionTo)return;if(root)root.hidden=true;const p={id:origin+'-'+hash(text).toString(36)+'-'+Date.now().toString(36),c:allowedCats.has(category)?category:'imagine',text,guides:[],index:null,time:Date.now(),sourceKind:'side',lens:null};void legacy.transitionTo(p).then(()=>globalThis.Elsewhere14?.setView?.('write'));}
  function actions(row){return el('div','','inf-actions')}
  function view(item){if(!root||!item)return;current=item;root.hidden=false;root.replaceChildren();root.append(el('p','AN ENCOUNTER FROM ELSEWHERE','inf-eyebrow'),el('h2',item.type.replace(/(^.|-.)/g,x=>x.toUpperCase()),'inf-title'),el('p',item.text,'inf-story'));
+  if(LIB.lenses?.length&&data.serendipity!=='familiar'&&data.shown%3===0){const lens=LIB.lenses[hash(item.id+'-perspective')%LIB.lenses.length];const perspective=el('details','','inf-door');perspective.append(el('summary','A perspective from '+lens.name),el('p',lens.question));root.append(perspective)}
   const bar=actions();
   bar.append(btn('Write from this',()=>prompt(item.text,item.category,'encounter')));
   bar.append(btn('Another kind of encounter',()=>open()));
@@ -88,7 +89,7 @@
  }
  function settings(){const host=document.getElementById('settingsDialog')?.querySelector('.panel');if(!host||document.getElementById('infSettings'))return;
  const section=el('section','','inf-settings');section.id='infSettings';section.append(el('h3','Infinite Door'),el('p','Local-only encounter history and editorial choices. No reading of saved journal text.','inf-muted'));
- const select=(label,key,values)=>{const line=el('label',label,'inf-setting');const input=document.createElement('select');for(const [v,t] of values){const o=el('option',t);o.value=v;input.append(o)}input.value=data[key];input.addEventListener('change',()=>{data[key]=input.value;write()});line.append(input);section.append(line)};
+ const select=(label,key,values)=>{const line=el('label',label,'inf-setting');const input=document.createElement('select');for(const [v,t] of values){const o=el('option',t);o.value=v;input.append(o)}input.value=data[key];input.addEventListener('change',()=>{data[key]=input.value;write();if(key==='mode')document.querySelector('.inf-toolbar')?.toggleAttribute('hidden',input.value==='off');});line.append(input);section.append(line)};
  select('Discovery',['mode'][0],[['auto','On'],['off','Off']]);
  select('Serendipity','serendipity',[['familiar','Familiar'],['unexpected','Unexpected'],['wild','Wild']]);
  select('Intensity','intensity',[['light','Light'],['medium','Medium'],['deep','Deep']]);
