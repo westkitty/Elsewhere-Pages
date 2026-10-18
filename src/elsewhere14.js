@@ -381,7 +381,7 @@
     notice('Unencrypted text copy requested. Keep it somewhere private.');
   }
   function saveResponse(asType = 'note') {
-    const p = project(), prompt = current(), raw = $('e14Answer')?.value.trim();
+    const p = project(), prompt = globalThis.ElsewhereArrival?.isFreeWriting?.()?null:current(), raw = $('e14Answer')?.value.trim();
     if (!p) { notice('Create or choose a project before saving a response.', true); UI()?.projects?.openProjectEditor?.(true); return null; }
     if (!raw) { notice('Write a response first.', true); $('e14Answer')?.focus(); return null; }
     if (!D()?.ARTIFACT_TYPES?.includes(asType)) { notice('Unsupported artifact type.', true); return null; }
