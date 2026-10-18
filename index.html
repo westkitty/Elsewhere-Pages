@@ -1147,15 +1147,589 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
 </script>
 
 <script type="text/plain" data-elsewhere-app>
+/* Authored three-bank Elsewhere material: independent themed prompts, not copies with suffixes. */
+(() => {
+  'use strict';
+  const banks={
+ "notice": {
+  "sub": [
+   "a sound that changed the room",
+   "the expression someone made before speaking",
+   "the space between two sentences",
+   "a texture you caught under your fingers",
+   "a tiny relief you did not announce",
+   "the first moment you felt awake",
+   "a passing kindness from a stranger",
+   "a joke that took a second to land",
+   "a detail in your own handwriting",
+   "a pause you chose to take",
+   "a view through a familiar window",
+   "the weight of something you carried",
+   "a smell that made you stop",
+   "a question nobody answered",
+   "the way the light landed today",
+   "the gentlest interruption",
+   "a small bit of courage nobody saw",
+   "a familiar object in an unfamiliar place",
+   "a sound that was missing",
+   "the moment you wanted to look away",
+   "a smile that arrived unexpectedly",
+   "something you almost threw out",
+   "a gesture that needed no explanation",
+   "an ordinary delay that helped you",
+   "the first words you heard this morning",
+   "the last thing you noticed outdoors",
+   "a room after everyone left",
+   "an object that looked newly interesting",
+   "a choice you made without deliberation",
+   "the way your posture changed",
+   "a tiny inconvenience that became funny",
+   "one thing that deserved a second look"
+  ],
+  "ang": [
+   "if you gave it ten more seconds",
+   "without explaining it away",
+   "as a single still image",
+   "from the perspective of someone nearby",
+   "if you described only the senses involved",
+   "without deciding what it meant",
+   "as though you were collecting evidence of ordinary life",
+   "when you notice what came just before"
+  ],
+  "end": [
+   "which part asks to be remembered",
+   "what was different from your expectation",
+   "where did your attention go first",
+   "what was quietly beautiful about it",
+   "which detail would you put in a photograph",
+   "how did it change the next moment",
+   "what would you name this observation",
+   "what is still unfinished about it"
+  ],
+  "op": [
+   "Stay with {s}. {A}, {e}?",
+   "Take another look at {s}. {A}, {e}?",
+   "Let {s} be enough for a moment. {A}, {e}?",
+   "Describe {s} without reaching for a lesson. {A}, {e}?",
+   "Hold on to {s}. {A}, {e}?",
+   "Follow your attention to {s}. {A}, {e}?",
+   "Imagine this as a museum label: {s}. {A}, {e}?",
+   "Before moving on from {s}, {a}, {e}?"
+  ]
+ },
+ "day": {
+  "sub": [
+   "the moment your plans shifted",
+   "a task that took less effort than expected",
+   "a conversation you would edit differently",
+   "a decision you postponed",
+   "something you did purely for pleasure",
+   "an unexpected compliment",
+   "the person you thought about most",
+   "a frustration that faded on its own",
+   "a chore that surprised you",
+   "a tiny victory nobody applauded",
+   "something you wanted more time for",
+   "a moment you said no",
+   "a moment you said yes",
+   "the funniest misunderstanding",
+   "a detail you wish you had photographed",
+   "one obligation you carried",
+   "the way the morning actually began",
+   "an idea that interrupted your work",
+   "a small repair you made",
+   "a moment you felt unusually capable",
+   "an hour that blurred together",
+   "an interaction that stayed with you",
+   "a promise you kept to yourself",
+   "something you did without an audience",
+   "a moment you changed your mind",
+   "the hardest minute rather than the hardest day",
+   "an ordinary bit of companionship",
+   "one thing you learned by accident",
+   "a plan that improved when it changed",
+   "the last difficult thing you finished",
+   "a stretch of time that felt like yours",
+   "the part of today you will probably forget"
+  ],
+  "ang": [
+   "as if you were writing a postcard",
+   "without comparing it to yesterday",
+   "from the viewpoint of an amused narrator",
+   "while separating expectation from reality",
+   "as three beats in a short scene",
+   "with only the facts you can remember",
+   "as a note to your future self",
+   "by naming the smallest turning point"
+  ],
+  "end": [
+   "what would the headline be",
+   "who deserves credit",
+   "what do you want another chance at",
+   "which part changed the direction of the day",
+   "what is worth repeating tomorrow",
+   "what did you actually need then",
+   "which part was more complicated than it looked",
+   "how would you end the scene"
+  ],
+  "op": [
+   "Give {s} a closer look. {A}, {e}?",
+   "Tell the story of {s}. {A}, {e}?",
+   "Choose a detail from {s}. {A}, {e}?",
+   "If today had one footnote about {s}, {a}, {e}?",
+   "Start a small account of {s}. {A}, {e}?",
+   "Keep the camera on {s}. {A}, {e}?",
+   "Put {s} in a single paragraph. {A}, {e}?",
+   "Without summarizing your whole day, take {s}. {A}, {e}?"
+  ]
+ },
+ "unearth": {
+  "sub": [
+   "a holiday you remember in fragments",
+   "an old bedroom at night",
+   "the first thing you saved up for",
+   "a friendship that changed shape",
+   "a place you once felt brave",
+   "an outfit you wore constantly",
+   "a teacher whose words stayed with you",
+   "the first story you told about yourself",
+   "a childhood rumor you believed",
+   "the taste of a meal you cannot recreate",
+   "an apology you understood years later",
+   "something you learned from an animal",
+   "a day you were unexpectedly included",
+   "a day you chose to leave",
+   "a photograph with someone outside the frame",
+   "a game whose rules you invented",
+   "the way an old home sounded",
+   "a time you felt older than you were",
+   "an old nickname you outgrew",
+   "a letter you never sent",
+   "the last ordinary day before a change",
+   "a celebration that went sideways",
+   "a favorite object that broke",
+   "someone you misunderstood at first",
+   "a moment you recognized your own stubbornness",
+   "an early creative obsession",
+   "a memory that belongs partly to someone else",
+   "a time you were helped without asking",
+   "a lesson you no longer agree with",
+   "a secret that has become harmless",
+   "a goodbye you now understand differently",
+   "the earliest version of a dream you still have"
+  ],
+  "ang": [
+   "starting from a sensory detail",
+   "without asking whether it was good or bad",
+   "while allowing two memories to disagree",
+   "as a scene with no narrator",
+   "from the age you were then",
+   "from the distance you have now",
+   "without forcing a neat ending",
+   "by noticing who else was there"
+  ],
+  "end": [
+   "which part can you see clearly",
+   "what remains uncertain",
+   "what did you need at that age",
+   "which assumption did you carry forward",
+   "what would surprise your younger self",
+   "whose perspective is missing",
+   "what did the setting teach you",
+   "what can stay unresolved"
+  ],
+  "op": [
+   "Open the door to {s}. {A}, {e}?",
+   "Return briefly to {s}. {A}, {e}?",
+   "Place {s} on the table. {A}, {e}?",
+   "Take one careful look at {s}. {A}, {e}?",
+   "Write a scene about {s}. {A}, {e}?",
+   "Let the memory of {s} stay imperfect. {A}, {e}?",
+   "Hold two versions of {s} together. {A}, {e}?",
+   "If {s} were an old letter, {a}, {e}?"
+  ]
+ },
+ "reframe": {
+  "sub": [
+   "a disagreement where both stories have gaps",
+   "a rule you follow without remembering why",
+   "someone you expect to disappoint you",
+   "a favor that became an obligation",
+   "a situation where you felt left out",
+   "a choice you keep calling selfish",
+   "a request you heard as criticism",
+   "a recent moment you felt dismissed",
+   "an assumption you made in a hurry",
+   "a delay you interpreted as rejection",
+   "an expectation you did not state",
+   "a conflict about fairness",
+   "the difference between being heard and being agreed with",
+   "a boundary that needs simpler words",
+   "a problem that has more than two options",
+   "a moment you confused certainty with clarity",
+   "a time you wanted an apology",
+   "a worry you treated like evidence",
+   "a decision that looked different the next morning",
+   "an interaction where silence meant different things",
+   "a compliment you suspected was politeness",
+   "a task you think you should enjoy",
+   "a desire that does not need a defense",
+   "a person whose intention you cannot know",
+   "a conversation worth trying again",
+   "a fear you mistook for a prediction",
+   "a rule that protects one person but constrains another",
+   "something you resent doing automatically",
+   "a plan with a hidden assumption",
+   "a mistake that was useful information",
+   "a demand you could turn into a request",
+   "a disagreement that has no villain"
+  ],
+  "ang": [
+   "without deciding who is right first",
+   "by separating impact from intention",
+   "by writing down what you actually know",
+   "from the side of the missing information",
+   "as though you were both trying to be understood",
+   "while making room for uncertainty",
+   "by asking what each person is protecting",
+   "without demanding an optimistic ending"
+  ],
+  "end": [
+   "which assumption could you check",
+   "what would be an honest next question",
+   "what part belongs to you",
+   "what needs to be said without blame",
+   "what interpretation is still plausible",
+   "which boundary stays intact",
+   "how would you make a repair specific",
+   "what would a fair disagreement sound like"
+  ],
+  "op": [
+   "Turn {s} over once. {A}, {e}?",
+   "Investigate {s}. {A}, {e}?",
+   "Try another account of {s}. {A}, {e}?",
+   "Without erasing your view of {s}, {a}, {e}?",
+   "Put {s} under gentler lighting. {A}, {e}?",
+   "Separate the facts in {s} from the story. {A}, {e}?",
+   "Imagine checking {s} with one precise question. {A}, {e}?",
+   "Give {s} a second interpretation. {A}, {e}?"
+  ]
+ },
+ "wander": {
+  "sub": [
+   "a shoe with a secret compartment",
+   "a library book returned fifty years late",
+   "the smallest door in a huge wall",
+   "a cloud shaped like a receipt",
+   "an impossible customer service desk",
+   "a bus route drawn by a cat",
+   "an umbrella with its own agenda",
+   "a dream about a forgotten password",
+   "the last vending machine on the moon",
+   "a suitcase packed by future you",
+   "a bell that rings for jokes",
+   "a hotel with no room thirteen but two room twelves",
+   "a postcard from a nonexistent city",
+   "an argument between two streetlights",
+   "a tiny museum of lost excuses",
+   "a statue that refuses its plaque",
+   "a garden of unfinished inventions",
+   "a map with all the shortcuts crossed out",
+   "a parade for a completely ordinary object",
+   "the world's most sincere fake commercial",
+   "a neighborhood that changes genre at sunset",
+   "a ticket for a train that never arrives",
+   "a lighthouse in a shopping mall",
+   "a bakery selling alternate endings",
+   "a radio station run by a bored ghost",
+   "a souvenir from a day that has not happened",
+   "a bored dragon working retail",
+   "a misplaced chapter from a myth",
+   "a lighthouse keeper with stage fright",
+   "a question found inside a fortune cookie",
+   "the autobiography of a houseplant",
+   "a treasure hunt for something nobody lost"
+  ],
+  "ang": [
+   "as an elaborate misunderstanding",
+   "as a rumor overheard at lunch",
+   "with the logic of a good dream",
+   "from the point of view of the object",
+   "as the opening scene of an absurd documentary",
+   "by making one unlikely detail completely normal",
+   "as if the universe were improvising",
+   "without needing to justify the coincidence"
+  ],
+  "end": [
+   "what is the next improbable clue",
+   "who takes this far too seriously",
+   "what rule suddenly becomes obvious",
+   "where is the hidden joke",
+   "what happens if nobody is surprised",
+   "who profits from the confusion",
+   "what small mystery begins here",
+   "how could it get stranger without becoming random"
+  ],
+  "op": [
+   "Take the detour through {s}. {A}, {e}?",
+   "Follow an unreasonable hunch about {s}. {A}, {e}?",
+   "Begin an imaginary documentary on {s}. {A}, {e}?",
+   "Treat {s} as normal for sixty seconds. {A}, {e}?",
+   "Place {s} in a different genre. {A}, {e}?",
+   "Give {s} one inconvenient consequence. {A}, {e}?",
+   "Do not explain {s} yet. {A}, {e}?",
+   "Let {s} lead you somewhere unexpected. {A}, {e}?"
+  ]
+ },
+ "learn": {
+  "sub": [
+   "how a rumor becomes collective memory",
+   "what a scientific model can and cannot prove",
+   "why some animals communicate through vibration",
+   "how people navigate without satellites",
+   "where the idea of zero developed",
+   "how a library catalog works",
+   "what makes a historical source reliable",
+   "how a musical instrument creates timbre",
+   "why optical illusions feel convincing",
+   "how a city manages rainwater",
+   "what a museum conservator does",
+   "why languages borrow words",
+   "how a star's light reveals its composition",
+   "what archaeologists can infer from pottery",
+   "why experiments need control groups",
+   "how a story changes between translations",
+   "how an animation illusion uses persistence and timing",
+   "what makes a map projection distort distances",
+   "how people authenticate an old letter",
+   "why some ecosystems need disturbances",
+   "how spacecraft orient themselves",
+   "what an oral history can preserve",
+   "how different cultures mark seasons",
+   "what makes a scientific claim falsifiable",
+   "how public parks change a neighborhood",
+   "why color looks different under different light",
+   "how birds learn their songs",
+   "what the earliest known musical notation records",
+   "how a telescope gathers faint light",
+   "why people mistake correlation for cause",
+   "how an accessibility feature changes a workflow",
+   "how a community archive preserves local stories"
+  ],
+  "ang": [
+   "starting from a trustworthy primary source",
+   "with one simple everyday analogy",
+   "while listing what remains debated",
+   "as a question you could test",
+   "by tracing the origin of the claim",
+   "using a short timeline",
+   "by comparing two explanations",
+   "without mistaking confidence for proof"
+  ],
+  "end": [
+   "what evidence would support an answer",
+   "which source would you check next",
+   "what common misunderstanding would you correct",
+   "what question does this lead to",
+   "which detail is easiest to verify",
+   "how would you explain it without jargon",
+   "what remains genuinely uncertain",
+   "how has the explanation changed over time"
+  ],
+  "op": [
+   "Investigate {s}. {A}, {e}?",
+   "Take ten minutes with {s}. {A}, {e}?",
+   "Start a small research note on {s}. {A}, {e}?",
+   "Before accepting a claim about {s}, {a}, {e}?",
+   "Ask a specialist's question about {s}. {A}, {e}?",
+   "Build a tiny fact sheet about {s}. {A}, {e}?",
+   "Compare what different sources say about {s}. {A}, {e}?",
+   "Follow the evidence around {s}. {A}, {e}?"
+  ]
+ },
+ "shadow": {
+  "sub": [
+   "a compliment that makes you defensive",
+   "a habit you criticize but also rely on",
+   "an old role you slip into under pressure",
+   "the need to be the reasonable one",
+   "a situation that sparks jealousy",
+   "what you do when you feel ignored",
+   "a fear of being replaceable",
+   "the moment you start keeping score",
+   "a comparison that leaves you smaller",
+   "a desire that contradicts your usual image",
+   "the wish to control an uncertain outcome",
+   "the impulse to prove you are right",
+   "a part of yourself you perform for safety",
+   "the difference between privacy and hiding",
+   "a resentment you have not examined",
+   "a strength that can become a shield",
+   "an expectation that never became an agreement",
+   "the part of you that avoids asking for help",
+   "a pattern you recognize only afterward",
+   "the fear behind a sharp reaction",
+   "a time you confused being needed with being loved",
+   "a habit of predicting other people's thoughts",
+   "a memory you use as a warning",
+   "a feeling you keep trying to outthink",
+   "the version of yourself who wants permission",
+   "an old insult you still argue against",
+   "a boundary that stirs guilt",
+   "a role that once helped you survive",
+   "a moment where honesty felt risky",
+   "the desire to be chosen without asking",
+   "something you are proud of but hide",
+   "a part of yourself that deserves less judgment"
+  ],
+  "ang": [
+   "as a pattern rather than a verdict",
+   "without turning a feeling into a fact",
+   "from a place of compassion and curiosity",
+   "while noticing what happens in your body",
+   "without naming anyone the villain",
+   "by asking when it was once useful",
+   "as a question with several possible answers",
+   "at the pace that feels safe today"
+  ],
+  "end": [
+   "what need is underneath it",
+   "where does it first show up",
+   "how might you respond with more choice",
+   "what might you ask rather than assume",
+   "what is worth protecting here",
+   "what would a small experiment look like",
+   "what can you set down for now",
+   "who would you be without that old rule"
+  ],
+  "op": [
+   "Approach {s} carefully. {A}, {e}?",
+   "Notice your reaction to {s}. {A}, {e}?",
+   "Without demanding a confession, explore {s}. {A}, {e}?",
+   "Name one real example of {s}. {A}, {e}?",
+   "Stay curious about {s}. {A}, {e}?",
+   "Consider {s} without shame. {A}, {e}?",
+   "If {s} were trying to protect you, {a}, {e}?",
+   "Give yourself room around {s}. {A}, {e}?"
+  ]
+ },
+ "sacred": {
+  "sub": [
+   "a small promise you made to yourself",
+   "a place that makes you feel connected",
+   "the first person who believed in your work",
+   "a ritual that asks for no audience",
+   "a sound that means home to you",
+   "an object you keep for someone absent",
+   "a story that changed what you value",
+   "the experience of being witnessed kindly",
+   "a moment of ordinary generosity",
+   "an animal you learned patience from",
+   "a tradition you invented rather than inherited",
+   "the difference between a rule and a vow",
+   "an artwork that feels like a threshold",
+   "a silence shared comfortably",
+   "the work of remembering someone faithfully",
+   "a symbol whose meaning changed",
+   "a place where you made a difficult decision",
+   "a moment of awe without an explanation",
+   "the value of choosing to return",
+   "a meal that marks belonging",
+   "a way you honor a friendship",
+   "a story you want someone else to inherit",
+   "a promise you refused to make lightly",
+   "a private anniversary worth noticing",
+   "a kind of beauty that asks you to pay attention",
+   "a connection that survived distance",
+   "a tradition you decided to change",
+   "a moment of reverence for the ordinary",
+   "the feeling of being allowed to exist",
+   "an act of repair as a quiet ritual",
+   "a memory you want to keep without freezing it",
+   "something meaningful precisely because it is temporary"
+  ],
+  "ang": [
+   "without requiring anyone else to agree",
+   "in the form of a modest ritual",
+   "through one object you can describe",
+   "with gratitude but without obligation",
+   "as a value you choose to practice",
+   "by recalling a single moment",
+   "without trying to prove the feeling",
+   "with room for the meaning to change"
+  ],
+  "end": [
+   "how could you honor it simply",
+   "what belongs only to you",
+   "which part is worth passing on",
+   "what do you want to protect about it",
+   "how might it shape tomorrow",
+   "what is its smallest symbol",
+   "what would respectful attention look like",
+   "what would you say if you had only one sentence"
+  ],
+  "op": [
+   "Make a little space for {s}. {A}, {e}?",
+   "Treat {s} as worthy of attention. {A}, {e}?",
+   "Return to what matters about {s}. {A}, {e}?",
+   "If you built a tiny ritual around {s}, {a}, {e}?",
+   "Sit beside {s} for a moment. {A}, {e}?",
+   "Name the meaning you give to {s}. {A}, {e}?",
+   "Imagine keeping a place for {s}. {A}, {e}?",
+   "Without turning {s} into a rule, {a}, {e}?"
+  ]
+ }
+};
+  const makeOpener=pattern=>(subject,angle,end)=>pattern.replace(/\{s\}/g,subject).replace(/\{A\}/g,angle?angle[0].toUpperCase()+angle.slice(1):'').replace(/\{a\}/g,angle).replace(/\{e\}/g,end);
+  const applyCategories=config=>{
+    for(const [key,entry] of Object.entries(banks)){
+      const target=config[key];if(!target)throw Error('Missing content path '+key);
+      if(target.subjects.length!==16||target.angles.length!==4||target.ends.length!==4||target.openers.length!==4)throw Error('Unrecognized baseline path '+key);
+      target.subjects.push(...entry.sub);
+      target.angles.push(...entry.ang);
+      target.ends.push(...entry.end);
+      target.openers.push(...entry.op.map(makeOpener));
+    }
+  };
+  globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{}, {applyCategories, categoryBanks:banks});
+})();
+</script>
+<script type="text/plain" data-elsewhere-app>
+/* Additional 24 authored prompts per existing pack. Original 12 indices preserved. */
+(()=>{'use strict';const extra={"greysonNow":["What part of today can be handled with one clear decision?","What would make the next conversation simpler?","What did you do today that deserves acknowledgment?","Which assumption would be easiest to verify?","What small choice can you stop reconsidering?","Where did you put in effort nobody saw?","What could be done with half the preparation?","What is the kindest thing you can do for future-you tonight?","What feels less complicated when you say it out loud?","What have you learned about your mood today?","What can wait without anything bad happening?","What would make the room feel more comfortable?","What task could you and someone else make into a game?","What is one plan you are actually looking forward to?","What could be decided with a coin flip?","Where could you ask for a little help?","What has been surprisingly easy today?","What would make the rest of the day feel complete enough?","What do you wish people understood about your day?","What should not be on tomorrow's list?","What moment was better because someone was there?","What is a good reason to end a task early?","What would make a ten-minute break worthwhile?","What is one thing you want to say directly?"],"greysonWeird":["What household object would stage a dramatic resignation?","If this day had a ridiculous sponsor, what would its slogan be?","What creature would be the worst landlord?","If your shoes could complain, what would they say?","What would a documentary narrator misunderstand about your kitchen?","Which chore is secretly an extreme sport?","What is the most suspiciously dramatic thing a toaster could announce?","Invent a terrible theme park ride based on an errand.","If a ghost were your roommate, what petty rule would it enforce?","What object deserves a completely unnecessary origin story?","Which mundane moment warrants a full orchestral score?","If a houseplant ran a press conference, what would the scandal be?","What would the worst possible fortune cookie say today?","If the moon sent customer feedback, what would it rate?","What boring disagreement could become an epic courtroom drama?","What would an alien misunderstand about grocery shopping?","Which ordinary word sounds most suspiciously invented?","If the weather were an awkward guest, what would it say?","Which appliance would start the smallest revolution?","What absurd award should someone in this room receive?","Which minor inconvenience would make a great movie monster?","What would Dexter's most theatrical objection sound like?","If tonight were a musical, what would the opening number be?","What tiny thing should receive a national monument?"],"greysonShared":["What makes spending quiet time together feel genuinely shared?","Which little ritual should we invent for rainy days?","What cheap outing would become a good story?","What would make an ordinary meal feel celebratory?","Which memory should we hear from the other person's point of view?","What small household job works better together?","What is something new we could teach each other?","What silly award should we give each other?","What detail from our first conversations remains funny?","What would be a good shared project for one weekend?","What can we make more comfortable at home?","Which song belongs to an ordinary memory together?","What joke never seems to get old?","What are we proud of accomplishing together lately?","Which tradition could we borrow and make our own?","What is one way our interests complement each other?","What do we want the next month to feel like?","What tiny adventure requires almost no planning?","Where have we become more patient with each other?","What meal could be our personal signature dish?","What helps us feel included without doing everything together?","What is something we do differently and appreciate?","What would make our next free evening feel spacious?","What should we remember to thank each other for?"],"greysonDexter":["What would Dexter charge for a five-minute consultation?","Which human project would Dexter refuse to fund?","What household object is clearly violating canine regulations?","What would Dexter call an unacceptable snack distribution?","Which chair is subject to immediate royal seizure?","What would appear in Dexter's annual human performance review?","Which errand would receive a formal stinkweasel objection?","How would Dexter redesign customer service?","What would be the official Dexter weather advisory?","Which conversation has exceeded the committee's patience?","What souvenir would Dexter reject on sight?","What would count as gross negligence in treat administration?","Which room needs a stricter inspection policy?","What would Dexter write in a complaint to the universe?","Which person deserves probation for insufficient snacks?","What would Dexter name the household budget committee?","How would Dexter rate today's handling of blankets?","What would be Dexter's least enthusiastic motivational speech?","Which unnecessary technology would Dexter ban?","What diplomatic incident could arise over a sofa cushion?","What would Dexter demand from a visiting dignitary?","Which boring task would Dexter outsource to a cat?","What is the simplest way to fail a Dexter loyalty audit?","What would Dexter reluctantly admit was not entirely terrible?"],"superpowers":["Who would use an extraordinary power for a very boring job?","What happens when a power works perfectly but the instructions are wrong?","Who refuses to use their power for money?","What power solves a problem but ruins the evidence?","What tiny power becomes useful during a blackout?","What ability requires a second person to activate?","Who has the least intimidating power and the best strategy?","What power has a beautiful side effect nobody expected?","What does a superpowered household disagreement look like?","Which power only works when the user is honest?","What power becomes unreliable in crowded places?","Who decides whether a power should be taught?","What ethical limit does the hero set for themselves?","What happens when two ordinary powers interact?","Who needs a power removed rather than improved?","What law is accidentally created by one famous rescue?","Which power leaves behind a physical clue?","What is the most useful power for a disabled character?","How would a power change how an artist works?","What does a hero do when their power is temporarily irrelevant?","What is the cost of keeping a useful power secret?","Which superpower creates an unexpected profession?","What power changes one relationship but not the world?","Who would turn down a chance to be more powerful?"],"villain":["What did your antagonist do before anyone called them dangerous?","What everyday virtue becomes dangerous when exaggerated?","Who tells the antagonist an inconvenient truth?","What is the antagonist genuinely afraid to lose?","Which part of their ideology contradicts their behavior?","What ordinary person can expose the entire scheme?","What legitimate grievance fuels a harmful plan?","Which ally is more principled than the antagonist?","What is the one thing they cannot control?","How would their supporters describe the story?","What did the antagonist expect to happen that did not?","What kind of public image are they trying to maintain?","What would embarrass them more than defeat?","What is their plan if nobody takes the bait?","Which unnecessary cruelty ultimately costs them support?","What does the antagonist collect and why?","Who understands them without excusing them?","What makes their headquarters uncomfortably ordinary?","What does an antagonist do after an unexpectedly good day?","What truth would end their self-justification?","What sacrifice are they willing to make but should not?","Who stands to gain from their failure?","What happens when the antagonist is almost right?","What makes their final choice genuinely difficult?"],"city":["What do children think is the strangest thing about this city?","How does the city sound before dawn?","Which building has outlived its original purpose?","Where do locals go when they need to be alone?","What institution would collapse without invisible labor?","How do people move between the richest and poorest districts?","What neighborhood has the best public argument?","Where do people gather when the power fails?","What makes the local transit system recognizable?","Which public artwork causes a fight every decade?","What is the city's most embarrassing tourist attraction?","Who maintains the old waterworks?","What small local holiday has a complicated origin?","What does the city smell like after rain?","Which alley tells a secret about its history?","What do newcomers always get wrong?","Where are abandoned objects repaired?","How does the city record its dead?","Who decides what gets demolished?","Which unofficial custom matters more than the law?","How has the weather reshaped the architecture?","Where do people go after midnight without money?","What conflict lives inside the city's public square?","What is one detail no aerial map would reveal?"],"character":["What does this person find effortlessly funny?","What do they do with their hands when nervous?","Which possession would they protect first?","What sort of apology do they find difficult?","Who sees through their public persona?","What do they believe they have outgrown?","What skill are they quietly proud of?","Which compliment surprises them most?","What do they regret not asking?","How do they spend an unexpectedly free afternoon?","What old promise still shapes their choices?","Which story do they tell differently each time?","What does their home reveal about their priorities?","What do they do when embarrassed?","What do they genuinely misunderstand about others?","Which stranger could change their mind?","How do they handle being wrong in public?","What does their voice sound like when relieved?","What motivates them beyond the obvious plot goal?","Which part of their past has become ordinary to them?","What makes them feel unexpectedly safe?","When do they choose silence?","What decision could only this character make?","What small contradiction makes them believable?"],"friendship":["What habit makes these friends unmistakably themselves?","Which shared place holds the most memories?","What do they each think the other needs?","When do they enjoy being silent together?","Who notices first when something is wrong?","What disagreement made them more honest?","What are they afraid to admit they envy?","Which old joke has become a ritual?","How do they react when one of them succeeds?","What expectation has never been discussed?","What does support look like when advice is unwanted?","Which favor is finally too much to ask?","When is space a gesture of trust?","What do they misunderstand about the same event?","How do their values align under pressure?","What would a stranger notice about their dynamic?","What could they build together?","What keeps the friendship alive across distance?","Which old version of the other person do they miss?","When must one say no to the other?","How does humor conceal affection?","What would an honest reunion look like?","What do they do when both are having a bad day?","What choice proves the relationship has changed?"],"weirdtoday":["What ordinary sound would be ominous in a movie?","If today were a museum exhibition, what would its title be?","What was the least impressive plot twist?","What moment deserves its own laugh-free sitcom?","Who made the most unintentionally dramatic entrance?","What did you misplace that would make a terrible treasure?","Which chore was surprisingly cinematic?","What would the director's commentary say about lunch?","What was the most absurd possible interpretation of a real moment?","Which sentence could be a surrealist poem?","What innocuous event needs a conspiracy theory for fun?","What would today's fake movie trailer emphasize?","What could be narrated by a melodramatic sports commentator?","Which object looked suspiciously out of place?","What is one improbable but harmless explanation for an inconvenience?","Which everyday phrase sounded strange when repeated?","Who would play your morning in an animated adaptation?","What moment felt like a deleted scene?","Which sound effect would improve an errand?","What would a minor household problem look like as a kaiju film?","What part of today would make a terrible board game?","What should be today's ridiculously specific award?","If today had a boss fight, what was it?","What was the funniest moment nobody else witnessed?"],"megan":["What would you say if you stopped apologizing for your expertise?","Where could you use fewer disclaimers?","What have you earned the right to celebrate?","Which criticism does not deserve to become a project?","What would it mean to make a bold choice without performing confidence?","What would a direct request sound like in twelve words?","What makes your personal style recognizable?","Which expectation could you simply decline?","What is the difference between humility and hiding?","What would you tell a friend about their visible strength?","How do you know when you have made enough effort?","Which idea deserves a louder introduction?","What would it look like to be proud and still curious?","Where can you stop negotiating with an imaginary critic?","What part of your life has your signature on it?","Which goal could use a little theatrical flair?","What does self-respect look like in a small interaction?","What would a confident but kind boundary sound like?","What is your least apologetic creative idea?","How have you surprised yourself recently?","Where does humor help you reclaim perspective?","What would you do if approval were irrelevant?","Which achievement belongs in your private hall of fame?","What is one way to let your work speak for itself?"],"sacred":["Which ordinary routine would you preserve as a ceremony?","What tiny object is a witness to your history?","Who taught you a kind of reverence?","Which place deserves your quiet attention?","What promise would you make without witnesses?","What memory should be tended rather than solved?","What art makes you feel connected to someone absent?","What kind of care feels like a ritual?","Which sound marks the beginning of rest?","What is something worth protecting without owning?","What does respect look like when nobody agrees?","Which recurring event could become a personal holiday?","How could gratitude be expressed without obligation?","What object represents a relationship without replacing it?","When did a stranger treat something meaningful with respect?","What value has become more important over time?","What gives your life a sense of continuity?","Which story should be retold in your own words?","What form of awe asks for no explanation?","Which ordinary kindness feels foundational?","How can a repaired object become more meaningful?","What do you want to remember without idealizing?","What would your smallest personal shrine hold?","Which tradition are you free to invent?"]};globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},{applyPacks(packs){for(const [key,list] of Object.entries(extra)){if(!packs[key]||packs[key].prompts.length!==12)throw Error('Pack baseline mismatch '+key);packs[key].prompts.push(...list);}},packBanks:extra});})();
+</script>
+<script type="text/plain" data-elsewhere-app>
+/* Two distinct additional creative prompt banks without altering original variants. */
+(()=>{
+'use strict';
+const questions={"power":["Who is affected first by the cost?","What would the user refuse to do with it?"],"character":["What choice would reveal their priorities?","Who sees a different side of them?"],"world":["Who adapts to this system most easily?","Which ordinary routine changes first?"],"scene":["Which small detail raises the stakes?","How could the ending surprise everyone?"],"villain":["Which belief makes their plan persuasive?","Where does their strategy contradict their values?"],"relationship":["Which expectation goes unspoken?","What would a respectful repair require?"],"creature":["How does it survive a normal day?","Who misunderstands its behavior?"],"place":["What does a longtime resident know?","What would make a visitor look twice?"],"magic":["Who bears the cost but did not consent?","How would a society organize around this rule?"],"society":["Who can opt out of the system?","What would a child notice that adults ignore?"]};
+const extraLenses=[["The archivist","What would a careful record preserve that memory leaves out?"],["The comic","Where is the harmless absurdity in this situation?"],["The skeptic","Which claim could you actually test?"],["The witness","What matters about having someone see this happen?"],["The cartographer","What connects this small detail to the larger pattern?"],["The gardener","What grows here when nobody is forcing it?"],["The repairer","What can be mended without pretending nothing broke?"],["The translator","How might someone else phrase the same need?"],["The anthropologist","Which invisible custom shaped this interaction?"],["The musician","What changes if you pay attention to rhythm and pause?"],["The artist","Which detail deserves to become an image?"],["The historian","What would this moment look like from ten years away?"],["The engineer","Which assumption makes the entire system work?"],["The storyteller","Whose perspective is missing?"],["The philosopher","Which distinction makes the question clearer?"],["The child","What looks strange before it becomes familiar?"],["The neighbor","What would a small act of care look like?"],["The inventor","What could you try that does not exist yet?"],["The stage manager","What has to happen offstage for this to work?"],["The dreamer","What unexpected possibility does this suggest?"]];
+const twists={"weird":["mailboxes develop a sense of humor","one street changes names on weekends","the library lends out unexplained sounds","umbrellas predict small arguments","a lost glove gains local fame","the bus driver knows every secret","cats file formal zoning appeals","clouds imitate familiar handwriting","every receipt includes an irrelevant prophecy","houseplants hum at sunset","an old clock refuses to count Tuesdays","cafes serve the same mysterious dessert","stairwells lead to unexpected conversations","one fountain repeats unfinished songs","the city issues permits for daydreams","the park bench offers unsolicited reviews","a bakery sells yesterday's weather","the post office misdelivers dreams","neighborhood maps include emotional shortcuts","a local statue has an agent","pigeons organize a talent show","the laundromat hosts midnight debates","a train station forgets one destination","the elevators have strong opinions about fashion","an alley appears after a good joke","every shop has a different moon phase","public clocks disagree politely","the mayor sends handwritten horoscopes","one bridge has a loyalty program","streetlights gossip about pedestrians","a museum catalogs lost compliments","the traffic lights occasionally applaud"],"unhinged":["the municipal budget is audited by a talking turnip","a black hole opens a modest bed-and-breakfast","every cloud requests annual leave","the local council must negotiate with Tuesday","a dragon becomes head of public relations","all footwear is temporarily self-governing","the sun hires a substitute for weekends","the zoo exhibits the concept of paperwork","an ancient oracle only predicts lunch specials","gravity files a workplace grievance","the ocean starts a tiny book club","every microwave becomes a philosophy professor","a meteor insists it is an art installation","the city's entire history is written by seagulls","a ghost opens a customer loyalty scheme","the moon introduces parking meters","all traffic cones become minor nobility","the timeline is managed by bored librarians","a mountain begins interviewing its visitors","every mirror starts charging admission","reality has a two-star customer support rating","a government department is replaced by raccoons","one vending machine claims diplomatic immunity","time travel is only possible via receipt refunds","the weather gives unsolicited performance reviews","the planet applies for a new name","an enormous fish becomes the mayor's press secretary","all maps require a dramatic monologue","the night sky starts sending invoices","a sentient doorway joins a labor union","the universe appoints a sarcastic ombudsman","a volcano launches a lifestyle podcast"]};
+const material={
+applyCreative(definitions){
+for(const [key,def] of Object.entries(definitions)){
+ const questionsForType=questions[key];if(!questionsForType||def.build.length!==4)throw Error('Unexpected creative baseline '+key);
+ const original=def.build.slice();
+ for(const question of questionsForType)for(const build of original)def.build.push(parts=>build(parts)+' '+question);
+}
+},
+applyLenses(lenses){if(lenses.length!==10)throw Error('Unexpected pop-lens baseline');lenses.push(...extraLenses.map(([name,text])=>({name,text})));},
+applyTwists(wild){for(const key of ['normal','weird','unhinged']){if(wild[key]?.length!==16)throw Error('Unexpected twist baseline '+key);if(key==='normal')wild[key].push(...Array(32).fill(''));else wild[key].push(...twists[key]);}}
+};
+globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},material);
+})();
+</script>
+<script type="text/plain" data-elsewhere-app>
 (() => {
   'use strict';
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => [...r.querySelectorAll(s)];
   const prefersReduced = typeof matchMedia==='function'?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false,addEventListener:null,addListener:null};
-  const PROMPTS_PER_CATEGORY = 1024;
-  const PROMPT_MASK = PROMPTS_PER_CATEGORY - 1;
+  const PROMPTS_PER_CATEGORY = 3072;
+  const PROMPT_MASK = 1023;
   const CATEGORY_KEYS = ['notice','day','unearth','reframe','wander','imagine','learn','shadow','sacred'];
   const UNIVERSE_SIZE = PROMPTS_PER_CATEGORY * CATEGORY_KEYS.length;
+  const CONTENT_3X = globalThis.ElsewhereContent3x;
   const cap = text => text ? text.charAt(0).toUpperCase()+text.slice(1) : '';
 
   const POP_LENSES = [
@@ -1171,6 +1745,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     {name:'Horror lens',text:'What rule keeps everyone safe until someone breaks it?'}
   ];
 
+  CONTENT_3X.applyLenses(POP_LENSES);
   const PEOPLE = [
     'a shy paramedic','a tired teacher','a famous singer','a kid who hates attention',
     'a night-shift clerk','a retired hero','a new villain','a broke college student',
@@ -1401,6 +1976,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
       p=>`In ${p.anchor}, one rule says ${p.idea}. What changes at home?`
     ]}
   };
+  CONTENT_3X.applyCreative(CREATIVE_DEFS);
   const WILD_TWISTS = {
     normal:['','','','','','','','','','','','','','','',''],
     weird:[
@@ -1417,6 +1993,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     ]
   };
 
+  CONTENT_3X.applyTwists(WILD_TWISTS);
   const CATEGORY_CONFIG = {
     notice:{label:'Notice',glyph:'\u25cc',color:'#9bdcff',color2:'#91f0d0',theme:'#0a1118',mood:'notice one small thing',next:'Notice another',mode:0,mult:21413,subjects:[
       'a small moment from today','a feeling you kept quiet','the last ten minutes','something you noticed twice','a moment that felt cinematic','a burst of confidence','a song or meme that popped up','one oddly important detail','something harder than it looked','the moment your mood changed','one thing in the room','a small kindness','something your body noticed','a choice you made fast','the best five seconds today','a detail only you would care about'
@@ -1485,10 +2062,11 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     ],guides:['Start with one real detail.','Meaning can stay unfinished.']}
   };
 
-  function decodePromptIndex(index){return {turn:index&3,lens:(index>>2)&3,subject:(index>>4)&15,variant:(index>>8)&3};}
+  CONTENT_3X.applyCategories(CATEGORY_CONFIG);
+  function decodePromptIndex(index){index%=1024;return {turn:index&3,lens:(index>>2)&3,subject:(index>>4)&15,variant:(index>>8)&3};}
   function popLensFor(categoryKey,index){const ci=CATEGORY_KEYS.indexOf(categoryKey);if(((index+ci*3)%11)!==0)return null;return POP_LENSES[(index+ci)%POP_LENSES.length];}
   function creativePromptFromIndex(index,type='mix',wildness='normal'){
-    const d=decodePromptIndex(index),ideaBase=d.lens*4+d.turn;
+    const d=decodePromptIndex(index),bank=Math.floor(index/1024),ideaBase=d.lens*4+d.turn;
     const actualType=type==='mix'?CREATIVE_TYPE_KEYS[(ideaBase+d.subject+d.variant)%CREATIVE_TYPE_KEYS.length]:type;
     const def=CREATIVE_DEFS[actualType]||CREATIVE_DEFS.power;
     const offset=wildness==='weird'?5:wildness==='unhinged'?11:0;
@@ -1497,20 +2075,20 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
       idea:def.pools[1][(ideaBase+offset)%def.pools[1].length],
       third:def.pools[2][(Math.imul(index,5)+3+offset)%def.pools[2].length],
       fourth:def.pools[3][(Math.imul(index,7)+1+offset)%def.pools[3].length],
-      twist:WILD_TWISTS[wildness][(Math.imul(index,3)+5)&15]
+      twist:WILD_TWISTS[wildness][((Math.imul(index%1024,3)+5)&15)+16*bank]
     };
-    const text=def.build[d.variant](parts);
+    const text=def.build[d.variant+4*bank](parts);
     const guides=['Answer one question.','Keep what feels fun.'];
     return {id:`imagine-${String(index).padStart(4,'0')}`,c:'imagine',index,text,guides,creativeType:actualType,wildness,parts,lens:popLensFor('imagine',index)};
   }
   function promptFromIndex(categoryKey,index,opts={}){
     if(categoryKey==='imagine')return creativePromptFromIndex(index,opts.creativeType||'mix',opts.wildness||'normal');
-    const c=CATEGORY_CONFIG[categoryKey],d=decodePromptIndex(index),subject=c.subjects[d.subject],angle=c.angles[d.lens],end=c.ends[d.turn];
-    const text=c.openers[d.variant](subject,angle,end);
+    const c=CATEGORY_CONFIG[categoryKey],d=decodePromptIndex(index),bank=Math.floor(index/1024),subject=c.subjects[d.subject+16*bank],angle=c.angles[d.lens+4*bank],end=c.ends[d.turn+4*bank];
+    const text=c.openers[d.variant+4*bank](subject,angle,end);
     return {id:`${categoryKey}-${String(index).padStart(4,'0')}`,c:categoryKey,index,text,guides:[...c.guides],lens:popLensFor(categoryKey,index)};
   }
   function fnv1a(text){let h=0x811c9dc5;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,0x01000193);}return h>>>0;}
-  function permutedIndex(categoryKey,ordinal,salt='elsewhere'){const c=CATEGORY_CONFIG[categoryKey];const offset=fnv1a(`${salt}|${categoryKey}`)&PROMPT_MASK;return (Math.imul(c.mult,ordinal)+offset)&PROMPT_MASK;}
+  function permutedIndex(categoryKey,ordinal,salt='elsewhere'){const c=CATEGORY_CONFIG[categoryKey];const bank=Math.floor(ordinal/1024),local=ordinal%1024;const offset=fnv1a(`${salt}|${categoryKey}`)&PROMPT_MASK;return bank*1024+((Math.imul(c.mult,local)+offset)&PROMPT_MASK);}
   function promptAt(categoryKey,ordinal,salt='elsewhere',opts={}){return promptFromIndex(categoryKey,permutedIndex(categoryKey,ordinal,salt),opts);}
   const ALL_MIXES={
     balanced:['notice','day','wander','imagine','unearth','reframe','sacred','learn','notice','day','wander','imagine','shadow','reframe','sacred','day','notice','learn','wander','unearth','imagine','sacred','reframe','shadow'],
@@ -1557,6 +2135,7 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
     ]}
   };
 
+  CONTENT_3X.applyPacks(PACKS);
   const PACK_KEYS=Object.keys(PACKS);
   const GREYSON_ES={
     greysonNow:[
