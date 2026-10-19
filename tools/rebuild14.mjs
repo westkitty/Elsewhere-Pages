@@ -19,6 +19,21 @@ function replace(kind,body,prefix='ELSEWHERE14'){
   current=current.slice(0,a+open.length)+'\n'+body+'\n'+current.slice(b);
 }
 replace('STYLE',css);replace('SCRIPT',js);
+// OMNI20 SOURCE LINK: keep the additive UX adapter embedded in the standalone edition.
+const omni20 = [
+  ['STYLE','src/elsewhere-omni20.css'],
+  ['SCRIPT','src/elsewhere-omni20.js'],
+];
+for(const [kind,filename] of omni20){
+  const open=`/* OMNI20:${kind}:START */`;
+  const close=`/* OMNI20:${kind}:END */`;
+  const begin=current.indexOf(open),end=current.indexOf(close);
+  if(begin<0||end<=begin||current.indexOf(open,begin+1)!==-1||current.indexOf(close,end+1)!==-1)
+    throw Error(`Missing or duplicate OMNI20 markers ${kind}`);
+  const contents=fs.readFileSync(path.join(root,filename),'utf8').trimEnd();
+  current=current.slice(0,begin+open.length)+'\n'+contents+'\n'+current.slice(end);
+}
+
 replace('STYLE',arrivalCss,'ELSEWHERE15');replace('SCRIPT',arrivalJs,'ELSEWHERE15');
 for(const [path,prefix,kind] of [['src/elsewhere-infinite.css','INFINITE','STYLE'],['src/elsewhere-infinite-content.js','INFINITE','CONTENT'],['src/elsewhere-infinite-engine.js','INFINITE','ENGINE']])replace(kind,fs.readFileSync(pathModule(path),'utf8').trimEnd(),prefix);
 if(process.argv.includes('--check')){
