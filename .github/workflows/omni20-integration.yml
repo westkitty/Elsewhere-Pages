@@ -23,7 +23,7 @@ jobs:
           import hashlib, io, lzma, pathlib, tarfile
           root=pathlib.Path('.')
           archive=(root/'.omni20/omni20_release_payload.tar.xz').read_bytes()
-          assert hashlib.sha256(archive).hexdigest()=='4e744b0960198f89b836a101dab7a5db8542ceff993c38f26789cad2c0e29bad', 'Payload hash mismatch'
+          assert hashlib.sha256(archive).hexdigest()=='a78859c20645207a67b11e9636bdab99513caad8ce76af00f2e69d222a2ab00f', 'Payload hash mismatch'
           allowed={'src/elsewhere-omni20.js','src/elsewhere-omni20.css','tests/omni20.test.mjs','tests/fixture-omni20.html','tests/browser_full_omni20.py','tools/install_omni20.mjs','docs/OMNI20-IMPLEMENTATION.md','README_IMPLEMENTATION.md'}
           raw=lzma.decompress(archive)
           with tarfile.open(fileobj=io.BytesIO(raw),mode='r:') as bundle:
