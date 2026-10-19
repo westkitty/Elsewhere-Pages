@@ -74,7 +74,7 @@
     const ranked=Object.entries(TERMS).map(([theme,terms])=>({theme,n:terms.filter(term=>words.has(term)).length})).filter(x=>x.n>=2).sort((a,b)=>b.n-a.n);
     return ranked.slice(0,3).map(x=>x.theme);
   }
-  const DEFAULTS=()=>({version:1,settings:{checkin:'daily',matching:true,writing:false,reveal:'weekly',categories:[...CATEGORIES]},events:[],lastDay:'',lastMode:'surprise',lastRevealAt:0,hideUntil:0});
+  const DEFAULTS=()=>({version:1,settings:{checkin:'daily',matching:true,writing:false,reveal:'weekly',categories:[...CATEGORIES]},events:[],lastDay:'',lastMode:'surprise',lastRevealAt:0,hideUntil:0,echoHistory:[]});
   function sanitize(raw){
     const d=DEFAULTS();if(!raw||raw.version!==1)return d;
     const p=raw.settings||{};
@@ -88,6 +88,7 @@
     d.lastMode=safeMode(raw.lastMode);
     d.lastRevealAt=Number.isFinite(raw.lastRevealAt)?raw.lastRevealAt:0;
     d.hideUntil=Number.isFinite(raw.hideUntil)?raw.hideUntil:0;
+    d.echoHistory=Array.isArray(raw.echoHistory)?unique(raw.echoHistory.filter(x=>typeof x==='string'&&x.length<80)).slice(-10):[];
     return d;
   }
   let data=DEFAULTS(), persistent=false, started=false;
@@ -120,7 +121,7 @@
       const score=matches.reduce((n,t)=>n+Math.min(weights.get(t),6),0);
       return {...f,matches,score};
     }).filter(f=>f.matches.length>=2).sort((a,b)=>b.score-a.score||b.matches.length-a.matches.length||a.id.localeCompare(b.id));
-    return rows[0]||null;
+    const history=new Set(data.echoHistory.slice(-4));return rows.find(x=>!history.has(x.id))||rows[0]||null;
   }
   function readiness(){const days=unique(data.events.map(e=>e.day)).length;return {days,observations:data.events.length,ready:!!rankEcho()}}
   function renderPrefs(){
@@ -170,7 +171,7 @@
     const dismiss=action('Dismiss',()=>{box.hidden=true});
     const buttons=node('div','','e15-echo-actions');buttons.append(dismiss,hide);
     box.append(eyebrow,message,source,reasons,explore,buttons);box.hidden=false;
-    if(!force){data.lastRevealAt=Date.now();persist();}
+    if(!force){data.lastRevealAt=Date.now();data.echoHistory=[...data.echoHistory,f.id].slice(-10);persist();}
   }
   function updateRouteBar(){
     const bar=$('e15RouteBar');if(!bar)return;
@@ -211,7 +212,12 @@
       const legacy=globalThis.ElsewhereLegacy;
       legacy?.chooseArrivalPath?.(MODES[finalMode].path);
       if(note&&finalMode!=='surprise')await legacy?.transitionTo?.(firstPrompt(finalMode));
-      else await legacy?.generateNext?.();
+      else {
+        await legacy?.generateNext?.();
+        if((finalMode==='surprise'||finalMode==='play')&&Math.random()<(finalMode==='surprise'?.7:.3)){
+          globalThis.ElsewhereInfinite?.open?.(finalMode==='play'?'wander':null);
+        }
+      }
     }
     renderEcho(false);renderPrefs();
   }
@@ -255,7 +261,7 @@
     actions.append(action('See my connection',()=>{renderEcho(true);const echo=$('e15Echo');if(echo.hidden){state.textContent='No reliable playful connection yet. Try a few more visits or enable categories.';}else{ $('settingsDialog')?.close();echo.scrollIntoView({block:'center',behavior:'auto'});}}));
     actions.append(action('Erase matching history',()=>{
       if(!confirm('Erase your local figure-matching observations? Existing journal entries and projects will not change.'))return;
-      data.events=[];data.lastRevealAt=0;data.hideUntil=0;persist();$('e15Echo').hidden=true;renderPrefs();
+      data.events=[];data.lastRevealAt=0;data.hideUntil=0;data.echoHistory=[];persist();$('e15Echo').hidden=true;renderPrefs();
     }));
     wrap.append(actions,node('p','Only theme labels and dates are retained for matching. Your check-in words are not saved here. Saved journal text is never analyzed unless you enable it. Data is plaintext browser storage on this site’s shared origin and is not included in Vault backups. Nothing is sent to a server.','e15-privacy'));
     target.append(wrap);renderPrefs();
@@ -269,6 +275,15 @@
     const label=node('label','A sentence, if you feel like it','e15-label');label.htmlFor='e15Note';welcome.append(label);
     const input=document.createElement('textarea');input.id='e15Note';input.rows=2;input.maxLength=600;input.placeholder='“I just want something fun.” “I need to work through something.” “No idea.”';
     input.setAttribute('aria-label','Optional: how are you feeling, or what are you looking for?');welcome.append(input);
+    const clarify=node('div','','e15-clarifier');clarify.hidden=true;
+    clarify.append(node('p','Would something lighter or something deeper feel better?','e15-muted'));
+    const clarifyChoices=node('div','','e15-clarifier-actions');
+    clarifyChoices.append(action('Lighter',()=>{void enter('play',true)}),action('Deeper',()=>{void enter('shadow',true)}),action('Let Elsewhere decide',()=>{void enter('surprise',true)}));
+    clarify.append(clarifyChoices);welcome.append(clarify);
+    input.addEventListener('input',()=>{
+      const text=input.value.trim();const explicit=/\b(surprise|whatever|anything|no idea|don't know|do not know|doesn't matter)\b/i.test(text);
+      clarify.hidden=text.length<20||explicit||pickMode(text)!=='surprise';
+    });
     const choices=node('div','','e15-choices');
     for(const m of ['talk','shadow','play','learn','quiet','surprise','write']){
       const b=action(MODES[m].label,()=>{void enter(m,true)},'e15-choice');

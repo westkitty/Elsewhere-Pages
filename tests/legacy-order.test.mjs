@@ -36,8 +36,8 @@ test('new pack material occupies only additional bank indices',()=>{
    assert.ok(result.slice(12).every(i=>i>=12),name);
  }
 });
-test('original generated prompt assignments still use first 1024 indexes',()=>{
+test('legacy per-bank permutation remains stable while the three banks interleave',()=>{
  assert.match(legacy,/const PROMPT_MASK = 1023/);
- assert.match(legacy,/const bank=Math\.floor\(ordinal\/1024\),local=ordinal%1024/);
+ assert.match(legacy,/const local=Math\.floor\(ordinal\/3\),bank=ordinal%3/);
  assert.match(legacy,/const count=index<1024\?10:POP_LENSES\.length/);
 });
