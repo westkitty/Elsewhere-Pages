@@ -36,6 +36,15 @@ jobs:
               dest.write_bytes(bundle.extractfile(member).read())
           print('Exact OMNI20 source extracted; no existing files overwritten')
           PY
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/browser_full_omni20.py')
+          text=p.read_text()
+          old="            page.locator('#om20Nav [data-omni20-view=\"atlas\"]').click()"
+          assert text.count(old)==1, 'Cannot identify mobile navigation smoke step'
+          text=text.replace(old,"            answer.blur()\n            page.wait_for_function(\"!document.documentElement.classList.contains('e14-keyboard-open')\")\n"+old)
+          p.write_text(text)
+          PY
       - name: Adapt the existing branch signature regression to one new deferred module
         run: |
           python3 - <<'PY'
