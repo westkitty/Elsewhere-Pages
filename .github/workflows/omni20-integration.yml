@@ -1,0 +1,105 @@
+name: Elsewhere OMNI20 guarded integration
+on:
+  push:
+    branches: [feature/omni20-full-integration-20261019]
+permissions:
+  contents: write
+jobs:
+  integrate:
+    if: "github.event.head_commit.message == 'ci: enable OMNI20 guarded integration'"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify and extract exact trusted source payload
+        run: |
+          python3 - <<'PY'
+          import hashlib, io, lzma, pathlib, tarfile
+          root=pathlib.Path('.')
+          archive=(root/'.omni20/omni20_release_payload.tar.xz').read_bytes()
+          assert hashlib.sha256(archive).hexdigest()=='4e744b0960198f89b836a101dab7a5db8542ceff993c38f26789cad2c0e29bad', 'Payload hash mismatch'
+          allowed={'src/elsewhere-omni20.js','src/elsewhere-omni20.css','tests/omni20.test.mjs','tests/fixture-omni20.html','tests/browser_full_omni20.py','tools/install_omni20.mjs','docs/OMNI20-IMPLEMENTATION.md','README_IMPLEMENTATION.md'}
+          raw=lzma.decompress(archive)
+          with tarfile.open(fileobj=io.BytesIO(raw),mode='r:') as bundle:
+            members=bundle.getmembers()
+            assert {m.name for m in members}==allowed,'Unexpected archive path'
+            for member in members:
+              assert member.isfile() and member.size<100000,'Nonregular/oversized archive entry'
+              dest=root/member.name
+              assert not dest.exists(),f'Existing source would be overwritten: {dest}'
+              dest.parent.mkdir(parents=True,exist_ok=True)
+              dest.write_bytes(bundle.extractfile(member).read())
+          print('Exact OMNI20 source extracted; no existing files overwritten')
+          PY
+      - name: Adapt the existing branch signature regression to one new deferred module
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/infinite-door.test.mjs')
+          src=p.read_text()
+          old="assert.equal(html.split('<script type=\"text/plain\" data-elsewhere-app>').length-1,26);"
+          assert src.count(old)==1, 'Unknown deferred script-count test; refuse blind rewrite'
+          p.write_text(src.replace(old,"assert.equal(html.split('<script type=\"text/plain\" data-elsewhere-app>').length-1,27);",1))
+          PY
+      - name: Install OMNI20 on the merged Elsewhere source and verify full suite
+        run: |
+          node tools/install_omni20.mjs
+          node tools/install_omni20.mjs --check
+          node --check src/elsewhere-omni20.js
+          node --check tools/install_omni20.mjs
+          node --test tests/*.test.mjs
+          node tools/guard_reset14.mjs --check
+          node tools/verify_x5.mjs
+          node tools/rebuild14.mjs --check
+      - name: Real assembled-page Chromium regression
+        run: |
+          python3 -m pip install playwright==1.55.0
+          python3 -m playwright install chromium
+          python3 tests/browser_full_omni20.py
+      - name: Update offline shell and operational truth after validation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, re, datetime
+          sw=Path('sw.js')
+          s=sw.read_text()
+          assert s.count("elsewhere-public-shell-v15")==1,'Unknown offline shell; do not alter cache blindly'
+          sw.write_text(s.replace("elsewhere-public-shell-v15","elsewhere-public-shell-v16-omni20",1))
+          state=Path('OPERATIONAL_STATE.md')
+          raw=state.read_text()
+          m=re.search(r'<!-- operational-state:metadata\s*(\{.*?\})\s*-->',raw,re.S)
+          assert m,'Operational State metadata missing'
+          meta=json.loads(m.group(1))
+          assert meta['project_id']=='elsewhere-pages' and meta['state_revision']==7,'Unexpected Operational State; stop'
+          meta['state_revision']=8
+          meta['last_updated']=datetime.datetime.now(datetime.timezone.utc).isoformat().replace('+00:00','Z')
+          meta['current_baseline']={'identity':'main 9ad9712 after merged Arrival PR #2 and Infinite Door PR #3; OMNI20 integrated only on feature branch, browser/Node smoke passed','last_verified':'2026-10-19','state':'partially-verified'}
+          scoped=meta.get('scope_boundaries',[])
+          scoped.append('OMNI20 integration is additive; production iPhone, encrypted vault restore, multi-tab stress and installed PWA require real-device acceptance')
+          meta['scope_boundaries']=scoped
+          block='<!-- operational-state:metadata\n'+json.dumps(meta,indent=2)+'\n-->'
+          raw=raw[:m.start()]+block+raw[m.end():]
+          raw+='\n\n## 2026-10-19 — OMNI20 candidate after feature merges\n\n- [VER] PR #2 Arrival and PR #3 Infinite Door were merged into main before this integration.\n- [VER] Source-linked OMNI20, original Node suite, reset/verification guards, and fresh-browser real standalone smoke passed in the GitHub Actions integration runner.\n- [UNV] Physical iPhone Safari, installed/offline PWA restart, encrypted vault restoration and real-data migration have NOT been verified.\n- [INV] Retain Dexter UI gate, Greyson EN/ES, legacy prompt engine, writing recovery, separate possible/established canon, and opt-in cross-project search.\n'
+          state.write_text(raw)
+          bible=Path('Elsewhere_bible.md')
+          b=bible.read_text()
+          b+='\n\n## 2026-10-19 — OMNI20 integrated after Arrival / Infinite branch merges\n\n- Main prior to OMNI20: `9ad9712e7d5386e1a44dd2fa49e1935436eb4c19` after PR #2 and PR #3 were merged.\n- The OMNI20 installer was repaired to defer its JavaScript behind the existing Dexter unlock gate; the independent interface and all original engines remain present.\n- Node suite, source integrity, and fresh-browser combined-site regression passed before feature-branch commit. Public Pages and actual device acceptance remain separate checks.\n- The offline shell version changed to `elsewhere-public-shell-v16-omni20`. No stored user data was reset or migrated.\n'
+          bible.write_text(b)
+          PY
+          node tools/rebuild14.mjs --check
+          git diff --check
+      - name: Commit only authorized tested integration files to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- index.html sw.js tools/rebuild14.mjs tools/verify_x5.mjs Elsewhere_bible.md OPERATIONAL_STATE.md README_IMPLEMENTATION.md docs/OMNI20-IMPLEMENTATION.md src/elsewhere-omni20.js src/elsewhere-omni20.css tools/install_omni20.mjs tests/omni20.test.mjs tests/fixture-omni20.html tests/browser_full_omni20.py tests/infinite-door.test.mjs
+          git diff --cached --check
+          git diff --cached --stat
+          git commit -m 'feat: integrate OMNI20 into Elsewhere with gated boot and browser validation'
+          git push origin HEAD:feature/omni20-full-integration-20261019
