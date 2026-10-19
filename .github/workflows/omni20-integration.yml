@@ -47,8 +47,9 @@ jobs:
           p.write_text(src.replace(old,"assert.equal(html.split('<script type=\"text/plain\" data-elsewhere-app>').length-1,27);",1))
           p=Path('tests/content3x.test.mjs')
           src=p.read_text()
-          assert src.count(old)==1, 'Unknown content3x deferred script-count test'
-          p.write_text(src.replace(old,"assert.equal(html.split('<script type=\"text/plain\" data-elsewhere-app>').length-1,27);",1))
+          old_count='assert.equal(inline.length,26);'
+          assert src.count(old_count)==1, 'Unknown content3x deferred script-count test'
+          p.write_text(src.replace(old_count,'assert.equal(inline.length,27);',1))
           PY
       - name: Install OMNI20 on the merged Elsewhere source and verify full suite
         run: |
