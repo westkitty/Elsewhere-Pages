@@ -182,3 +182,12 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 - The OMNI20 installer was repaired to defer its JavaScript behind the existing Dexter unlock gate; the independent interface and all original engines remain present.
 - Node suite, source integrity, and fresh-browser combined-site regression passed before feature-branch commit. Public Pages and actual device acceptance remain separate checks.
 - The offline shell version changed to `elsewhere-public-shell-v16-omni20`. No stored user data was reset or migrated.
+
+## 2026-10-19 — Contextual daily greeting (feature branch; release not claimed)
+
+- Scope: Local-first greeting above Arrival, with correct device-local daypart/date/weekday, conservative fixed-date observances, month boundaries, optional one-time or annual user-entered dates, local authored sentence variation and bounded anti-repeat history.
+- Identity consent: The reader may enter a first name and independently opt into occasional mentions of a named person such as Greyson. Do not assume all public Elsewhere readers know Greyson. Never assert unobserved relationship facts, appointments, feelings or weather.
+- Authored source: src/elsewhere-greeting.js embedded ahead of src/elsewhere-arrival.js inside the existing deferred ELSEWHERE15 script marker; src/elsewhere-arrival.css supplies restrained responsive presentation. The source-linked rebuild remains the only way to update the embedded index.
+- Privacy boundary: elsewhere:greeting:v1 plaintext localStorage, not in Vault backup, no third-party calendar or remote requests, no journal scan, separately erasable. Limit personal dates to twelve; validate dates including leap days, sanitize names/labels and use textContent.
+- Protect: Dexter unlock, daily/every-time/disabled Arrival choices, prompt engine progress, Greyson EN/ES packs, Infinite Door/OMNI20, v13 project facts, drafts, save/recovery, Atlas, vault, offline shell and public-origin caveat.
+- Verification: tests/greeting.test.mjs added for chronological, privacy, source and repetition constraints; all broader release criteria remain subject to independent CI/browser/device proof. Do not claim deployment from a branch change.
