@@ -61,6 +61,10 @@
   const safeMode=m=>Object.prototype.hasOwnProperty.call(MODES,m)?m:'surprise';
   function pickMode(input){
     const t=String(input||'').toLowerCase().slice(0,600);
+    // Explicit boundaries outrank thematic keywords. Never answer "no questions"
+    // by delivering another question or accidentally saving the instruction.
+    if(/\b(no (?:more )?questions?|no prompts?|without (?:any )?questions?|(?:do not|don't|stop) ask(?:ing)?|just write|let me write|blank page)\b/.test(t))return 'write';
+    if(/\b(lighter|lighten (?:it|things) up|something (?:light|easy)|less intense|not so heavy|cheer me up)\b/.test(t))return 'play';
     if(/\b(funny|silly|fun|laugh|joke|play|distract|escape)\b/.test(t))return 'play';
     if(/\b(shadow|deeper|avoid|pattern|hard truth|self.examin)\b/.test(t))return 'shadow';
     if(/\b(hurt|sad|upset|anxious|stressed|argu|conflict|relationship|overwhelm|lonely|rough)\b/.test(t))return 'talk';
@@ -69,6 +73,7 @@
     if(/\b(write|blank page|no prompt)\b/.test(t))return 'write';
     return 'surprise';
   }
+  const navigationOnly=note=>/^(?:please\s+)?(?:no (?:more )?questions?|no prompts?|just write|let me write|blank page|don't ask(?: me)?(?: questions)?|do not ask(?: me)?(?: questions)?|without (?:any )?questions?)(?:\s+please)?[.!?]*$/i.test(String(note||'').trim());
   function extractThemes(input){
     const words=new Set(String(input||'').toLowerCase().slice(0,12000).match(/[a-z]+/g)||[]);
     const ranked=Object.entries(TERMS).map(([theme,terms])=>({theme,n:terms.filter(term=>words.has(term)).length})).filter(x=>x.n>=2).sort((a,b)=>b.n-a.n);
@@ -261,7 +266,7 @@
     if(finalMode==='write'){
       document.documentElement.classList.add('elsewhere-arrival-freewriting');
       const editor=$('e14Answer');
-      if(editor){if(!editor.value.trim()&&note){editor.value=note;editor.dispatchEvent(new Event('input',{bubbles:true}));}editor.focus({preventScroll:true})}
+      if(editor){if(!editor.value.trim()&&note&&!navigationOnly(note)){editor.value=note;editor.dispatchEvent(new Event('input',{bubbles:true}));}editor.focus({preventScroll:true})}
       globalThis.Elsewhere14?.setView?.('write');
     } else {
       const legacy=globalThis.ElsewhereLegacy;
@@ -275,6 +280,17 @@
       }
     }
     renderEcho(false);renderPrefs();
+  }
+  let rerouteOffset=0;
+  function somethingElse(){
+    // A genuine reroute: unlike choosing another random question, avoid the
+    // current mode and its prompt category, and do not force shadow work.
+    const currentPath=globalThis.ElsewhereLegacy?.getCurrent?.()?.c;
+    const modes=['play','learn','quiet','talk'].filter(mode=>
+      mode!==data.lastMode&&MODES[mode].path!==currentPath
+    );
+    const next=modes.length?modes[rerouteOffset++%modes.length]:'play';
+    void enter(next,false);
   }
   function inputSetting(label,kind,value,handler){
     const line=node('label','','e15-setting-line');
@@ -415,7 +431,7 @@
     route.firstChild.id='e15ModeStatus';
     route.append(action('Change direction',showWelcome));
     route.append(action('Just write',()=>{void enter('write',false)}));
-    route.append(action('Something else',()=>{void enter('surprise',false)}));
+    route.append(action('Something else',somethingElse));
     stage.before(route);
     const echo=node('aside','','e15-echo');echo.id='e15Echo';echo.setAttribute('aria-label','Optional figure comparison');echo.hidden=true;stage.before(echo);
   }
