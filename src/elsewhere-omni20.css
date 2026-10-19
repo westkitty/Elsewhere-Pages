@@ -1,0 +1,170 @@
+/* Elsewhere OMNI20: one nav, preserved legacy tools, dark editorial visual identity. */
+body.omni20-ready {
+  --om20-edge:rgba(175,213,237,.24);
+  --om20-bg:#0b121c;
+  --om20-field:#121e2b;
+  --om20-ink:#eef4f8;
+  --om20-muted:#b7cbd9;
+  --om20-active:#99dfff;
+}
+body.omni20-ready .omni20-visually-hidden {
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;
+  margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;
+}
+/* The legacy prompt controls and newer workspace actions remain in the DOM, but do not
+   compete as two independent mobile bottom navigation bars. */
+body.omni20-ready #mobileCommandDock,
+body.omni20-ready #e14Tabs {display:none!important;}
+body.omni20-ready:not(.omni20-workspace-active) #e14Workspace {display:none!important;}
+body.omni20-ready.omni20-workspace-active #ideaStage {display:none!important;}
+body.omni20-ready.omni20-workspace-active #e14Workspace {display:block!important;}
+body.omni20-ready #main {scrollbar-width:thin;min-width:0;scroll-padding-top:75px;}
+body.omni20-ready .omni20-nav {
+  display:flex;align-items:center;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:25;
+  background:rgba(8,14,22,.96);border:1px solid var(--om20-edge);
+  border-radius:18px;padding:10px 12px;box-shadow:0 14px 45px rgba(0,0,0,.24);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  font:500 14px/1.25 system-ui,sans-serif;color:var(--om20-ink);
+}
+html.elsewhere-locked .omni20-nav {display:none!important;}
+.omni20-nav-meta {display:grid;gap:3px;min-width:78px}
+.omni20-nav-meta strong {letter-spacing:.1em;font-size:10px;color:var(--om20-muted)}
+.omni20-nav-meta span {font-size:11px;color:var(--om20-muted)}
+.omni20-nav-tabs {display:flex;flex:1 1 auto;align-items:center;justify-content:center;gap:5px;min-width:0}
+.omni20-nav-tab {display:flex;gap:8px;align-items:center;justify-content:center;min-width:86px;
+  min-height:47px;padding:10px 12px;border-radius:11px;border:1px solid transparent;
+  background:transparent;color:var(--om20-muted);cursor:pointer;font:600 14px/1.1 system-ui,sans-serif;
+}
+.omni20-nav-tab.is-active,
+.omni20-nav-tab[aria-current=page]{background:#213e54;border-color:#6eb6df;color:#fff}
+.omni20-nav-tab:hover:not(.is-active){background:rgba(153,223,255,.08);color:var(--om20-ink)}
+.omni20-tab-icon {font-size:19px;line-height:1}
+.omni20-nav-secondary{display:flex;gap:8px;align-items:center;margin-left:auto;min-width:0}
+.omni20-nav-secondary select{max-width:195px;min-height:46px;padding:8px 10px;border-radius:10px;
+  color:var(--om20-ink);border:1px solid var(--om20-edge);background:var(--om20-field);font-size:14px}
+.omni20-tools-button {white-space:nowrap;min-height:46px;padding:8px 14px;border-radius:11px;
+  border:1px solid rgba(153,223,255,.45);background:rgba(153,223,255,.12);
+  color:var(--om20-ink);cursor:pointer;font:600 14px system-ui,sans-serif}
+.omni20-nav :is(button,select):focus-visible,
+.omni20-library-tabs button:focus-visible,
+.omni20-command-dialog :is(button,input):focus-visible,
+.omni20-write-about:focus-visible,
+.omni20-settings-section summary:focus-visible,
+.omni20-vault-create summary:focus-visible {
+  outline:3px solid #9ce3ff;outline-offset:3px;
+}
+body.omni20-ready .omni20-write-about {background:#1c5876;color:#fff;border:1px solid #73c7ec;
+  min-height:46px;min-width:136px;padding:11px 15px;border-radius:13px;font-weight:700;cursor:pointer}
+body.omni20-ready #promptCard .actionrow{display:flex;gap:9px;flex-wrap:wrap}
+body.omni20-ready .e14-workspace {margin-top:10px;}
+body.omni20-ready.omni20-workspace-active #e14Workspace .e14-head {padding-bottom:5px}
+body.omni20-ready.omni20-workspace-active #e14Workspace .e14-head .e14-eyebrow{font-size:11px;letter-spacing:.12em}
+body.omni20-ready .omni20-library-tabs {display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 20px;padding:5px;
+  background:#101b29;border-radius:14px;border:1px solid var(--om20-edge)}
+.omni20-library-tab {position:relative;min-height:45px;flex:1 1 130px;border:1px solid transparent;
+  border-radius:10px;background:transparent;color:var(--om20-muted);font:600 14px system-ui;cursor:pointer;padding:10px}
+.omni20-library-tab[aria-selected=true] {background:#28455f;color:#fff;border-color:#6ea9cd}
+.omni20-library-pane[hidden] {display:none!important}
+.omni20-pending-count{display:inline-block;padding:6px 10px;margin-bottom:10px;
+ border:1px solid #7eabbd;border-radius:16px;color:#dff4fa;font-size:12px}
+.omni20-count{display:inline-flex;align-items:center;justify-content:center;
+ min-width:20px;height:20px;margin-left:5px;padding:0 5px;border-radius:12px;background:#3a657c;color:#fff;font-size:11px}
+.omni20-count[hidden]{display:none!important}
+.omni20-atlas-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;}
+.omni20-atlas-group{display:flex;flex-wrap:wrap;gap:8px;align-content:start;align-items:center;min-width:0;
+ padding:12px;border:1px solid var(--om20-edge);border-radius:14px;background:rgba(12,27,39,.48)}
+.omni20-atlas-group legend{padding:0 7px;color:var(--om20-muted);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.omni20-atlas-find input{width:100%;min-width:0}
+.omni20-atlas-history input[type=range]{width:100%}
+.omni20-atlas-arrange{grid-column:1/-1}
+.omni20-vault-create{margin:16px 0;border:1px solid var(--om20-edge);border-radius:14px;padding:0;background:#111d2a}
+.omni20-vault-create summary{padding:15px;min-height:50px;cursor:pointer;color:#eaf3fb;font-weight:650}
+.omni20-vault-create[open] summary{border-bottom:1px solid var(--om20-edge)}
+.omni20-vault-fields{display:grid;gap:10px;padding:15px}
+.omni20-vault-fields input{width:100%;min-height:46px}
+.omni20-vault-fields button,.omni20-vault-restore button{min-height:48px}
+.omni20-settings-grouped{display:grid;gap:12px;grid-column:1/-1}
+.omni20-settings-section{border:1px solid var(--om20-edge);border-radius:15px;padding:0 12px 14px;background:#111b28}
+.omni20-settings-section summary{min-height:51px;cursor:pointer;padding:15px 3px;color:#eaf5ff;font-weight:700}
+.omni20-settings-contents{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+.omni20-settings-contents .dangerzone{grid-column:1/-1}
+.omni20-command-dialog {width:min(660px,calc(100vw - 24px));max-height:min(83dvh,850px);padding:18px;
+  border:1px solid rgba(153,223,255,.42);border-radius:20px;box-shadow:0 35px 100px #000b;
+  color:#f4f7fa;background:#0b1520;overflow:hidden}
+.omni20-command-dialog::backdrop {background:rgba(3,5,8,.74);backdrop-filter:blur(6px)}
+.omni20-command-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.omni20-command-head h2{font-size:clamp(19px,4vw,28px);margin:4px 0 12px}
+.omni20-command-close{min-height:44px;border:1px solid #7193ab;border-radius:10px;padding:8px 14px;
+ background:#182d3e;color:#fff;cursor:pointer}
+.omni20-command-dialog label{display:block;margin:5px 0 7px;color:#d1e2ef;font-size:13px}
+.omni20-command-dialog input[type=search]{width:100%;min-height:52px;padding:12px 15px;
+ border:1px solid #6b99b1;border-radius:13px;background:#071019;color:#fff;font-size:16px}
+.omni20-command-list{display:grid;gap:6px;max-height:min(56dvh,600px);overflow:auto;padding:12px 1px 4px}
+.omni20-command-row{min-height:52px;width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;
+ padding:12px;border:1px solid rgba(177,215,240,.15);border-radius:12px;
+ background:rgba(255,255,255,.045);color:#eef8ff;cursor:pointer;font-size:14px;gap:10px}
+.omni20-command-row:hover{background:#243f53}
+.omni20-command-row small{color:#bad0df;font-size:11px;text-align:right}
+.omni20-empty{color:#b8c7d3;padding:15px}
+body.focus-mode.omni20-ready .omni20-nav{display:none!important}
+@media (max-width:1080px){
+  .omni20-nav-meta{display:none}
+  .omni20-nav-tab{min-width:74px}
+  .omni20-nav-secondary select{max-width:150px}
+}
+@media (max-width:760px), (max-height:520px) and (pointer:coarse){
+  body.omni20-ready #main{padding-bottom:calc(99px + env(safe-area-inset-bottom,0px));scroll-padding-bottom:calc(102px + env(safe-area-inset-bottom,0px))}
+  body.omni20-ready .omni20-nav{position:fixed;top:auto;left:0;right:0;bottom:0;border-radius:18px 18px 0 0;
+    z-index:1005;display:flex;flex-direction:column;gap:5px;justify-content:center;
+    padding:7px max(10px,env(safe-area-inset-right,0px)) calc(7px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));}
+  .omni20-nav-tabs{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;order:2}
+  .omni20-nav-tab{min-height:53px;min-width:0;display:grid;justify-items:center;align-content:center;gap:3px;padding:7px 2px;font-size:12px}
+  .omni20-tab-icon{font-size:18px}
+  .omni20-nav-secondary{order:1;width:100%;display:flex;justify-content:space-between;margin:0;gap:6px}
+  .omni20-nav-secondary select{max-width:calc(100vw - 126px);width:auto;flex:1;min-height:44px;font-size:13px}
+  .omni20-tools-button{min-height:44px;padding:8px 11px;font-size:13px}
+  body.omni20-ready .e14-workspace{margin-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+  body.omni20-ready #promptCard .omni20-write-about{width:100%}
+  .omni20-atlas-groups{grid-template-columns:1fr}
+  .omni20-command-row{flex-wrap:wrap;min-height:52px}
+  .omni20-library-tab{flex:1 1 calc(50% - 6px)}
+  html.e14-keyboard-open .omni20-nav{visibility:hidden;pointer-events:none;opacity:0;transform:translateY(105%)}
+}
+@media (prefers-reduced-motion:reduce){
+ .omni20-nav,.omni20-nav *, .omni20-command-dialog,.omni20-command-dialog * {transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+@media (prefers-contrast:more){
+ body.omni20-ready{--om20-edge:rgba(235,246,255,.7);--om20-muted:#edf6ff}
+ .omni20-command-row,.omni20-nav-tab{border-color:var(--om20-edge)}
+}
+
+.omni20-persistence{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:9px 0 16px;
+ padding:8px 12px;border:1px solid var(--om20-edge);border-radius:12px;font-size:13px;color:#cbe1f0}
+.omni20-persistence[data-error=true]{color:#ffe1d5;border-color:#e2a996;background:rgba(135,45,32,.14)}
+.omni20-persistence-export{margin-left:auto;min-height:44px;padding:9px 12px;border:1px solid #dba795;
+ border-radius:10px;background:#4a2b2a;color:white;font-weight:650;cursor:pointer}
+.omni20-persistence-export[hidden]{display:none!important}
+/* Read-only artifact inspector; the existing edit/canon actions retain ownership. */
+.omni20-inspector[hidden]{display:none!important}
+.omni20-inspector{position:fixed;z-index:250;right:max(15px,env(safe-area-inset-right,0px));top:78px;
+  bottom:40px;width:min(370px,calc(100vw - 24px));display:flex;flex-direction:column;gap:14px;
+  border:1px solid #6699b5;background:#0d1b29;color:#eef6fe;border-radius:21px;
+  box-shadow:0 20px 80px #000b;padding:16px;overflow:auto}
+.omni20-inspector-header{display:flex;align-items:start;justify-content:space-between;gap:12px}
+.omni20-inspector-header h3{margin:0;font-size:clamp(18px,3vw,23px)}
+.omni20-inspector-close,.omni20-inspector-actions button,.omni20-inspect-button{cursor:pointer;min-height:44px;
+ background:#19364a;color:#f5fbff;border:1px solid #7caac6;border-radius:10px;padding:9px 11px;font:600 13px/1.35 system-ui}
+.omni20-inspector-close{flex-shrink:0}
+.omni20-inspector-body{overflow-wrap:anywhere;line-height:1.5}
+.omni20-inspector-content{white-space:pre-wrap;font-size:15px;line-height:1.6}
+.omni20-inspector-type{text-transform:uppercase;font-size:11px;letter-spacing:.1em;color:#b6cddd}
+.omni20-inspector-tags,.omni20-inspector-muted{font-size:12px;color:#c3d8e7}
+.omni20-inspector-actions{display:grid;gap:8px}
+.omni20-inspector-actions .omni20-inspector-primary{background:#1d5b77;border-color:#97d7f3}
+.omni20-inspector :is(button):focus-visible,.omni20-inspect-button:focus-visible{outline:3px solid #aee8ff;outline-offset:3px}
+@media(max-width:760px), (max-height:520px) and (pointer:coarse){
+ .omni20-inspector{top:auto;left:7px;right:7px;bottom:calc(128px + env(safe-area-inset-bottom,0px));
+   max-height:58dvh;width:auto;padding:14px;z-index:1020}
+}
+
+.omni20-save-explainer{font:500 12px/1.55 system-ui,sans-serif;color:#bccee0;margin:10px 0 9px;max-width:72ch}

@@ -4,11 +4,11 @@
 {
   "artifact_path": "",
   "current_baseline": {
-    "identity": "Verified local Elsewhere release candidate from feature HEAD e9d98de; final JS sha256 256c58d0; GitHub delivery needs independent readback",
-    "last_verified": "2026-10-17",
-    "state": "verified"
+    "identity": "main 9ad9712 after merged Arrival PR #2 and Infinite Door PR #3; OMNI20 integrated only on feature branch, browser/Node smoke passed",
+    "last_verified": "2026-10-19",
+    "state": "partially-verified"
   },
-  "last_updated": "2026-10-18T00:22:54Z",
+  "last_updated": "2026-10-19T12:28:18.266135Z",
   "linked_parent_state": null,
   "project_id": "elsewhere-pages",
   "project_name": "Elsewhere Living Atlas",
@@ -17,9 +17,10 @@
   "scope_boundaries": [
     "Repository westkitty/Elsewhere-Pages; user explicitly authorized feature push and merge to main",
     "Preserve Dexter lock, Greyson preferences, saved projects, source-linked creative data and unrelated work",
-    "Real iPhone Safari/VoiceOver and installed offline PWA remain unverified"
+    "Real iPhone Safari/VoiceOver and installed offline PWA remain unverified",
+    "OMNI20 integration is additive; production iPhone, encrypted vault restore, multi-tab stress and installed PWA require real-device acceptance"
   ],
-  "state_revision": 7
+  "state_revision": 8
 }
 -->
 
@@ -492,3 +493,11 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - **Additional green gates:** `node --check` original v14 and arrival sources; `node tools/guard_reset14.mjs --check` PASS; `node tools/verify_x5.mjs` PASS; `node tools/rebuild14.mjs --check` PASS.
 - **Specific newly exercised invariants:** every 36-question pack is a valid no-repeat permutation, old valid 12-question ordering remains stable, formerly negative/invalid pack indices are normalized, new banks keep distinct indices, source scripts remain deferred behind lock, Spanish and English Greyson content both have 36 items.
 - **Evidence boundary:** GitHub CI and source integrity do not prove physical Safari, cross-tab runtime, installed offline PWA, encrypted restore on a real origin, or actual mobile layout. PR #2 still open and not merged; no public Pages release claim.
+
+
+## 2026-10-19 — OMNI20 candidate after feature merges
+
+- [VER] PR #2 Arrival and PR #3 Infinite Door were merged into main before this integration.
+- [VER] Source-linked OMNI20, original Node suite, reset/verification guards, and fresh-browser real standalone smoke passed in the GitHub Actions integration runner.
+- [UNV] Physical iPhone Safari, installed/offline PWA restart, encrypted vault restoration and real-data migration have NOT been verified.
+- [INV] Retain Dexter UI gate, Greyson EN/ES, legacy prompt engine, writing recovery, separate possible/established canon, and opt-in cross-project search.

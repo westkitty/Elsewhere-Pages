@@ -164,3 +164,21 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 - PR #2 content change revision `874e3adf1c4adc3e0e70297aa5da4b538aeffc88` passed 57/57 Node tests on GitHub Actions run `39089054570`. Syntax, source packaging, reset protection, and standalone rebuild checks also passed.
 - New regression tests protect all 12 pack permutations across 36 positions. A pre-existing signed-step edge case that could yield negative pack indices was repaired using an unsigned step; where the original 12-item sequence was valid, its order is preserved. Original 1,024-index generated prompt bank and original lens choices remain protected from expansion.
 - Real iPhone/Safari, browser storage interaction under genuine multi-tab conditions, HTTPS Vault workflows, and installed-PWA testing still need direct verification before claims of production release readiness. Nothing was merged into main.
+
+## 2026-10-19 — OMNI20 unified navigation source integration
+
+- **Scope:** Additive OMNI20 source adapter and integration with existing standalone rebuild, no application data migration.
+- **Change groups:** unified Explore/Write/Library/Atlas navigation; contextual command catalog and project switch; Library/Atlas/Settings/Vault grouping; local save feedback and accessibility.
+- **Preserved:** v12/v13/v14 engines, Greyson EN/ES progress, draft data, source-linked writing, explicit canon, Dexter lock and backup transaction code.
+- **Validation:** local standalone source parity and Node/Chromium synthetic checks; see docs/OMNI20-IMPLEMENTATION.md. The actual complete Elsewhere app and physical iPhone remain unverified.
+- **Incoming branches:** arrival-first PR #2 and Infinite Door PR #3 remain separate and unmerged at preparation; optional commands activate only when installed.
+- **Delivery:** uncommitted local source integration. No push, merge, deployed origin, or live user data change.
+- **Remaining gates:** full original browser/device flows, existing suite, vault transaction and multi-tab checks, PR dependency integration.
+
+
+## 2026-10-19 — OMNI20 integrated after Arrival / Infinite branch merges
+
+- Main prior to OMNI20: `9ad9712e7d5386e1a44dd2fa49e1935436eb4c19` after PR #2 and PR #3 were merged.
+- The OMNI20 installer was repaired to defer its JavaScript behind the existing Dexter unlock gate; the independent interface and all original engines remain present.
+- Node suite, source integrity, and fresh-browser combined-site regression passed before feature-branch commit. Public Pages and actual device acceptance remain separate checks.
+- The offline shell version changed to `elsewhere-public-shell-v16-omni20`. No stored user data was reset or migrated.
