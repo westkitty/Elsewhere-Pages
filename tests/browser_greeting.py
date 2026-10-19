@@ -89,6 +89,9 @@ def verify(browser, width, height):
     editor.blur()
 
     page.reload(wait_until='domcontentloaded')
+    assert page.locator('#elsewhereGate').is_visible(), 'reload must restore Dexter lock'
+    page.locator('#elsewhereGatePassword').fill('Dexter')
+    page.locator('#elsewhereGateSubmit').click()
     page.wait_for_function('window.ElsewhereOmni20?.initialized === true', timeout=30000)
     assert page.locator('#e15Welcome').is_hidden(), 'daily Arrival should not be forced twice'
     assert page.locator('#e15Greeting').is_visible(), 'daily hello should be available on reopening'
@@ -105,13 +108,16 @@ def verify(browser, width, height):
     assert wiped['profile']['personName'] == ''
     assert wiped['profile']['dates'] == []
     assert page.evaluate("localStorage.getItem('elsewhere:arrival:v1')") is not None
-    assert not page.locator('#e15GreetingText').inner_text().find('Our test-day milestone') >= 0
+    assert 'Our test-day milestone' not in page.locator('#e15GreetingText').inner_text()
 
     page.locator('#e15SettingCheckin').select_option('off')
     page.locator('#e15GreetingEnabled').uncheck()
     assert page.locator('#e15Greeting').is_hidden()
     page.evaluate("document.getElementById('settingsDialog').close()")
     page.reload(wait_until='domcontentloaded')
+    assert page.locator('#elsewhereGate').is_visible(), 'reload must restore Dexter lock'
+    page.locator('#elsewhereGatePassword').fill('Dexter')
+    page.locator('#elsewhereGateSubmit').click()
     page.wait_for_function('window.ElsewhereOmni20?.initialized === true', timeout=30000)
     assert page.locator('#e15Welcome').is_hidden(), 'disabled check-in should stay off'
     assert page.locator('#e15Greeting').is_hidden(), 'disabled hello should remain off'
