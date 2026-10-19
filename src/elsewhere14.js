@@ -381,7 +381,7 @@
     notice('Unencrypted text copy requested. Keep it somewhere private.');
   }
   function saveResponse(asType = 'note') {
-    const p = project(), prompt = current(), raw = $('e14Answer')?.value.trim();
+    const p = project(), prompt = globalThis.ElsewhereArrival?.isFreeWriting?.()?null:current(), raw = $('e14Answer')?.value.trim();
     if (!p) { notice('Create or choose a project before saving a response.', true); UI()?.projects?.openProjectEditor?.(true); return null; }
     if (!raw) { notice('Write a response first.', true); $('e14Answer')?.focus(); return null; }
     if (!D()?.ARTIFACT_TYPES?.includes(asType)) { notice('Unsupported artifact type.', true); return null; }
@@ -393,7 +393,7 @@
         p.timeline.push({id:`entry_${entry.id}`,label:`Saved ${asType}: ${entry.name}`,artifactIds:[entry.id],createdAt:Date.now(),order:Date.now(),sourceId:entry.id,kind:'response'});
         p.returnPoint={kind:'artifact',id:entry.id,label:entry.name};return entry;
       });
-      afterWrite(p,raw,result,'Response saved locally.');refreshVisibleCollections();return record;
+      afterWrite(p,raw,result,'Response saved locally.');if(writingPersisted(result))try{globalThis.dispatchEvent(new CustomEvent('elsewhere:response-saved',{detail:{text:raw}}))}catch{}refreshVisibleCollections();return record;
     }catch(e){notice(e.message,true);return null}
   }
   function saveDraft() {

@@ -466,3 +466,29 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - Current checkout: 39/39 Node tests passed, source/standalone/reset guards passed, and actual 393px Brave browser end-to-end smoke passed 12/12 (Dexter unlock, wrong password, project creation, saved writing and reload recovery).
 - User explicitly authorized stage, commit, push and merge into main. These Git actions must still be verified on the remote.
 - Hardware iPhone Safari, VoiceOver, changed-password recovery, HTTPS encrypted restoration and installed offline PWA have not been directly verified.
+
+
+## 2026-10-17 — Arrival / Quiet Echoes feature branch
+
+- **Requested:** replace the initial unsolicited prompt with a one-question conversational choice; route talk/deeper/play/learn/quiet/surprise/blank-page; support graceful switching and skipping; make optional celebrity, literary, historical and mythological parallels accumulate across visits with Settings-level controls.
+- **Code implementation:** `src/elsewhere-arrival.js` + `src/elsewhere-arrival.css` embedded in `index.html`; legacy first-prompt defer; category bridge; save-success-only writing signal; pure prompt-free writing path.
+- **Privacy invariant:** optional note ephemeral unless deliberately moved to journal editor; optional writing analysis off; only theme labels and dates in local matching record; no automatic canon establishment; origin and vault inclusion limits documented.
+- **Evidence still needed:** GitHub Actions Node suite and rebuild integrity; real unlock/start/check-in/skip/blank-page/write/save/reload browser tests; actual iPhone Safari + offline PWA; password/change and vault roundtrip checks. Do not describe browser-dependent behaviors as verified until directly exercised.
+- **Scope isolation:** matching observations never migrate into v13 project facts; reset applies only to `elsewhere:arrival:v1`; old projects and prompt history must remain unchanged.
+
+
+## 2026-10-17 — Content depth ×3 (feature branch)
+
+- **Source branch:** `feature/arrival-conversation-quiet-echoes` in `westkitty/Elsewhere-Pages`. Source content expanded in place; existing first-bank prompt indices, no-repeat progress, saved writing, and password lock preserved by design.
+- **Added catalogs:** five `src/elsewhere-triple-*.js` modules for eight themed paths, twelve curated packs, ten creative builders, optional lenses/twists, nine deeper-question groups, and four parallel Greyson Spanish packs. The Arrival figure roster increases from 21 to 63.
+- **Intended invariant:** 3,072 prompts per path × nine paths; 36 questions in every original authored pack and Greyson ES pack; 12 creative formulations per builder; 48 twists per level; 30 optional lenses; 18 deeper questions per path; no new external APIs, secrets, or canon state.
+- **Evidence status:** code and source-level structural tests only until CI and actual browser journeys pass. Real Safari/PWA and production release remain independently unverified. Do not remove the pending release gate.
+- **Scope protection:** browser-local personalization remains optional, figure matches remain analogies, newly saved writing matching remains opt-in; historical user data must not be reset or migrated destructively to access the new banks.
+
+
+### 2026-10-17 — Threefold content CI verification receipt
+
+- **Verified GitHub Actions run:** `39089054570` for commit `874e3adf1c4adc3e0e70297aa5da4b538aeffc88` on PR #2; outcome **SUCCESS**, Node **57/57 PASS**.
+- **Additional green gates:** `node --check` original v14 and arrival sources; `node tools/guard_reset14.mjs --check` PASS; `node tools/verify_x5.mjs` PASS; `node tools/rebuild14.mjs --check` PASS.
+- **Specific newly exercised invariants:** every 36-question pack is a valid no-repeat permutation, old valid 12-question ordering remains stable, formerly negative/invalid pack indices are normalized, new banks keep distinct indices, source scripts remain deferred behind lock, Spanish and English Greyson content both have 36 items.
+- **Evidence boundary:** GitHub CI and source integrity do not prove physical Safari, cross-tab runtime, installed offline PWA, encrypted restore on a real origin, or actual mobile layout. PR #2 still open and not merged; no public Pages release claim.

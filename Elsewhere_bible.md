@@ -133,3 +133,34 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 - Verified implementation commit: `e466f2ad25b17b3c0fcce443233406ceab389272` — `feat: integrate Elsewhere OMNI iPhone experience and recovery safeguards`.
 - Scope: 33 intended Elsewhere application, documentation, regression and release-guard files; untracked Python bytecode was not staged.
 - The commit was created on `feature/elsewhere-14-living-atlas` after source and full-browser validation. Pushing, merging and deployment require independent GitHub receipts.
+
+
+## 2026-10-17 — Arrival-first journaling and quiet figure parallels
+
+**Work branch:** `feature/arrival-conversation-quiet-echoes`. The user requested an actual conversational check-in before prompts; controllable routes for talk, shadow work, play, learning, quiet, surprise, or a blank page; and optional, slowly earned comparisons with real/fictional/mythological figures. Do not convert Elsewhere into a diagnosing or coercive profiling app.
+
+**Implementation contract:** v12 engine remains the generator, v13 projects remain authoritative, v14 writing/atlas remains authoritative. The new standalone source pair is `src/elsewhere-arrival.js` and `src/elsewhere-arrival.css`, embedded in `index.html` by `tools/rebuild14.mjs` and deferred behind the existing Dexter lock. The startup engine must defer generating its first prompt until arrival decides. A blank-page session must not attribute writing to an old prompt. Quiet Echoes stores only theme/date metadata locally and must never rewrite canon or inferred project facts.
+
+**Privacy/defaults:** check-in once daily and skippable; quiet parallels from selected paths, optional and dismissible; newly saved response analysis separately opt-in; no retroactive scans or network inference; settings control frequency, categories, matching, optional writing input and deletion. No more than weekly unsolicited figure matches, with repeated-day evidence thresholds; comparisons are analogies, not diagnoses, identity labels, endorsements, or biographical equivalencies. Matching data is plaintext, lives separately from the vault, and does not sync. Security warning for shared GitHub Pages origin remains mandatory.
+
+**Protected compatibility:** existing 19-script deferred startup contract, older Greyson EN/ES packs, no-repeat prompt progress, password replacement, standalone HTML, PWA public shell, drafts and encrypted backup/restore. Tests must prove these, not infer them from polished visuals. Runtime Safari/mobile/full PWA interaction remains to be independently verified before claiming a completed deployment.
+
+
+## 2026-10-17 — Threefold content bank expansion
+
+**Control:** Tripling means creative/journaling depth, not tripling visible UI controls or modifying the existing privacy and state contracts.
+
+**New catalog sources:** `src/elsewhere-triple-paths.js`, `src/elsewhere-triple-packs.js`, `src/elsewhere-triple-creative.js`, `src/elsewhere-triple-deeper.js`, `src/elsewhere-triple-spanish.js`. All are embedded as deferred executable text in `index.html` and loaded ahead of the original v12 engine after unlock. The original authored `src/elsewhere14.js` and `src/elsewhere-arrival.js` remain source-of-truth for their corresponding overlays.
+
+**Count contract:** Nine paths × 3,072 deterministic prompt indices = 27,648; eight reflection paths each 48 subjects/12 angles/12 endings/12 openers; ten creative builders × 12 formulations; twelve existing curated packs × 36 authored prompts; four Greyson Spanish packs × 36 localized prompts; 30 lenses; 48 normal/weird/unhinged twists each; nine paths × 18 deepening questions; 12 example endings; 24 enhancement instructions; 63 figure parallels. No user-facing identity diagnosis.
+
+**Preservation:** Existing index 0–1023 is byte-equivalent in its prompt text and stable ID mapping to the prior bank. Extend ordinal and sanitized index ranges to 0–3071; use `bank=Math.floor(ordinal/1024)` and the same 1,024-element permutation inside each bank. New curated pack prompts are appended, not prepended. Do not reset existing progress or mutate project/canon records. Access lock, original storage format, encrypted-vault behavior, Greyson language routing, and PWA public shell must not regress.
+
+**Evidence gate:** Run `node --test tests/*.test.mjs`, `node tools/guard_reset14.mjs --check`, `node tools/verify_x5.mjs`, `node tools/rebuild14.mjs --check`; read GitHub Actions result and the full merged source. Actual browser-local rendering, iPhone Safari, installed PWA, two-tab conflict and sensitive restore tests remain separate. The feature branch must not merge to `main` based only on catalog-count checks.
+
+
+### Threefold edition — verified implementation evidence
+
+- PR #2 content change revision `874e3adf1c4adc3e0e70297aa5da4b538aeffc88` passed 57/57 Node tests on GitHub Actions run `39089054570`. Syntax, source packaging, reset protection, and standalone rebuild checks also passed.
+- New regression tests protect all 12 pack permutations across 36 positions. A pre-existing signed-step edge case that could yield negative pack indices was repaired using an unsigned step; where the original 12-item sequence was valid, its order is preserved. Original 1,024-index generated prompt bank and original lens choices remain protected from expansion.
+- Real iPhone/Safari, browser storage interaction under genuine multi-tab conditions, HTTPS Vault workflows, and installed-PWA testing still need direct verification before claims of production release readiness. Nothing was merged into main.
