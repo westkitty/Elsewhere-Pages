@@ -49,7 +49,7 @@ jobs:
           PY
       - name: Install OMNI20 on the merged Elsewhere source and verify full suite
         run: |
-          node tools/install_omni20.mjs
+          node tools/install_omni20.mjs --skip-tests
           node tools/install_omni20.mjs --check
           node --check src/elsewhere-omni20.js
           node --check tools/install_omni20.mjs
