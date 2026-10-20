@@ -94,3 +94,10 @@ test('standalone builds preserve gated boot, original v12 prompt engine and sour
   assert.match(source,/Erase matching history/);
   assert.match(source,/Offer occasional figure comparisons/);
 });
+
+test('Arrival honors no-questions and lighter intent before thematic routing',()=>{
+  assert.match(source,/no \(?:more \)\?questions/);
+  assert.match(source,/navigationOnly\(note\)/);
+  assert.match(source,/function somethingElse\(\)/);
+  assert.match(source,/route\.append\(action\('Something else',somethingElse\)\)/);
+});
