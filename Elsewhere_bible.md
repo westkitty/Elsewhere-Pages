@@ -191,3 +191,9 @@ Apply the cumulative X5 base and Omni source overlay only in a verified matching
 - Privacy boundary: elsewhere:greeting:v1 plaintext localStorage, not in Vault backup, no third-party calendar or remote requests, no journal scan, separately erasable. Limit personal dates to twelve; validate dates including leap days, sanitize names/labels and use textContent.
 - Protect: Dexter unlock, daily/every-time/disabled Arrival choices, prompt engine progress, Greyson EN/ES packs, Infinite Door/OMNI20, v13 project facts, drafts, save/recovery, Atlas, vault, offline shell and public-origin caveat.
 - Verification: tests/greeting.test.mjs added for chronological, privacy, source and repetition constraints; all broader release criteria remain subject to independent CI/browser/device proof. Do not claim deployment from a branch change.
+
+## 2026-10-20 — Bounded continuation uplift (branch only)
+
+- Improved Arrival parsing: explicit no-questions/blank-page instructions select writing before emotional keywords; lighter requests select play; standalone navigation instructions are not copied into the writing editor; Something else selects a different non-shadow path.
+- Service-worker shell version advanced to v17 for update delivery; v14 registration accepts secure loopback HTTP in addition to HTTPS and continues to reject insecure origins. Rebuilt index from authored sources.
+- Added Arrival source regression test. Browser/CI verification and physical Safari/offline acceptance remain separately required; no merge or deployment claimed.
