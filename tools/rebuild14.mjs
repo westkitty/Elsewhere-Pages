@@ -19,6 +19,10 @@ function replace(kind,body,prefix='ELSEWHERE14'){
   current=current.slice(0,a+open.length)+'\n'+body+'\n'+current.slice(b);
 }
 replace('STYLE',css);replace('SCRIPT',js);
+// Opt-in encrypted Drive archive: sources embedded without external runtime dependencies.
+for(const [kind,file] of [['STYLE','src/elsewhere-drive-archive.css'],['SCRIPT','src/elsewhere-drive-archive.js']]){
+  replace(kind,fs.readFileSync(path.join(root,file),'utf8').trimEnd(),'ELSEWHERE_DRIVE');
+}
 // OMNI20 SOURCE LINK: keep the additive UX adapter embedded in the standalone edition.
 const omni20 = [
   ['STYLE','src/elsewhere-omni20.css'],
