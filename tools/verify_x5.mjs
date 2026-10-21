@@ -17,7 +17,7 @@ const n=s=>(html.split(s).length-1);
 const signatures={
   'Dexter lock is present':n('id="elsewhereGate"')===1&&html.includes("const DEFAULT = 'Dexter'"),
   'Greyson v12/v13 bridge is present':html.includes('greysonLanguage')&&html.includes('greysonDexter'),
-  'v14 scripts stay deferred until unlock':n('<script type="text/plain" data-elsewhere-app>')===(html.includes('/* OMNI20:SCRIPT:START */')?27:26),
+  'v14 scripts stay deferred until unlock':n('<script type="text/plain" data-elsewhere-app>')===(26+(html.includes('/* OMNI20:SCRIPT:START */')?1:0)+(html.includes('/* ELSEWHERE_DRIVE:SCRIPT:START */')?1:0)),
   'content tripling catalogs are deferred behind lock': ['elsewhere-triple-paths.js','elsewhere-triple-packs.js','elsewhere-triple-creative.js'].every(name=>!html.includes('<script src="'+name+'"'))&&n('globalThis.ElsewhereContent3x=')>=3,
   'Infinite Door source modules': ['CONTENT','ENGINE','STYLE'].every(k=>n('/* INFINITE:'+k+':START */')===1),
   'arrival source module present':n('/* ELSEWHERE15:SCRIPT:START */')===1&&n('/* ELSEWHERE15:SCRIPT:END */')===1,

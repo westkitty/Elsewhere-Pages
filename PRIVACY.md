@@ -56,6 +56,12 @@ The record is **plaintext localStorage**; code from other repositories on the sh
 
 No answer text or theme observations are sent to an external model or server by the arrival module. The normal browser/network and shared-origin risks documented above still apply.
 
+## Local personalized daily greetings
+
+Daily hello derives its text offline from the browser's local clock, stable on-device calendar rules, and optional user-entered first names and important dates. It does not connect to Google Calendar, email, geolocation, news, weather, a language model, or any third-party service. It does not inspect journal text, infer relationships, or silently assign appointments. A name such as Greyson appears only if the user types that name and enables occasional references; the reference never asserts a relationship or event.
+
+The optional greeting record is stored in plaintext browser localStorage as elsewhere:greeting:v1: a bounded set of names, date labels, recurrence flags, preferences, and recent greeting variant IDs. It does not contain raw journal writing. The record is browser/device-specific, is not included in encrypted Vault backup/restore, and is readable by other scripts sharing the westkitty.github.io origin (see the shared-origin warning above). If local storage is unavailable, greeting preferences are session-only with a visible warning. To erase only this metadata, use Settings > Arrival & quiet echoes > Daily hello & personal calendar > Erase greeting personalization. The check-in, writing, projects, Quiet Echoes observations, password and vault data remain untouched.
+
 ## Optional encrypted Google Drive archive
 
 The Drive Archive feature, when configured and explicitly enabled by a user, seals a full saved-universe snapshot in AES-256-GCM before storing ciphertext in a separate IndexedDB queue or uploading it to Google Drive using the `drive.file` scope. The random data key is wrapped under a passphrase-derived key. Neither the passphrase nor the plaintext archive is sent to Google. The user authorizes a Google account directly; OAuth access tokens remain in session memory. Offline pending archives can remain in browser storage; Google uploads happen only while the app is open, unlocked and authorized. An expired token requires reauthorization.

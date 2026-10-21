@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1017" id="themeColor" />
   <meta name="color-scheme" content="dark" />
-  <!-- Set a public Google OAuth web client ID only after registering this HTTPS origin. -->
+  <!-- Public client ID only. Never include Google API secrets here. -->
   <meta name="elsewhere-google-oauth-client" content="" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -774,6 +774,24 @@ html.elsewhere-arrival-freewriting #ideaStage{display:block}
 .e15-echo-question{min-height:46px;text-align:left;padding:11px 13px;border-radius:12px;border:1px solid rgba(162,211,240,.35);background:#182c3d;color:#edf8ff;font:500 14px/1.55 system-ui,sans-serif;cursor:pointer}
 .e15-echo-question:hover{border-color:#b4e7ff;background:#203e55}
 .e15-echo-question:focus-visible{outline:3px solid #a3ebff;outline-offset:3px}
+
+/* Local daily hello: secondary to the single Arrival question. */
+#e15Greeting[hidden]{display:none!important}
+.e15-greeting{width:min(100%,850px);min-width:0;box-sizing:border-box;margin:0 auto 14px;padding:18px clamp(20px,4vw,34px);border-left:3px solid rgba(156,217,238,.72);border-radius:14px;background:rgba(25,42,56,.75);color:#e3f0f7}
+.e15-greeting-eyebrow{margin:0 0 7px;color:#a9d7ee;font:650 11px/1.5 system-ui,sans-serif;letter-spacing:.07em}
+.e15-greeting-copy{margin:0;max-width:67ch;font:400 clamp(15px,2.1vw,18px)/1.58 Georgia,'Times New Roman',serif}
+.e15-greeting-settings{margin:22px 0 10px;padding:14px;border:1px solid rgba(168,207,235,.28);border-radius:14px}
+.e15-greeting-settings>summary{cursor:pointer;min-height:44px;padding:10px 2px;font:650 16px/1.4 system-ui,sans-serif}
+.e15-greeting-settings>.e15-setting-line{padding:8px 0}
+.e15-greeting-field,.e15-greeting-date-entry>label{display:flex;flex-direction:column;gap:6px;margin:10px 0;color:#daedf6;font:500 14px/1.5 system-ui,sans-serif}
+.e15-greeting-field input,.e15-greeting-date-entry input:not([type=checkbox]){min-width:0;max-width:100%;padding:10px 12px;border:1px solid rgba(155,201,229,.4);border-radius:10px;background:#142536;color:#fff;font:400 16px/1.4 system-ui,sans-serif;box-sizing:border-box}
+.e15-greeting-settings button{min-height:44px;margin:6px 0;padding:9px 13px;border:1px solid rgba(164,205,235,.4);border-radius:10px;background:#1a2e42;color:#eaf7ff;cursor:pointer}
+.e15-greeting-dates h4{margin-bottom:8px}
+.e15-greeting-date-list{margin-top:10px}
+.e15-greeting-date-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid rgba(174,211,235,.18);padding:7px 0;color:#daeaf3;overflow-wrap:anywhere}
+.e15-greeting-date-row span{min-width:0;flex:1}
+.e15-greeting-settings :is(input,summary,button):focus-visible{outline:3px solid #a3ebff;outline-offset:3px}
+@media(max-width:700px){.e15-greeting{padding:15px 18px;border-radius:12px}.e15-greeting-copy{font-size:15px}}
 /* ELSEWHERE15:STYLE:END */
 /* INFINITE:STYLE:START */
 /* The Infinite Door: deliberate, low-overhead editorial encounters. */
@@ -5341,7 +5359,9 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
   }
   function registerOffline() {
-    if (location.protocol!=='https:' && location.hostname!=='localhost')return;
+    // Secure browser origins include HTTPS and trustworthy loopback development.
+    // Do not attempt service worker registration from file:// or insecure HTTP.
+    if (!globalThis.isSecureContext || !['http:','https:'].includes(location.protocol))return;
     if(!('serviceWorker' in navigator))return;
     navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{ /* optional offline capability */ });
   }
@@ -5493,6 +5513,168 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
 </script>
 <script type="text/plain" data-elsewhere-app>
 /* ELSEWHERE15:SCRIPT:START */
+/* Elsewhere daily greeting: factual local-clock context, authored variety, no remote calendar calls. */
+(() => {
+  'use strict';
+
+  const OPENINGS={
+    morning:[
+      'Morning{name}. The day has not decided what shape it will take.',
+      'Good morning{name}. No need to arrive with a plan.',
+      'Morning{name}. A little curiosity is enough to begin.',
+      'Good morning{name}. You can start quietly and change direction later.',
+      'Morning{name}. The page is here; it is not keeping score.',
+      'Good morning{name}. Whatever is on your mind can come as it is.'
+    ],
+    afternoon:[
+      'Good afternoon{name}. There is still room for a different direction.',
+      'Afternoon{name}. No need to make a production of arriving.',
+      'The afternoon is here{name}. Take the doorway that fits.',
+      'Good afternoon{name}. An unfinished thought is welcome.',
+      'Afternoon{name}. This hour can belong to something unexpected.',
+      'Good afternoon{name}. You can begin in the middle of things.'
+    ],
+    evening:[
+      'Good evening{name}. The day does not need a tidy ending.',
+      'Evening{name}. You can put down the performance for a moment.',
+      'Good evening{name}. There is room for quieter questions now.',
+      'Evening{name}. The unfinished pieces can stay unfinished.',
+      'Good evening{name}. Whatever happened today, you choose what comes next.',
+      'Evening{name}. A small detour may be plenty.'
+    ],
+    night:[
+      'Late tonight{name}, the page is still yours.',
+      'Night has arrived{name}. No grand conclusions required.',
+      'Good night{name}. You need not turn this into an assignment.',
+      'It is late{name}. A thought can be left gently unfinished.',
+      'Nighttime{name}. Seriousness is optional here.',
+      'Late hours{name}. Even the strange ideas have somewhere to go.'
+    ],
+    late:[
+      'It is after midnight{name}. You can arrive without explanation.',
+      'The small hours are here{name}. Nothing needs solving on demand.',
+      'Very early, or very late{name}. This space can follow your pace.',
+      'The clock has crossed midnight{name}. The page does not mind.',
+      'These quiet hours are yours{name}, however you use them.',
+      'Still awake{name}? You need not justify the hour.'
+    ]
+  };
+  const WEEKDAYS=[
+    ['Sunday can be rest, work, play, or something else entirely.','Sunday leaves the shape of today up to you.','There is no single correct way to spend a Sunday.'],
+    ['Monday need not become a list of obligations.','The week is opening, but you can enter it on your own terms.','Monday has arrived without a demand for reinvention.'],
+    ['Tuesday has room for a new thread or an old one.','Nothing says Tuesday must be ordinary.','Tuesday offers no mandatory script.'],
+    ['We are around the middle of the week; the direction is still negotiable.','Wednesday can hold an unfinished question.','It is Wednesday, not a deadline for figuring yourself out.'],
+    ['Thursday can be a turning point without being a dramatic one.','There is space in Thursday for the unexpected.','Thursday is allowed to be more than anticipation of Friday.'],
+    ['Friday does not require a completed checklist.','The week may be winding down; the questions can keep their own pace.','Friday can mean release, discovery, or simply another day.'],
+    ['Saturday does not owe anyone a schedule.','It is Saturday; usefulness is not the only measure of a day.','Saturday can be light, demanding, or pleasantly peculiar.']
+  ];
+  const CLOSINGS=[
+    'Want to follow a thought, a mood, or a complete surprise?',
+    'You can choose the depth; you can also choose no questions.',
+    'Bring what is real, or borrow a little strangeness.',
+    'There is no prize for being productive here.',
+    'Start where you actually are, not where a prompt thinks you should be.',
+    'Reflection, play, a blank page: none of them needs permission.',
+    'If the first doorway is wrong, take another.',
+    'A half-formed idea is more than enough.',
+    'We can make room for something ordinary or wonderfully odd.',
+    'You do not have to explain yourself before beginning.',
+    'A small detour counts as a destination.',
+    'You may go deeper, go lighter, or go nowhere in particular.'
+  ];
+  const PERSON_LINES=[
+    'If {person} belongs in today’s story, there is room for that too.',
+    'You can bring {person} into the conversation—or leave this space entirely your own.',
+    'Whatever is happening around {person}, your own direction still matters.',
+    'A thought about {person} can come along, but it is not a requirement.'
+  ];
+  // Only fixed-date observances whose dates do not require a live feed, lunar
+  // calendar or region-dependent shifting rules. No claimed news or weather.
+  const OBSERVANCES={
+    '01-01':'It is New Year’s Day. A new calendar page is not an order to reinvent yourself.',
+    '02-14':'It is Valentine’s Day. Affection can take many forms, including taking time for yourself.',
+    '03-14':'It is Pi Day. A small tribute to curiosity and delightful improbability.',
+    '04-22':'It is Earth Day. Paying attention to the world is a kind of exploration.',
+    '10-31':'It is Halloween. A little strangeness seems especially appropriate.',
+    '12-31':'It is New Year’s Eve. You are allowed to leave the year with loose ends.'
+  };
+  const TEXT_LIMIT=48;
+  const unique=items=>[...new Set(items)];
+  const simpleName=value=>typeof value==='string'
+    ?value.replace(/[\u0000-\u001f\u007f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,TEXT_LIMIT)
+    :'';
+  function dayKey(date){
+    return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
+  }
+  function validDate(iso){
+    if(typeof iso!=='string'||! /^\d{4}-\d{2}-\d{2}$/.test(iso))return false;
+    const parts=iso.split('-').map(Number);
+    const d=new Date(0);d.setFullYear(parts[0],parts[1]-1,parts[2]);d.setHours(12,0,0,0);
+    return d.getFullYear()===parts[0]&&d.getMonth()===parts[1]-1&&d.getDate()===parts[2];
+  }
+  function sanitize(profile){
+    const x=profile&&typeof profile==='object'&&!Array.isArray(profile)?profile:{};
+    const dates=[],seen=new Set();
+    if(Array.isArray(x.dates))for(const item of x.dates.slice(0,24)){
+      if(!item||!validDate(item.date))continue;
+      const label=simpleName(item.label);
+      if(!label)continue;
+      const annual=item.annual===true,signature=item.date+'|'+label+'|'+annual;
+      if(seen.has(signature))continue;
+      seen.add(signature);dates.push({date:item.date,label,annual});
+      if(dates.length>=12)break;
+    }
+    return {
+      enabled:x.enabled!==false,
+      yourName:simpleName(x.yourName),
+      personName:simpleName(x.personName),
+      mentionPerson:x.mentionPerson===true,
+      dates
+    };
+  }
+  const hash=s=>{let n=2166136261;for(let i=0;i<s.length;i++){n^=s.charCodeAt(i);n=Math.imul(n,16777619)}return n>>>0};
+  function pick(items,seed,history,field){
+    const used=new Set((Array.isArray(history)?history:[]).slice(-5).map(e=>e&&e[field]).filter(Number.isInteger));
+    const first=hash(seed)%items.length;
+    for(let i=0;i<items.length;i++)if(!used.has((first+i)%items.length))return (first+i)%items.length;
+    return first;
+  }
+  function generate(when=new Date(),preferences={},recent=[]){
+    const d=when instanceof Date?new Date(when.getTime()):new Date(when);
+    if(!Number.isFinite(d.getTime())){
+      return {day:'',part:'unknown',eyebrow:'A moment for yourself',text:'Welcome to Elsewhere. You may begin anywhere.',signature:null,source:'clock-unavailable',mentionsPerson:false};
+    }
+    const p=sanitize(preferences),key=dayKey(d),parts=key.slice(5),day=d.getDate(),weekday=d.getDay(),hour=d.getHours();
+    const part=hour<5?'late':hour<12?'morning':hour<17?'afternoon':hour<21?'evening':'night';
+    const safeHistory=Array.isArray(recent)?recent.filter(h=>h&&h.day!==key).slice(-30):[];
+    const intro=pick(OPENINGS[part],key+part+'intro',safeHistory,'intro');
+    const ending=pick(CLOSINGS,key+part+'end',safeHistory,'ending');
+    const weekdayChoice=hash(key+'weekday')%WEEKDAYS[weekday].length;
+    let anchor=WEEKDAYS[weekday][weekdayChoice],source='weekday';
+    const personal=p.dates.find(x=>x.annual?x.date.slice(5)===parts:x.date===key);
+    if(personal){
+      anchor='You marked today for '+personal.label+'. You decide what that means here.';
+      source='personal-date';
+    }else if(Object.prototype.hasOwnProperty.call(OBSERVANCES,parts)){
+      anchor=OBSERVANCES[parts];source='observance';
+    }else if(day===1){
+      anchor='The first day of a new month is here. No clean slate is required.';
+      source='month-boundary';
+    }else if(day===new Date(d.getFullYear(),d.getMonth()+1,0).getDate()){
+      anchor='It is the last day of the month. Loose ends are allowed.';
+      source='month-boundary';
+    }
+    const n=p.yourName?', '+p.yourName:'';
+    const opening=OPENINGS[part][intro].replace('{name}',n);
+    const days=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),day)/86400000);
+    const mentionsPerson=!!(p.mentionPerson&&p.personName&&days%7===0);
+    const personLine=mentionsPerson?PERSON_LINES[hash(key+'person')%PERSON_LINES.length].replace('{person}',p.personName):'';
+    const text=[opening,anchor,personLine,CLOSINGS[ending]].filter(Boolean).join(' ');
+    const eyebrow=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'})+' · '+(part==='late'?'After midnight':part.charAt(0).toUpperCase()+part.slice(1));
+    return {day:key,part,eyebrow,text,signature:{day:key,intro,ending},source,mentionsPerson};
+  }
+  globalThis.ElsewhereGreeting=Object.freeze({version:1,generate,sanitize,validDate,dayKey});
+})();
 /* Elsewhere Arrival & Quiet Echoes: local, consent-aware and independent of project canon. */
 (() => {
   'use strict';
@@ -5556,6 +5738,10 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
   const safeMode=m=>Object.prototype.hasOwnProperty.call(MODES,m)?m:'surprise';
   function pickMode(input){
     const t=String(input||'').toLowerCase().slice(0,600);
+    // Explicit boundaries outrank thematic keywords. Never answer "no questions"
+    // by delivering another question or accidentally saving the instruction.
+    if(/\b(no (?:more )?questions?|no prompts?|without (?:any )?questions?|(?:do not|don't|stop) ask(?:ing)?|just write|let me write|blank page)\b/.test(t))return 'write';
+    if(/\b(lighter|lighten (?:it|things) up|something (?:light|easy)|less intense|not so heavy|cheer me up)\b/.test(t))return 'play';
     if(/\b(funny|silly|fun|laugh|joke|play|distract|escape)\b/.test(t))return 'play';
     if(/\b(shadow|deeper|avoid|pattern|hard truth|self.examin)\b/.test(t))return 'shadow';
     if(/\b(hurt|sad|upset|anxious|stressed|argu|conflict|relationship|overwhelm|lonely|rough)\b/.test(t))return 'talk';
@@ -5564,6 +5750,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     if(/\b(write|blank page|no prompt)\b/.test(t))return 'write';
     return 'surprise';
   }
+  const navigationOnly=note=>/^(?:please\s+)?(?:no (?:more )?questions?|no prompts?|just write|let me write|blank page|don't ask(?: me)?(?: questions)?|do not ask(?: me)?(?: questions)?|without (?:any )?questions?)(?:\s+please)?[.!?]*$/i.test(String(note||'').trim());
   function extractThemes(input){
     const words=new Set(String(input||'').toLowerCase().slice(0,12000).match(/[a-z]+/g)||[]);
     const ranked=Object.entries(TERMS).map(([theme,terms])=>({theme,n:terms.filter(term=>words.has(term)).length})).filter(x=>x.n>=2).sort((a,b)=>b.n-a.n);
@@ -5586,7 +5773,54 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     d.echoHistory=Array.isArray(raw.echoHistory)?unique(raw.echoHistory.filter(x=>typeof x==='string'&&x.length<80)).slice(-10):[];
     return d;
   }
+  const GREETING_KEY='elsewhere:greeting:v1';
+  const greetingDefaults=()=>({enabled:true,yourName:'',personName:'',mentionPerson:false,dates:[]});
+  let greetingProfile=greetingDefaults(),greetingHistory=[],greetingPersistent=false;
   let data=DEFAULTS(), persistent=false, started=false;
+  function loadGreeting(){
+    try{
+      const raw=JSON.parse(localStorage.getItem(GREETING_KEY)||'null');
+      greetingProfile=globalThis.ElsewhereGreeting?.sanitize(raw?.profile||{})||greetingDefaults();
+      greetingHistory=Array.isArray(raw?.history)?raw.history.filter(row=>
+        row&&/^\d{4}-\d{2}-\d{2}$/.test(row.day)&&Number.isInteger(row.intro)&&row.intro>=0&&row.intro<6&&
+        Number.isInteger(row.ending)&&row.ending>=0&&row.ending<12&&['late','morning','afternoon','evening','night'].includes(row.part)
+      ).slice(-30):[];
+      greetingPersistent=true;
+    }catch{greetingProfile=greetingDefaults();greetingHistory=[];greetingPersistent=false;}
+  }
+  function persistGreeting(){
+    try{localStorage.setItem(GREETING_KEY,JSON.stringify({version:1,profile:greetingProfile,history:greetingHistory.slice(-30)}));greetingPersistent=true;return true}
+    catch{greetingPersistent=false;return false}
+  }
+  function renderGreeting(){
+    const view=$('e15Greeting'),api=globalThis.ElsewhereGreeting;
+    if(!view||!api)return;
+    view.hidden=!greetingProfile.enabled;
+    if(view.hidden)return;
+    const today=api.generate(new Date(),greetingProfile,greetingHistory);
+    $('e15GreetingWhen').textContent=today.eyebrow;
+    $('e15GreetingText').textContent=today.text;
+    if(today.signature&&!greetingHistory.some(x=>x.day===today.day&&x.part===today.part)){
+      greetingHistory.push({...today.signature,part:today.part});
+      greetingHistory=greetingHistory.slice(-30);
+      persistGreeting();
+    }
+  }
+  function renderGreetingDates(){
+    const list=$('e15GreetingDates');if(!list)return;
+    list.replaceChildren();
+    if(!greetingProfile.dates.length){list.append(node('p','No dates added. The calendar greeting still works offline.','e15-muted'));return}
+    for(const entry of greetingProfile.dates){
+      const item=node('div','','e15-greeting-date-row');
+      const title=node('span',entry.label+' · '+entry.date+(entry.annual?' · every year':''));
+      item.append(title,action('Remove',()=>{
+        greetingProfile.dates=greetingProfile.dates.filter(x=>x!==entry);
+        persistGreeting();renderGreetingDates();renderGreeting();
+      }));
+      list.append(item);
+    }
+  }
+
   function load(){
     try{const raw=localStorage.getItem(KEY);data=sanitize(raw?JSON.parse(raw):null);persistent=true}
     catch{data=DEFAULTS();persistent=false}
@@ -5628,6 +5862,12 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     $('e15SettingReveal').value=data.settings.reveal;
     $('e15SettingReveal').disabled=!data.settings.matching;
     for(const c of CATEGORIES){const input=$('e15Cat-'+c);if(input){input.checked=data.settings.categories.includes(c);input.disabled=!data.settings.matching;}}
+    const greetToggle=$('e15GreetingEnabled');
+    if(greetToggle){
+      greetToggle.checked=greetingProfile.enabled;
+      $('e15GreetingPersonEnabled').checked=greetingProfile.mentionPerson;
+      $('e15GreetingStatus').textContent=(greetingPersistent?'Stored locally on this browser.':'Browser storage unavailable; changes last only for this session.')+' These dates are not read from Google Calendar or any network service.';
+    }
     const state=$('e15SettingState'),ready=readiness();
     state.textContent='Stored on this browser: '+ready.observations+' theme observations over '+ready.days+' day(s). '+(ready.ready?'A comparison is available.':'A connection needs several separate visits.')+' '+(persistent?'':'Changes are session-only; browser storage is unavailable.');
   }
@@ -5683,6 +5923,7 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     $('e15Echo').hidden=true;
     $('e15Note').value='';
     const main=$('main');if(main)main.scrollTop=0;
+    renderGreeting();
     const focus=$('e15WelcomeTitle');if(focus)focus.focus({preventScroll:true});
   }
   function firstPrompt(mode){
@@ -5696,12 +5937,13 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     data.lastDay=dayOf();data.lastMode=finalMode;persist();
     if(withChoice&&finalMode!=='write')record('choice',MODES[finalMode].traits);
     $('e15Welcome').hidden=true;
+    if($('e15Greeting'))$('e15Greeting').hidden=true;
     document.documentElement.classList.remove('elsewhere-arrival-pending','elsewhere-arrival-freewriting');
     updateRouteBar();
     if(finalMode==='write'){
       document.documentElement.classList.add('elsewhere-arrival-freewriting');
       const editor=$('e14Answer');
-      if(editor){if(!editor.value.trim()&&note){editor.value=note;editor.dispatchEvent(new Event('input',{bubbles:true}));}editor.focus({preventScroll:true})}
+      if(editor){if(!editor.value.trim()&&note&&!navigationOnly(note)){editor.value=note;editor.dispatchEvent(new Event('input',{bubbles:true}));}editor.focus({preventScroll:true})}
       globalThis.Elsewhere14?.setView?.('write');
     } else {
       const legacy=globalThis.ElsewhereLegacy;
@@ -5715,6 +5957,17 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
       }
     }
     renderEcho(false);renderPrefs();
+  }
+  let rerouteOffset=0;
+  function somethingElse(){
+    // A genuine reroute: unlike choosing another random question, avoid the
+    // current mode and its prompt category, and do not force shadow work.
+    const currentPath=globalThis.ElsewhereLegacy?.getCurrent?.()?.c;
+    const modes=['play','learn','quiet','talk'].filter(mode=>
+      mode!==data.lastMode&&MODES[mode].path!==currentPath
+    );
+    const next=modes.length?modes[rerouteOffset++%modes.length]:'play';
+    void enter(next,false);
   }
   function inputSetting(label,kind,value,handler){
     const line=node('label','','e15-setting-line');
@@ -5751,6 +6004,61 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
       item.input.id='e15Cat-'+c;cats.append(item.line);
     }
     wrap.append(cats);
+    const greeting=node('details','','e15-greeting-settings');
+    greeting.append(node('summary','Daily hello & personal calendar'));
+    greeting.append(node('p','A different locally generated greeting for each day. Timing and dates come from this device. Names and personal dates are optional and never sent to a server.','e15-muted'));
+    const enabled=inputSetting('Show the daily hello','checkbox',greetingProfile.enabled,value=>{
+      greetingProfile.enabled=value;persistGreeting();renderGreeting();renderPrefs();
+    });
+    enabled.input.id='e15GreetingEnabled';greeting.append(enabled.line);
+    function nameControl(text,id,value,handler){
+      const line=node('label','','e15-greeting-field');
+      const input=document.createElement('input');input.id=id;input.type='text';input.maxLength=48;input.value=value;
+      input.autocomplete='off';input.addEventListener('change',()=>{
+        const safe=globalThis.ElsewhereGreeting.sanitize({yourName:input.value}).yourName;
+        handler(safe);input.value=safe;
+        persistGreeting();renderGreeting();renderPrefs();
+      });
+      line.append(node('span',text),input);return line;
+    }
+    greeting.append(nameControl('Your first name (optional)','e15GreetingYourName',greetingProfile.yourName,value=>greetingProfile.yourName=value));
+    greeting.append(nameControl('Someone to mention sometimes (optional)','e15GreetingPersonName',greetingProfile.personName,value=>greetingProfile.personName=value));
+    const person=inputSetting('Occasionally mention this person','checkbox',greetingProfile.mentionPerson,value=>{
+      greetingProfile.mentionPerson=value;persistGreeting();renderGreeting();renderPrefs();
+    });
+    person.input.id='e15GreetingPersonEnabled';greeting.append(person.line);
+    const dates=node('div','','e15-greeting-dates');
+    dates.append(node('h4','Your own important dates'));
+    const dateControls=node('div','','e15-greeting-date-entry');
+    const whenLabel=node('label','Date');const when=document.createElement('input');when.type='date';when.id='e15GreetingDate';whenLabel.append(when);
+    const whatLabel=node('label','A short label');const what=document.createElement('input');what.type='text';what.maxLength=48;what.placeholder='Something worth remembering';what.id='e15GreetingDateLabel';whatLabel.append(what);
+    const repeat=inputSetting('Repeat every year','checkbox',true,()=>{});repeat.input.checked=true;
+    const feedback=node('p','','e15-muted');feedback.id='e15GreetingDateStatus';feedback.setAttribute('role','status');
+    dateControls.append(whenLabel,whatLabel,repeat.line,action('Add date',()=>{
+      const api=globalThis.ElsewhereGreeting;
+      if(!api?.validDate(when.value)){feedback.textContent='Choose a valid date.';return}
+      const label=api.sanitize({yourName:what.value}).yourName;
+      if(!label){feedback.textContent='Give the date a short label.';return}
+      if(greetingProfile.dates.length>=12){feedback.textContent='The local calendar holds up to 12 dates.';return}
+      const entry={date:when.value,label,annual:repeat.input.checked};
+      if(greetingProfile.dates.some(x=>x.date===entry.date&&x.label===entry.label&&x.annual===entry.annual)){
+        feedback.textContent='That date is already listed.';return;
+      }
+      greetingProfile.dates.push(entry);
+      persistGreeting();renderGreetingDates();renderGreeting();renderPrefs();
+      feedback.textContent='Date saved on this browser.';what.value='';
+    }),feedback);
+    dates.append(dateControls);
+    const dateList=node('div','','e15-greeting-date-list');dateList.id='e15GreetingDates';dates.append(dateList);
+    greeting.append(dates);
+    greeting.append(action('Erase greeting personalization',()=>{
+      if(!confirm('Erase your local greeting names, important dates and variation history? Journal entries, projects and figure matching will not change.'))return;
+      greetingProfile=greetingDefaults();greetingHistory=[];persistGreeting();
+      $('e15GreetingYourName').value='';$('e15GreetingPersonName').value='';
+      renderGreetingDates();renderGreeting();renderPrefs();
+    }));
+    const greetingStatus=node('p','','e15-privacy');greetingStatus.id='e15GreetingStatus';greetingStatus.setAttribute('role','status');greeting.append(greetingStatus);
+    wrap.append(greeting);renderGreetingDates();
     const state=node('p','','e15-muted');state.id='e15SettingState';state.setAttribute('role','status');wrap.append(state);
     const actions=node('div','','e15-settings-actions');
     actions.append(action('See my connection',()=>{renderEcho(true);const echo=$('e15Echo');if(echo.hidden){state.textContent='No reliable playful connection yet. Try a few more visits or enable categories.';}else{ $('settingsDialog')?.close();echo.scrollIntoView({block:'center',behavior:'auto'});}}));
@@ -5764,6 +6072,10 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
   function installUI(){
     if($('e15Welcome'))return;
     const stage=$('ideaStage')?.querySelector('.stage');if(!stage)return;
+    const greet=node('aside','','e15-greeting');greet.id='e15Greeting';greet.hidden=true;greet.setAttribute('aria-label','Personalized daily greeting');
+    const when=node('p','','e15-greeting-eyebrow');when.id='e15GreetingWhen';
+    const message=node('p','','e15-greeting-copy');message.id='e15GreetingText';
+    greet.append(when,message);stage.before(greet);
     const welcome=node('section','','e15-arrival');welcome.id='e15Welcome';welcome.setAttribute('aria-labelledby','e15WelcomeTitle');
     const title=node('h1','How are you doing today?','e15-title');title.id='e15WelcomeTitle';title.tabIndex=-1;
     welcome.append(node('p','ELSEWHERE / ARRIVAL','e15-eyebrow'),title,node('p','You do not have to know what you need. Give me a direction, or let me choose.','e15-deck'));
@@ -5796,21 +6108,26 @@ globalThis.ElsewhereContent3x=Object.assign(globalThis.ElsewhereContent3x||{},ma
     route.firstChild.id='e15ModeStatus';
     route.append(action('Change direction',showWelcome));
     route.append(action('Just write',()=>{void enter('write',false)}));
-    route.append(action('Something else',()=>{void enter('surprise',false)}));
+    route.append(action('Something else',somethingElse));
     stage.before(route);
     const echo=node('aside','','e15-echo');echo.id='e15Echo';echo.setAttribute('aria-label','Optional figure comparison');echo.hidden=true;stage.before(echo);
   }
   function boot(){
     if(started||typeof document==='undefined'||!$('ideaStage')||!globalThis.ElsewhereLegacy||!globalThis.Elsewhere14?.initialized)return false;
-    started=true;load();installUI();installSettings();
+    started=true;load();loadGreeting();installUI();installSettings();
     addEventListener('elsewhere:response-saved',event=>{
       if(!data.settings.matching||!data.settings.writing)return;
       const value=event?.detail?.text;
       if(typeof value!=='string'||value.trim().length<25)return;
       record('writing',extractThemes(value));renderPrefs();
     });
-    addEventListener('storage',event=>{if(event.key!==KEY)return;load();renderPrefs();if(!data.settings.matching&&$('e15Echo'))$('e15Echo').hidden=true;});
+    addEventListener('storage',event=>{
+      if(event.key===GREETING_KEY){loadGreeting();renderPrefs();renderGreetingDates();renderGreeting();return}
+      if(event.key!==KEY)return;load();renderPrefs();if(!data.settings.matching&&$('e15Echo'))$('e15Echo').hidden=true;
+    });
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$('e15Greeting')&&!$('e15Greeting').hidden)renderGreeting()});
     const today=dayOf();
+    renderGreeting();
     if(data.settings.checkin==='off'||(data.settings.checkin==='daily'&&data.lastDay===today)){
       $('e15Welcome').hidden=true;
       document.documentElement.classList.remove('elsewhere-arrival-pending');
