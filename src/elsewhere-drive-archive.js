@@ -169,7 +169,7 @@
     if(busy){pendingChanges=true;return}
     busy=true;
     try {
-      const payload=snapshotPayload(),body=JSON.stringify(payload);
+      const payload=snapshotPayload(),body=JSON.stringify({...payload,universe:{...payload.universe,exportedAt:0}});
       if(force || body!==lastBody){
         const env=await sealArchive(payload,dataKey,configOfVault());
         const serialized=JSON.stringify(env);
@@ -280,7 +280,9 @@
       const id=about.user?.permissionId;
       if(!id)throw Error('Could not identify the authorized Google Drive account.');
       if(settings?.accountId && settings.accountId!==id &&
-        !confirm('This is a DIFFERENT Google account. Switch the archive destination for this device? Existing cloud files stay in the previous account.'))){
+        (await allPending()).length)throw Error('This device has encrypted backups pending for the previous Google account. Reconnect that account and complete them before switching.');
+      if(settings?.accountId && settings.accountId!==id &&
+        !confirm('This is a DIFFERENT Google account. Switch the archive destination for this device? Existing cloud files stay in the previous account.')){
         token=null;tokenExpiry=0;return;
       }
       if(settings?.accountId && settings.accountId!==id)folderId=null;

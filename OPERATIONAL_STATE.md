@@ -501,3 +501,10 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - [VER] Source-linked OMNI20, original Node suite, reset/verification guards, and fresh-browser real standalone smoke passed in the GitHub Actions integration runner.
 - [UNV] Physical iPhone Safari, installed/offline PWA restart, encrypted vault restoration and real-data migration have NOT been verified.
 - [INV] Retain Dexter UI gate, Greyson EN/ES, legacy prompt engine, writing recovery, separate possible/established canon, and opt-in cross-project search.
+
+## 2026-10-21 — Drive archive implementation branch
+
+- [IMPLEMENTED-UNVERIFIED] `feature/encrypted-drive-archive-20261021` includes an opt-in encrypted IndexedDB queue, PBKDF2-wrapped AES-256-GCM archive key, direct drive.file token-flow, app-created Drive folder, upload read-back verification, and guarded restore using the existing transaction. Existing local journal/drafts remain plaintext by design and cannot be claimed encrypted.
+- [VERIFIED-SOURCE] New cryptographic round-trip and tamper tests pass, along with existing Node regression and build/reset checks.
+- [BLOCKED] No Google OAuth client ID, dedicated HTTPS origin, provider consent verification, live Drive upload, physical Safari/Android or offline installed PWA acceptance.
+- [DECISION] Do not merge to main or deploy as fully private live journal storage until independent browser and provider verification; preserve legacy v12/v13 writing and backup restoration.

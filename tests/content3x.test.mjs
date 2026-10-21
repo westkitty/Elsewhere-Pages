@@ -57,7 +57,7 @@ test('all nine deeper prompts triple their choices and assistants have threefold
  assert.match(html,/const ASSIST_ENHANCE_EXTRAS=\[.*Try this from a different point of view/);
 });
 test('all content modules are deferred until Dexter unlock, with unchanged v14 source markers',()=>{
- assert.equal(inline.length,27);
+ assert.equal(inline.length,28);
  for(const name of ['elsewhere-triple-paths','elsewhere-triple-packs','elsewhere-triple-creative','elsewhere-triple-deeper']){
    const source=fs.readFileSync(new URL('../src/'+name+'.js',import.meta.url),'utf8').trimEnd();
    assert.ok(inline.some(s=>s.includes(source)),name);
