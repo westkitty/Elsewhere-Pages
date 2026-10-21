@@ -7,6 +7,9 @@ on:
       - 'src/elsewhere-arrival.css'
       - 'src/elsewhere-omni20.js'
       - 'tests/browser_greeting.py'
+      - 'tests/browser_offline_shell.py'
+      - 'sw.js'
+      - 'src/elsewhere14.js'
       - 'index.html'
       - 'tools/rebuild14.mjs'
 
@@ -26,3 +29,4 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - run: python tests/browser_greeting.py
       - run: python tests/browser_full_omni20.py
+      - run: python tests/browser_offline_shell.py
