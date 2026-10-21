@@ -94,3 +94,11 @@ test('standalone builds preserve gated boot, original v12 prompt engine and sour
   assert.match(source,/Erase matching history/);
   assert.match(source,/Offer occasional figure comparisons/);
 });
+
+test('Arrival honors no-questions and lighter intent before thematic routing',()=>{
+  assert.equal(sandbox.ElsewhereArrival.pickMode('No questions, just let me write'), 'write');
+  assert.equal(sandbox.ElsewhereArrival.pickMode('Something lighter please'), 'play');
+  assert.match(source,/navigationOnly\(note\)/);
+  assert.match(source,/function somethingElse\(\)/);
+  assert.match(source,/route\.append\(action\('Something else',somethingElse\)\)/);
+});

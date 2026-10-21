@@ -1181,7 +1181,9 @@
     window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
   }
   function registerOffline() {
-    if (location.protocol!=='https:' && location.hostname!=='localhost')return;
+    // Secure browser origins include HTTPS and trustworthy loopback development.
+    // Do not attempt service worker registration from file:// or insecure HTTP.
+    if (!globalThis.isSecureContext || !['http:','https:'].includes(location.protocol))return;
     if(!('serviceWorker' in navigator))return;
     navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{ /* optional offline capability */ });
   }

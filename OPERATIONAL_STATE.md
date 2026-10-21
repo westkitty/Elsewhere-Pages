@@ -4,11 +4,11 @@
 {
   "artifact_path": "",
   "current_baseline": {
-    "identity": "main 9ad9712 after merged Arrival PR #2 and Infinite Door PR #3; OMNI20 integrated only on feature branch, browser/Node smoke passed",
+    "identity": "main b49a02d after OMNI20 merge; contextual greetings implemented on unmerged feature/contextual-daily-greetings-20261019",
     "last_verified": "2026-10-19",
     "state": "partially-verified"
   },
-  "last_updated": "2026-10-19T12:28:18.266135Z",
+  "last_updated": "2026-10-19T13:40:38.977Z",
   "linked_parent_state": null,
   "project_id": "elsewhere-pages",
   "project_name": "Elsewhere Living Atlas",
@@ -20,7 +20,7 @@
     "Real iPhone Safari/VoiceOver and installed offline PWA remain unverified",
     "OMNI20 integration is additive; production iPhone, encrypted vault restore, multi-tab stress and installed PWA require real-device acceptance"
   ],
-  "state_revision": 8
+  "state_revision": 9
 }
 -->
 
@@ -501,3 +501,21 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - [VER] Source-linked OMNI20, original Node suite, reset/verification guards, and fresh-browser real standalone smoke passed in the GitHub Actions integration runner.
 - [UNV] Physical iPhone Safari, installed/offline PWA restart, encrypted vault restoration and real-data migration have NOT been verified.
 - [INV] Retain Dexter UI gate, Greyson EN/ES, legacy prompt engine, writing recovery, separate possible/established canon, and opt-in cross-project search.
+
+## 2026-10-19 — Daily greeting / local calendar feature candidate
+
+- **Baseline:** Main HEAD b49a02da5675e28c6b28915728fe40ea2f7c396c was verified at feature creation. The greeting exists on feature/contextual-daily-greetings-20261019 and has not been merged or deployed.
+- **Change:** Authored offline greeting module, Arrival/Settings controls, local personal date and name options, responsive CSS, source-linked single-file embed, documentation and 8 focused regression tests.
+- **Protected:** Dexter UI unlock/defer sequence; v12/v13/v14 path progress and writing/canon; Greyson EN/ES packs; Infinite Door and OMNI20; offline startup; backup/restore and multi-tab protections. No cloud/calendar synchronization or personal journal analysis.
+- **Privacy:** Separate plaintext localStorage record elsewhere:greeting:v1, optional names and at most 12 user-entered date labels, local repeat history, independent scoped erase, no inferred relationships. Not in encrypted vault and cannot be assumed synchronized.
+- **Proof state:** IMPLEMENTED-UNVERIFIED pending GitHub Actions Node, source/build/reset checks and end-to-end browser flows. Real Safari, mobile PWA, restored encrypted vault, and changed-password unlock are not proven by static integration.
+- **Release:** BLOCKED until required tests pass and merge/deploy authority is obtained.
+
+## 2026-10-21 — Verified offline shell and recovery browser gate
+
+- **Verified commit:** `bc923b7055205a6804e21c3788634068656053b9` on unmerged draft PR #5. The same SHA passed both GitHub workflows: Node/build integrity and Chromium browser acceptance.
+- **New executable proof:** `tests/browser_offline_shell.py` with real service workers enabled, secure loopback origin, fresh synthetic project and writing, then forced offline browser context. It verifies v17 SW activation and exactly six public shell assets; disconnects and reopens the cached HTML; unlocks Dexter; verifies persisted artifact; explicitly recovers an unsaved draft; navigates Atlas and Library; reopens a second disconnected page; checks for unexpected cache entries and JavaScript errors.
+- **Compatibility proof:** Existing `tests/browser_greeting.py` and `tests/browser_full_omni20.py` both passed on the same SHA. Branch Node suite, reset guard, `verify_x5`, and source-linked rebuild check all passed.
+- **Earlier test-only corrections:** The offline test now uses the visible All tools project-creation path, dismisses optional Project Ignition through its ordinary control, and tests route operability independently of Arrival's hidden tabs. No production feature code needed changing to satisfy the new offline gate.
+- **Not proven:** Physical iPhone Safari/VoiceOver, actual installed PWA, real-world migration or encrypted vault restore, customized password, production HTTPS, multi-tab contention under offline conditions. The browser run uses only synthetic data.
+- **Delivery:** PR #5 remains a draft, unmerged; GitHub Pages production is untouched. Do not merge/deploy until user-authorized and remaining release checks are accepted.
