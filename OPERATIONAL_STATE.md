@@ -510,3 +510,12 @@ Add stable `DEC-###` entries for source locks, routes, naming, packaging, style,
 - **Privacy:** Separate plaintext localStorage record elsewhere:greeting:v1, optional names and at most 12 user-entered date labels, local repeat history, independent scoped erase, no inferred relationships. Not in encrypted vault and cannot be assumed synchronized.
 - **Proof state:** IMPLEMENTED-UNVERIFIED pending GitHub Actions Node, source/build/reset checks and end-to-end browser flows. Real Safari, mobile PWA, restored encrypted vault, and changed-password unlock are not proven by static integration.
 - **Release:** BLOCKED until required tests pass and merge/deploy authority is obtained.
+
+## 2026-10-21 — Verified offline shell and recovery browser gate
+
+- **Verified commit:** `bc923b7055205a6804e21c3788634068656053b9` on unmerged draft PR #5. The same SHA passed both GitHub workflows: Node/build integrity and Chromium browser acceptance.
+- **New executable proof:** `tests/browser_offline_shell.py` with real service workers enabled, secure loopback origin, fresh synthetic project and writing, then forced offline browser context. It verifies v17 SW activation and exactly six public shell assets; disconnects and reopens the cached HTML; unlocks Dexter; verifies persisted artifact; explicitly recovers an unsaved draft; navigates Atlas and Library; reopens a second disconnected page; checks for unexpected cache entries and JavaScript errors.
+- **Compatibility proof:** Existing `tests/browser_greeting.py` and `tests/browser_full_omni20.py` both passed on the same SHA. Branch Node suite, reset guard, `verify_x5`, and source-linked rebuild check all passed.
+- **Earlier test-only corrections:** The offline test now uses the visible All tools project-creation path, dismisses optional Project Ignition through its ordinary control, and tests route operability independently of Arrival's hidden tabs. No production feature code needed changing to satisfy the new offline gate.
+- **Not proven:** Physical iPhone Safari/VoiceOver, actual installed PWA, real-world migration or encrypted vault restore, customized password, production HTTPS, multi-tab contention under offline conditions. The browser run uses only synthetic data.
+- **Delivery:** PR #5 remains a draft, unmerged; GitHub Pages production is untouched. Do not merge/deploy until user-authorized and remaining release checks are accepted.
