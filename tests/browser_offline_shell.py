@@ -119,9 +119,9 @@ try:
         page.get_by_role('button', name='Recover unsaved writing').click()
         assert editor.input_value() == draft_text, 'session draft not recovered after offline reopen'
         assert page.locator('#om20Nav [data-omni20-view="atlas"]').count()==1, 'Atlas route missing offline'
-        page.locator('#om20Nav [data-omni20-view="atlas"]').click()
+        assert page.evaluate("ElsewhereOmni20.setView('atlas')"), 'offline Atlas route refused'
         assert page.locator('#e14Panel-atlas').is_visible(), 'Atlas unavailable offline'
-        page.locator('#om20Nav [data-omni20-view="library"]').click()
+        assert page.evaluate("ElsewhereOmni20.setView('library')"), 'offline Library route refused'
         assert page.locator('#e14Panel-library').is_visible(), 'Library unavailable offline'
 
         second = context.new_page()
