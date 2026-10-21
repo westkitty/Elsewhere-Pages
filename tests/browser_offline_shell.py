@@ -90,6 +90,8 @@ try:
             page.locator('#om20CommandList .omni20-command-row').filter(has_text='Create project').click()
             page.locator('#projectNameInput').fill('Synthetic offline project')
             page.locator('#projectSaveBtn').click()
+            if page.locator('#projectIgnitionDialog').evaluate('(el) => el.open'):
+                page.locator('#ignitionCancel').click()
             project_id = active_project(page)
         assert project_id, 'unable to establish test project'
 
