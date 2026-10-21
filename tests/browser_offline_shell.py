@@ -72,14 +72,14 @@ try:
         cache_report = page.evaluate("""async () => {
           const registration=await navigator.serviceWorker.ready;
           const names=await caches.keys();
-          const expected='elsewhere-public-shell-v17-arrival-greeting';
+          const expected='elsewhere-public-shell-v18-drive-archive';
           const assets=await caches.open(expected);
           const entries=await assets.keys();
           const urls=entries.map(e=>new URL(e.url).pathname);
           return {active:registration.active?.state, names, urls};
         }""")
         assert cache_report['active']=='activated', f"service worker not active: {cache_report}"
-        assert 'elsewhere-public-shell-v17-arrival-greeting' in cache_report['names'], 'new app version was not precached'
+        assert 'elsewhere-public-shell-v18-drive-archive' in cache_report['names'], 'new app version was not precached'
         assert len(cache_report['urls'])==6, f"unexpected cache entries: {cache_report['urls']}"
         assert all(url.endswith(('/','/index.html','/manifest.webmanifest','/icon.svg','/icon-192.png','/icon-512.png')) for url in cache_report['urls'])
 
@@ -139,7 +139,7 @@ try:
         assert saved_text not in str(cache_after) and draft_text not in str(cache_after), 'writing leaked to cache metadata'
         assert not errors, f"browser runtime errors: {errors[:5]}"
         context.set_offline(False)
-        print('PASS: install/claim v17 SW, six public shell assets only, saved response, session draft, offline navigation/relock/recovery, Atlas/Library, reconnect, zero JS errors')
+        print('PASS: install/claim v18 SW, six public shell assets only, saved response, session draft, offline navigation/relock/recovery, Atlas/Library, reconnect, zero JS errors')
         context.close()
         browser.close()
 finally:

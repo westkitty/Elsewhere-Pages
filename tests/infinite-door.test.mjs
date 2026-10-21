@@ -36,7 +36,7 @@ test('discovery preference sanitization rejects malformed values and unknown exc
 test('deferred sources remain private behind the Dexter gate and match standalone',()=>{
  assert.ok(html.includes(content.trimEnd()));assert.ok(html.includes(engine.trimEnd()));
  assert.match(html,/INFINITE:ENGINE:START/);
- assert.equal(html.split('<script type="text/plain" data-elsewhere-app>').length-1,27);
+ assert.equal(html.split('<script type="text/plain" data-elsewhere-app>').length-1,28);
  assert.match(html,/const DEFAULT = 'Dexter'/);
 });
 test('third-bank prompts preserve their selected content in follow-up and remixes',()=>{
