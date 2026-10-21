@@ -85,7 +85,9 @@ try:
 
         project_id = active_project(page)
         if not project_id:
-            page.locator('#newProjectBtn').click()
+            page.locator('#om20ToolsButton').click()
+            page.locator('#om20CommandInput').fill('Create project')
+            page.locator('#om20CommandList .omni20-command-row').filter(has_text='Create project').click()
             page.locator('#projectNameInput').fill('Synthetic offline project')
             page.locator('#projectSaveBtn').click()
             project_id = active_project(page)
